@@ -4,7 +4,7 @@
   "description": "tareas de curso EscuelaIT #14-js-imperativa",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "tarea"
@@ -14,5 +14,8 @@
   "dependencies": {
     "console-input": "^1.0.2",
     "console-mpds": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^28.0.2"
   }
 }
