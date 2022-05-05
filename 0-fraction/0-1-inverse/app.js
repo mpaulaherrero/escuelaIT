@@ -18,4 +18,4 @@ while(gcd > b){
 
 //console.writeln(`El máximo común divisor ${gcd}`);
 
-console.writeln(`La fracción ${numerator}/${denominator} invertida es la fracción ${denominator/gcd}/${numerator/gcd}`);
+console.writeln(`La fracción ${numerator}/${denominator} ${gcd>1 ?`= ${numerator/gcd}/${denominator/gcd} `:``}invertida es la fracción ${denominator/gcd}/${numerator/gcd}`);

@@ -29,7 +29,7 @@ do{
 
 const longInterval=(max-min)/numInterval;
 //console.writeln(`Tamaño intervalo dividido ${longInterval}`);
-let resultText = `El intervalo [${min}, ${max}] dividido en ${numInterval} son`
+let resultText = `El intervalo [${min}, ${max}] dividido en ${numInterval} intervalos son`
 let minInterval = min;
 let maxInterval = min+longInterval; 
 
