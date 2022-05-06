@@ -1,70 +1,57 @@
-let x=1;
-let y=2;
-let z=false;
-//ojo con esto por que es una trampa que viene del mundo de la matemática
-//se lee de izq a derecha y para que retorne true z debe tener el mismo valor booleano resultado de igualar x y y por valor y tipo
-//x y y iguales en valor y tipo y z valor true o x y y diferentes en valor y/o tipo y z valor false
-//esto se cumple exceptuando NaN
-if (x===y===z) console.log("1. retorna true");
-else console.log("1. retorna false");
+const salidaComparar = (result, x, y, z, op) => {
+    if (result) console.log(`Comparar ${ typeof x === "string" ? `"${x}"`: x}${op}${typeof y === "string"  ? `"${y}"`: y}${op}${ typeof z === "string"  ? `"${z}"`:z} retorna true`);
+    else console.log(`Comparar ${ typeof x === "string" ? `"${x}"`: x}${op}${typeof y === "string"  ? `"${y}"`: y}${op}${ typeof z === "string"  ? `"${z}"`:z} retorna false`);
+}
 
-x="3";
-y=3;
-z=false;
-if (x===y===z) console.log("2. retorna true");
-else console.log("2. retorna false");
+const compararEstricto = (x, y, z) => {
+     salidaComparar(x===y===z, x, y, z, "===");
+}
 
-x=5;
-y=4;
-z=0;
+const comparar = (x, y, z) => {
+    salidaComparar(x==y==z, x, y, z, "==");
+}
 
-//se lee de izq a derecha y para que para que retorne true z debe tener el mismo valor booleano o la coerción del mismo 
-// resultado de igualar x y y, dado que no tienen que ser del mismo tipo
-if (x==y==z) console.log("3. retorna true");
-else console.log("3. retorna false");
+const compararMenor = (x, y, z) => {
+    salidaComparar(x<y<z, x, y, z, "<");
+}
 
-x=3
-y=3;
-z="true";
-if (x==y==z) console.log("4. retorna true");
-else console.log("4. retorna false");
+compararEstricto(1, 2, false);
+compararEstricto("3", 3, false);
+comparar(5, 4, 0);
+comparar(3, 3, "true");
+comparar(3, 3, true);
+comparar(3, 3, 1);
+comparar(10, '10', 10);
+comparar(4, 4, 4);
+comparar("1", 1, 1.0);
 
-x=3;
-y=3;
-z=true;
-if (x==y==z) console.log("5. retorna true");
-else console.log("5. retorna false");
+compararMenor(1, 1, 1);
+compararMenor(5, 6, 1);
+compararMenor(5, 6, 0);
+compararMenor(6, 5, 0);
+compararMenor(5, 6, 1);
+compararMenor(5, 6, 2);
+compararMenor(6, 5, 2);
+compararMenor(1, 3, 5);
+compararMenor(true, 1, '1');
+compararMenor(true, 1, Infinity);
+compararMenor(true, 1, "cadena");
+compararMenor(true, 1, "0cadena");
 
-x=10;
-y='10';
-z=10;
-if (x==y==z) console.log("6. retorna true");
-else console.log("6. retorna false");
+//por coerción si pregunto en un condicional por la varialbe sola vale true
+//, pero si lo comparo con otra no
+let numVar = 4;
+let boolVar = true;
 
-x=4;
-y=4;
-z=4;
-if (x==y==z) console.log("7. retorna true");
-else console.log("7. retorna false");
+if(numVar) console.log(`Comparar ${typeof numVar === "string" ? `"${numVar}"`:numVar} retorna true`);
+else console.log(`Comparar ${typeof numVar === "string" ? `"${numVar}"`:numVar} retorna false`);
 
-console.log(1*2+3*4+5*6)
+if(numVar==boolVar) console.log(`Comparar ${typeof numVar === "string" ? `"${numVar}"`:numVar}==${typeof boolVar === "string" ? `"${boolVar}"`:boolVar} retorna true`);
+else console.log(`Comparar ${typeof numVar === "string" ? `"${numVar}"`:numVar}==${typeof boolVar === "string" ? `"${boolVar}"`:boolVar} retorna false`);
 
-console.log(true&&false||false&&true||true&&false)
-
-console.log(undefined===undefined);
-console.log(NaN===NaN);
-console.log(null===null);
-console.log(true==Infinity);
-console.log(true==4);
-console.log(false==4);
-console.log(4==true);
-
-//si lo tengo solo vale true, pero si lo comparo no
-let boolVar = 4;
-let boolVar2 = true;
-
-if(boolVar) console.log("8. retorna true");
-else console.log("8. retorna false");
-
-if(boolVar==boolVar2) console.log("9. retorna true");
-else console.log("9. retorna false");
+console.log(`1*2+3*4+5*6=>${1*2+3*4+5*6}`);
+console.log(`true&&false||false&&true||true&&false=>${true&&false||false&&true||true&&false}`);
+console.log(`undefined===undefined=>${undefined===undefined}`);
+console.log(`NaN===NaN=>${NaN===NaN}`);
+console.log(`null===null=>${null===null}`);
+console.log(`true==Infinity=>${true==Infinity}`);
