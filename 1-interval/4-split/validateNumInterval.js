@@ -1,8 +1,4 @@
 const validateNumInterval = ( numInterval) => {
-    let error='';
-    if (numInterval <= 0){
-        error=`Error!!! La cantidad debe ser positiva`;
-    }
-    return error;
+    return numInterval <= 0;
 }
 module.exports = {validateNumInterval}

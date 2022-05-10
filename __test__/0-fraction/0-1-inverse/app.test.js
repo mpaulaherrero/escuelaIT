@@ -6,6 +6,8 @@ describe('Pruebas de Fraction-Inverse', () =>{
         expect(fractionInverse(2,3)).toBe("La fracción 2/3 invertida es la fracción 3/2");
         expect(fractionInverse(3,18)).toBe("La fracción 3/18 = 1/6 invertida es la fracción 6/1");
         expect(fractionInverse(2,5)).toBe("La fracción 2/5 invertida es la fracción 5/2");
+        expect(fractionInverse(0,5)).toBe("La fracción 0/5 no se puede invertir");
+        expect(fractionInverse(5,0)).toBe("La fracción 5/0 no se puede invertir");
     })
 
 

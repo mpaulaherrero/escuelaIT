@@ -1,16 +1,17 @@
 const fractionInverse = (numerator, denominator) => {
     let gcd=numerator;
-    let b=denominator;
-    if(gcd < b){
+    let rest=denominator;
+    if(gcd < rest){
         gcd=denominator;
-        b=numerator;
+        rest=numerator;
     }
-
-    while(gcd > b){
-        gcd=gcd-b;
+    if(rest!=0){
+        while(gcd > rest){
+            gcd=gcd-rest;
+        }
+        return `La fracción ${numerator}/${denominator} ${gcd>1 ?`= ${numerator/gcd}/${denominator/gcd} `:``}invertida es la fracción ${denominator/gcd}/${numerator/gcd}`;
+    } else {
+        return `La fracción ${numerator}/${denominator} no se puede invertir`;
     }
-    
-    //console.writeln(`El máximo común divisor ${gcd}`);
-    return `La fracción ${numerator}/${denominator} ${gcd>1 ?`= ${numerator/gcd}/${denominator/gcd} `:``}invertida es la fracción ${denominator/gcd}/${numerator/gcd}`;
 }
 module.exports = {fractionInverse}

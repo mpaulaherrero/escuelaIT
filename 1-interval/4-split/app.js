@@ -6,23 +6,23 @@ const console = new Console();
 
 let min;
 let max;
-let numInterval;
 let error;
 do {
     min = console.readNumber("Introduce el mínimo del intervalo: ");
     max = console.readNumber("Introduce el máximo del interval(superior o igual al mínimo): ");
     error = validateMinMax(min, max);
-    if(error!==''){
-        console.writeln(error);
+    if(error){
+        console.writeln(`Error!!! El máximo debe ser superior o igual al mínimo`);
     }
-} while(error!=='');
+} while(error);
 
+let numIntervals;
 do {
-    numInterval = console.readNumber("Introduce una cantidad positiva de intervalos: ");
-    error = validateNumInterval(numInterval);
-    if(error!==''){
-        console.writeln(error);
+    numIntervals = console.readNumber("Introduce una cantidad positiva de intervalos: ");
+    error = validateNumInterval(numIntervals);
+    if(error){
+        console.writeln(`Error!!! La cantidad debe ser positiva`);
     }
-} while(error!=='');
+} while(error);
 
-console.writeln(intervalSplit(min, max, numInterval));
+console.writeln(intervalSplit(min, max, numIntervals));

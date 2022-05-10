@@ -26,31 +26,19 @@ switch(month){
     case 6:
     case 9:
     case 12:
-        if(day>=21){
-            seasonPartText = `primeros` + seasonPartText;
-        } else {
-            seasonPartText = `finales` + seasonPartText;
-        }
+        seasonPartText = (day>=21 ?  `primeros` : `finales`) + seasonPartText;
         break;
     case 4:
     case 7:
     case 10:
     case 1:
-        if(day>=21){
-            seasonPartText = `mediados` + seasonPartText;
-        } else {
-            seasonPartText = `primeros` + seasonPartText;
-        }
+        seasonPartText = (day>=21 ?  `mediados` : `primeros`) + seasonPartText;
         break;
     case 5:
     case 8:
     case 11:
     case 2:
-        if(day>=21){
-            seasonPartText = `finales` + seasonPartText;
-        } else {
-            seasonPartText = `mediados` + seasonPartText;
-        }  
+        seasonPartText = (day>=21 ?  `finales` : `mediados`) + seasonPartText;
 }
 
     return `El día ${day} del ${month} de ${year} cae a ${seasonPartText}.`;
