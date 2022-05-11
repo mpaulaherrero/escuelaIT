@@ -1,13 +1,14 @@
 const { Console } = require("console-mpds");
 const console = new Console();
 
+const NUM_INTERVALS = 2;
+const LOCALE = 'es-ES';
 let min = 0;
 let max = 1000000;
-let numIntervals = 2;
 let guessNumber=false;
 do{
-    const longInterval=parseInt((max-min)/numIntervals);
-    let answerd = console.readString(`¿Tu número es igual o mayor que ${(min + longInterval).toLocaleString('es-ES')}? (Si/No): `);
+    const longInterval=parseInt((max-min)/NUM_INTERVALS);
+    let answerd = console.readString(`¿Tu número es igual o mayor que ${(min + longInterval).toLocaleString(LOCALE)}? (Si/No): `);
     if(answerd==="Si" || answerd==="si" || answerd==="SI" || answerd==="s"){
         min += longInterval;
     } else if(answerd==="No" || answerd==="no" || answerd==="NO" || answerd==="n"){
@@ -18,6 +19,6 @@ do{
     //console.writeln(`Intervalo ${min}-${max}, longInterval=${longInterval}`);   
     guessNumber = longInterval === 1;
     if (guessNumber){
-        console.writeln(`Tu número es ${min.toLocaleString('es-ES')}`);
+        console.writeln(`Tu número es ${min.toLocaleString(LOCALE)}`);
     } 
 } while(!guessNumber);
