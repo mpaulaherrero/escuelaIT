@@ -20,5 +20,3 @@ newMin = newMin < 60 ? newMin: (addValue = 1, newMin - 60);
 const newHour = hour1 + hour2 + addValue;
 
 console.writeln(`La hora ${hour1}:${min1}:${seg1} sumada con la hora ${hour2}:${min2}:${seg2} es ${newHour}:${newMin}:${newSeg}`);
-
-//La suma es 22:22:22
