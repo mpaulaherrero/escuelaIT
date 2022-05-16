@@ -9,41 +9,29 @@ for (let i = 0; i < text.length; i++){
     switch(char){
         case " ":
             char = "";
-            break
-        case "Á":
+            break;
         case "á":
             char = "a";
             break;
-        case "É":
         case "é":
             char = "e";
             break;
-        case "Í":
         case "í":
             char = "i";
             break;    
-        case "Ó":
         case "ó":
             char = "o";
             break;
-        case "Ú":
         case "ú":
             char = "u";
             break;
-        default:
-            if ( 65<= char.charCodeAt(0) && char.charCodeAt(0) <= 90){
-                char = String.fromCharCode(char.charCodeAt(0)+32);
-            }    
     }
     cleanText += char;  
 }
 //console.log(cleanText);
 
-let result = true;
-for (let i = 0, j = cleanText.length-1; i < j; i++, j--){
-    if(cleanText[i]!==cleanText[j]){
-        result=false;
-        break;
-    }
+let ifPalindrome = true;
+for (let i = 0, j = cleanText.length-1; ifPalindrome && i < j; i++, j--){
+    ifPalindrome = cleanText[i]===cleanText[j];
 }
-console.writeln( `La cadenas de caracteres "${text}" ${result? `es`: `NO es`} Palindromo`);
+console.writeln( `La cadenas de caracteres "${text}" ${ifPalindrome? ``: `NO `}es Palindromo`);

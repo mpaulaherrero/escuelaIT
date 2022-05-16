@@ -1,24 +1,35 @@
 const { Console } = require("console-mpds");
 const console = new Console();
 
-const NUM_INTERVALS = 2;
 const LOCALE = 'es-ES';
+
+const NUM_INTERVALS = 2;
 let min = 0;
 let max = 1000000;
 let guessNumber=false;
 do{
-    const longInterval=parseInt((max-min)/NUM_INTERVALS);
-    let answerd = console.readString(`¿Tu número es igual o mayor que ${(min + longInterval).toLocaleString(LOCALE)}? (Si/No): `);
-    if(answerd==="Si" || answerd==="si" || answerd==="SI" || answerd==="s"){
-        min += longInterval;
-    } else if(answerd==="No" || answerd==="no" || answerd==="NO" || answerd==="n"){
-        max -= longInterval;
-    } else {
-        console.writeln(`Error!!! Por favor responde Si o No`);
+
+    let quotient = 0;
+    let remainder = max-min;
+    while(remainder >= NUM_INTERVALS){
+        remainder -= NUM_INTERVALS;
+        quotient += 1;
     }
-    //console.writeln(`Intervalo ${min}-${max}, longInterval=${longInterval}`);   
-    guessNumber = longInterval === 1;
+    let middlePoint = min + quotient;
+    console.writeln(`Intervalo ${min}-${max}, middlePoint=${middlePoint}, rest=${remainder}`); 
+    
+    let answerd = console.readString(`¿Tu número es igual, menor o mayor que ${(middlePoint).toLocaleString(LOCALE)}?: `);
+    if(answerd === "mayor"){
+        min = middlePoint;
+    } else if(answerd === "menor"){
+        max = middlePoint;
+    } else if(answerd === "igual"){
+        guessNumber = true;
+    } else {
+        console.writeln(`Error!!! Por favor responde mayor, menor o igual`);
+    }
+    
     if (guessNumber){
-        console.writeln(`Tu número es ${min.toLocaleString(LOCALE)}`);
+        console.writeln(`Tu número es ${middlePoint.toLocaleString(LOCALE)}`);
     } 
 } while(!guessNumber);
