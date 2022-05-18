@@ -16,6 +16,6 @@
     "console-mpds": "^1.0.4"
   },
   "devDependencies": {
-    "jest": "^28.0.2"
+    "jest": "^28.1.0"
   }
 }

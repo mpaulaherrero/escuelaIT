@@ -7,6 +7,7 @@ const console = new Console();
 let min;
 let max;
 let error;
+
 do {
     min = console.readNumber("Introduce el mínimo del intervalo: ");
     max = console.readNumber("Introduce el máximo del interval(superior o igual al mínimo): ");
@@ -26,3 +27,4 @@ do {
 } while(error);
 
 console.writeln(intervalSplit(min, max, numIntervals));
+
