@@ -6,30 +6,28 @@ const LOCALE = 'es-ES';
 const NUM_INTERVALS = 2;
 let min = 0;
 let max = 1000000;
+let middlePoint;
 let guessNumber=false;
 do{
-
-    let quotient = 0;
-    let remainder = max-min;
-    while(remainder >= NUM_INTERVALS){
-        remainder -= NUM_INTERVALS;
-        quotient += 1;
-    }
-    let middlePoint = min + quotient;
-    console.writeln(`Intervalo ${min}-${max}, middlePoint=${middlePoint}, rest=${remainder}`); 
+    middlePoint = ((min + max) - ((min + max) % NUM_INTERVALS)) / NUM_INTERVALS;
+    //console.writeln(`Intervalo ${min}-${max}, middlePoint=${middlePoint}`); 
     
     let answerd = console.readString(`¿Tu número es igual, menor o mayor que ${(middlePoint).toLocaleString(LOCALE)}?: `);
-    if(answerd === "mayor"){
-        min = middlePoint;
-    } else if(answerd === "menor"){
-        max = middlePoint;
-    } else if(answerd === "igual"){
-        guessNumber = true;
-    } else {
-        console.writeln(`Error!!! Por favor responde mayor, menor o igual`);
+    switch(answerd){
+        case "mayor":
+            min = middlePoint + 1;
+            break;
+        case "menor":
+            max = middlePoint - 1;
+            break;
+        case "igual":
+            guessNumber=true;
+            break;
+        default:
+            console.writeln(`Error!!! Por favor responde mayor, menor o igual`);
     }
-    
-    if (guessNumber){
-        console.writeln(`Tu número es ${middlePoint.toLocaleString(LOCALE)}`);
-    } 
 } while(!guessNumber);
+
+if (guessNumber){
+    console.writeln(`Tu número es ${middlePoint.toLocaleString(LOCALE)}`);
+} 
