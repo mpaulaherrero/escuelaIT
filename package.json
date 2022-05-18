@@ -14,5 +14,8 @@
   "dependencies": {
     "console-input": "^1.0.2",
     "console-mpds": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
   }
 }
