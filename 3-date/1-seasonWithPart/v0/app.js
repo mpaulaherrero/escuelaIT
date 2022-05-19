@@ -35,7 +35,7 @@ do {
     } 
 } while(error);
 
-const periods = [`a primeros`,  `a mediados`, `a finales` ];
+const periods = [`primeros`,  `mediados`, `finales` ];
 const seasons = [`primavera`,  `verano`, `otoño`, `invierno` ];
 
 const dayOfYear = DAYS_PER_MONTH * (month - 1) + day;
@@ -43,10 +43,8 @@ let dayOfSolarYear = dayOfYear - OFFSET_DAYS + 1;
 if(dayOfSolarYear < 1){
     dayOfSolarYear = dayOfYear - OFFSET_DAYS + DAYS_PER_YEAR;
 }
-let iPeriods = (dayOfSolarYear-dayOfSolarYear % DAYS_PER_MONTH) / DAYS_PER_MONTH;
-let iSeasons = ((dayOfSolarYear-1)-(dayOfSolarYear-1) % DAYS_PER_SEASON) / DAYS_PER_SEASON;
 
-const period=periods[iPeriods % MONTHS_PER_SEASON];
-const season=seasons[iSeasons];
+const period=periods[parseInt(dayOfSolarYear / DAYS_PER_MONTH) % MONTHS_PER_SEASON];
+const season=seasons[parseInt((dayOfSolarYear-1) / DAYS_PER_SEASON)];
 
 console.writeln(`El día ${day} del ${month} de ${year} cae a ${period} de ${season}.`);
