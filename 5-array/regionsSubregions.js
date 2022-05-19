@@ -509,24 +509,24 @@ const SUBREGIONS = [
 
 let regionsSubregions = [];
 for(let i=0; i<REGIONS.length; i++){
-        let foundRegion;
-        let regionsSubregionsIndex;
-        for(regionsSubregionsIndex=0; regionsSubregionsIndex<regionsSubregions.length && !foundRegion; regionsSubregionsIndex++){
-            foundRegion = regionsSubregions[regionsSubregionsIndex][0]===REGIONS[i];
-        }
-        if(!foundRegion){
-            regionsSubregions[regionsSubregionsIndex]=[REGIONS[i],[SUBREGIONS[i]]];
-        } else {
-            regionsSubregionsIndex -=1;
-            let foundSubregion=false;
-            let subregionsIndex;
-            for(subregionsIndex=0; subregionsIndex < regionsSubregions[regionsSubregionsIndex][1].length && !foundSubregion; subregionsIndex++){
-                foundSubregion = regionsSubregions[regionsSubregionsIndex][1][subregionsIndex]===SUBREGIONS[i];
-            }
-            if(!foundSubregion){
-                regionsSubregions[regionsSubregionsIndex][1][subregionsIndex]=SUBREGIONS[i];
-            } 
-        }    
+	let foundRegion;
+	let regionsSubregionsIndex;
+	for(regionsSubregionsIndex=0; regionsSubregionsIndex<regionsSubregions.length && !foundRegion; regionsSubregionsIndex++){
+		foundRegion = regionsSubregions[regionsSubregionsIndex][0]===REGIONS[i];
+	}
+	if(!foundRegion){
+		regionsSubregions[regionsSubregionsIndex]=[REGIONS[i],[SUBREGIONS[i]]];
+	} else {
+		regionsSubregionsIndex -=1;
+		let foundSubregion=false;
+		let subregionsIndex;
+		for(subregionsIndex=0; subregionsIndex < regionsSubregions[regionsSubregionsIndex][1].length && !foundSubregion; subregionsIndex++){
+			foundSubregion = regionsSubregions[regionsSubregionsIndex][1][subregionsIndex]===SUBREGIONS[i];
+		}
+		if(!foundSubregion){
+			regionsSubregions[regionsSubregionsIndex][1][subregionsIndex]=SUBREGIONS[i];
+		}
+	}    
 }
 for(let i=0; i<regionsSubregions.length; i++){
     console.writeln(`${regionsSubregions[i][0]}:`);
