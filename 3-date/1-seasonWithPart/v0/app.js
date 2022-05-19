@@ -1,6 +1,12 @@
 const { Console } = require("console-mpds");
 const console = new Console();
 
+const DAYS_PER_MONTH = 30;
+const DAYS_PER_YEAR = 12 * DAYS_PER_MONTH;
+const MONTHS_PER_SEASON = 3;
+const DAYS_PER_SEASON = MONTHS_PER_SEASON * DAYS_PER_MONTH;
+const OFFSET_DAYS = 21 + 2 * DAYS_PER_MONTH;
+
 let error;
 let day;
 do {
@@ -29,47 +35,18 @@ do {
     } 
 } while(error);
 
-let seasonPartText = ` de `;
-switch(month){
-    case 12:
-    case 1:
-    case 2:
-        seasonPartText = seasonPartText + `invierno`;
-        break;
-    case 3:
-    case 4:
-    case 5:
-        seasonPartText = seasonPartText + `primavera`;
-        break;    
-    case 6:
-    case 7:
-    case 8:
-        seasonPartText = seasonPartText + `verano`;
-        break;
-    case 8:
-    case 10:
-    case 11:
-        seasonPartText = seasonPartText + `otoño`;   
-}
+const periods = [`a primeros`,  `a mediados`, `a finales` ];
+const seasons = [`primavera`,  `verano`, `otoño`, `invierno` ];
 
-switch(month){
-    case 3:
-    case 6:
-    case 9:
-    case 12:
-        seasonPartText = (day>=21 ?  `primeros` : `finales`) + seasonPartText;
-        break;
-    case 4:
-    case 7:
-    case 10:
-    case 1:
-        seasonPartText = (day>=21 ?  `mediados` : `primeros`) + seasonPartText;
-        break;
-    case 5:
-    case 8:
-    case 11:
-    case 2:
-        seasonPartText = (day>=21 ?  `finales` : `mediados`) + seasonPartText;
+const dayOfYear = DAYS_PER_MONTH * (month - 1) + day;
+let dayOfSolarYear = dayOfYear - OFFSET_DAYS + 1;
+if(dayOfSolarYear < 1){
+    dayOfSolarYear = dayOfYear - OFFSET_DAYS + DAYS_PER_YEAR;
 }
+let iPeriods = (dayOfSolarYear-dayOfSolarYear % DAYS_PER_MONTH) / DAYS_PER_MONTH;
+let iSeasons = ((dayOfSolarYear-1)-(dayOfSolarYear-1) % DAYS_PER_SEASON) / DAYS_PER_SEASON;
 
-console.writeln(`El día ${day} del ${month} de ${year} cae a ${seasonPartText}.`);
+const period=periods[iPeriods % MONTHS_PER_SEASON];
+const season=seasons[iSeasons];
+
+console.writeln(`El día ${day} del ${month} de ${year} cae a ${period} de ${season}.`);
