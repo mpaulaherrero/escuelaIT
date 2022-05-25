@@ -270,8 +270,11 @@ do {
   
   switch (option) {
     case 1:
-      console.writeln(NAMES);
-      console.writeln();
+      let result = NAMES[0];
+      for (let i = 1; i < NAMES.length; i++) {
+        result += (i===NAMES.length - 1? " y " : ", ") + NAMES[i];
+      }
+      console.writeln(result)
       break;
     case 2:
       let country = console.readString("Dame el nombre del país: ");
