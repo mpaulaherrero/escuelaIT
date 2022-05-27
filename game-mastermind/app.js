@@ -17,6 +17,7 @@ function playMastermind() {
         do{
             finished = proposeCombination(secretCombination, proposedCombinations, COLORS);
         } while(!finished);
+        console.writeln(`The secret combination was:${secretCombination}`);
     }
 
     function isResumed(){
@@ -48,8 +49,17 @@ function playMastermind() {
     }
 
     function getSecretCombination(COLORS, SECRECT_COMBINATION_LENGHT){
-        //TODO: buscar cuatro colores random de COLORS
-        return "bycr";
+        //return "bycr";
+        let secretCombinationArray = [...COLORS];
+        for (let i = 0; i < COLORS.length - SECRECT_COMBINATION_LENGHT; i++) {
+			secretCombinationArray.splice(Math.floor(Math.random() * secretCombinationArray.length),1);
+		}
+        const shuffledSecretCombinationArray = secretCombinationArray.sort((a, b) => 0.5 - Math.random());
+        let secretCombination = "";
+        for (let i = 0; i < shuffledSecretCombinationArray.length; i++) {
+			secretCombination += shuffledSecretCombinationArray[i];
+		}
+        return secretCombination;
     }
 
     function showBoard(proposedCombinations) {
