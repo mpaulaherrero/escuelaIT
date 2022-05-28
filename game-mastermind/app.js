@@ -4,20 +4,20 @@ playMastermind();
 
 function playMastermind() {
     do {
-        start();
+        playGame();
     } while (isResumed());
 
-    function start(){
+    function playGame(){
         const COLORS = ['r','g','y','b','m','c'];
-        const SECRECT_COMBINATION_LENGHT=4;
-        const secretCombination = getSecretCombination(COLORS,SECRECT_COMBINATION_LENGHT);
-        let proposedCombinations = [];
+        const secretCombination = getSecretCombination(COLORS);
+        let attempts = [];
         let finished; 
-        showBoard(proposedCombinations);
+        showBoard(attempts);
         do{
-            finished = proposeCombination(secretCombination, proposedCombinations, COLORS);
+            let proposedCombination = getProposedCombination(secretCombination.length, COLORS);
+            let result = checkProposedCombination(secretCombination, proposedCombination);
+            finished = showAttemptResult(proposedCombination, attempts, result);
         } while(!finished);
-        console.writeln(`The secret combination was:${secretCombination}`);
     }
 
     function isResumed(){
@@ -35,23 +35,11 @@ function playMastermind() {
         return result;
     }
 
-    function proposeCombination(secretCombination, proposedCombinations, COLORS){
-        let proposedCombination;
-        let correctProposedCombination;
-        do{
-            proposedCombination = console.readString(`Propose a combination: `);
-            correctProposedCombination = validateProposedCombination(proposedCombination, COLORS, secretCombination.length);
-        } while(!correctProposedCombination);
-
-        let success = checkProposedCombination(secretCombination, proposedCombination, proposedCombinations);
-        showBoard(proposedCombinations);
-        return showResult(proposedCombinations, success);
-    }
-
-    function getSecretCombination(COLORS, SECRECT_COMBINATION_LENGHT){
+    function getSecretCombination(COLORS){
         //return "bycr";
+        const COMBINATION_LENGHT=4;
         let secretCombinationArray = [...COLORS];
-        for (let i = 0; i < COLORS.length - SECRECT_COMBINATION_LENGHT; i++) {
+        for (let i = 0; i < COLORS.length - COMBINATION_LENGHT; i++) {
 			secretCombinationArray.splice(Math.floor(Math.random() * secretCombinationArray.length),1);
 		}
         const shuffledSecretCombinationArray = secretCombinationArray.sort((a, b) => 0.5 - Math.random());
@@ -59,46 +47,40 @@ function playMastermind() {
         for (let i = 0; i < shuffledSecretCombinationArray.length; i++) {
 			secretCombination += shuffledSecretCombinationArray[i];
 		}
+        //console.writeln(`The secret combination is:${secretCombination}`);
         return secretCombination;
     }
 
-    function showBoard(proposedCombinations) {
-        const attemptText = `${proposedCombinations.length} attempt(s):`;
-        const secretCombinationText = `****`; //TODO: hay que poner * segun SECRECT_COMBINATION_LENGHT
-        const proposedCombinationResults = getProposedCombinationsResults(proposedCombinations);
-        let msg = `\n${attemptText}\n${secretCombinationText}${ proposedCombinationResults ? `${proposedCombinationResults}`: ``}`;
-        console.writeln(msg);
+    function showBoard(attempts) {
+        const attemptText = `${attempts.length} attempt(s):`;
+        const secretCombinationText = `****`;
+        const attemptsLines = getAttemptsLines(attempts);
+        console.writeln(`\n${attemptText}\n${secretCombinationText}${ attemptsLines.length!==0 ? `${attemptsLines}`: ``}`);
     }
 
-    function getProposedCombinationsResults(proposedCombinations){
-        result = ""
-        for(let i=0; i< proposedCombinations.length; i++){
-            result += `\n${proposedCombinations[i]}`;
+    function getAttemptsLines(attempts){
+        let lines = ""
+        for(let i=0; i< attempts.length; i++){
+            lines += `\n${attempts[i]}`;
         }
-        return result;
+        return lines;
     }
 
-    function showResult(proposedCombinations, success){
-        const MAX_ATTEMPT=10;
-        const SUCCESS_ATTEMPT= "You've won!!! ;-)";
-        const MAX_ATTEMPT_REACHED="You've lost!!! :-(";
-        if(success){
-            console.writeln(SUCCESS_ATTEMPT);
-            return success;
-        } else {
-            let finished = proposedCombinations.length == MAX_ATTEMPT;
-            if(finished){
-                console.writeln(MAX_ATTEMPT_REACHED);
-            }
-            return finished;
-        }
+    function getProposedCombination(combinationLength, COLORS){
+        let proposedCombination;
+        let correctProposedCombination;
+        do{
+            proposedCombination = console.readString(`Propose a combination: `);
+            correctProposedCombination = validateProposedCombination(proposedCombination, COLORS, combinationLength);
+        } while(!correctProposedCombination);
+        return proposedCombination;
     }
 
-    function validateProposedCombination(proposedCombination, COLORS, secretCombinationLength){
+    function validateProposedCombination(proposedCombination, COLORS, combinationLength){
         const WRONG_LENGTH_ERROR = `Wrong proposed combination length`;
-        const WRONG_COLOR_ERROR = `Wrong colors, they must be: ${writeColors(COLORS)}`;
+        const WRONG_COLOR_ERROR = `Wrong colors, they must be: ${getColorsText(COLORS)}`;
         const REPEATED_COLOR_ERROR = `Wrong proposed combination, at least one color is repeated`;
-        let correct = proposedCombination.length === secretCombinationLength;
+        let correct = proposedCombination.length === combinationLength;
         if(!correct){
             console.writeln(WRONG_LENGTH_ERROR);
         }
@@ -116,6 +98,14 @@ function playMastermind() {
         return correct;
     }
 
+    function getColorsText(COLORS){
+        let colorsText = "";
+        for (let i = 0; i < COLORS.length; i++) {
+            colorsText += COLORS[i];
+        }
+        return colorsText;
+    }
+
     function isAColor(value, COLORS){
         let found = false;
         for (let i = 0; i < COLORS.length && !found; i++) {
@@ -124,15 +114,15 @@ function playMastermind() {
         return found;
     }
 
-    function writeColors(COLORS){
-        let colorsText = "";
-        for (let i = 0; i < COLORS.length; i++) {
-            colorsText += COLORS[i];
+    function isRepeated(color, proposedCombination, indexColor){
+        let repeated=false;
+        for(let i=0; i<proposedCombination.length && !repeated; i++){
+            repeated = proposedCombination[i]===color && i!==indexColor;
         }
-        return colorsText;
+        return repeated;
     }
 
-    function checkProposedCombination(secretCombination, proposedCombination, proposedCombinations){
+    function checkProposedCombination(secretCombination, proposedCombination){
         let black=0;
         let white=0;
         for(let i=0; i<secretCombination.length; i++){
@@ -144,16 +134,7 @@ function playMastermind() {
                 }
             }
         }
-        proposedCombinations[proposedCombinations.length]=proposedCombination + ` --> ${black} blacks and ${white} whites`;
-        return black === secretCombination.length;
-    }
-
-    function isRepeated(color, proposedCombination, indexColor){
-        let repeated=false;
-        for(let i=0; i<proposedCombination.length && !repeated; i++){
-            repeated = proposedCombination[i]===color && i!==indexColor;
-        }
-        return repeated;
+        return [black, white];
     }
 
     function isOnSecretCombination(color, secretCombination){
@@ -162,5 +143,26 @@ function playMastermind() {
             found = secretCombination[i]===color;
         }
         return found;
+    }
+
+    function showAttemptResult(proposedCombination, attempts, result){
+        let [black, ...white] = result;
+        attempts[attempts.length] = proposedCombination + ` --> ${black} blacks and ${white} whites`;
+        showBoard(attempts);
+        
+        const MAX_ATTEMPT=10;
+        const SUCCESS_ATTEMPT= "You've won!!! ;-)";
+        const MAX_ATTEMPT_REACHED="You've lost!!! :-(";
+        let success = black === proposedCombination.length;
+        if(success){
+            console.writeln(SUCCESS_ATTEMPT);
+            return success;
+        } else {
+            let finished = attempts.length == MAX_ATTEMPT;
+            if(finished){
+                console.writeln(MAX_ATTEMPT_REACHED);
+            }
+            return finished;
+        }
     }
 } 
