@@ -41,7 +41,7 @@ function playMastermind() {
 
     function searchColor(value, COLORS){
         let found = false;
-        for (let i = 0; i < COLORS.length && !found; i++) {
+        for (let i = 0; !found && i < COLORS.length ; i++) {
             found = COLORS[i] === value;
         }
         return found;
