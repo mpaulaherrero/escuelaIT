@@ -26,17 +26,16 @@ function playMastermind() {
         const COMBINATION_LENGHT = 4;
         let secretCombination = "";
         for (let i = 0; i < COMBINATION_LENGHT; i++) {
-            let randomColor;
             let repeated;
             do {
-                randomColor = COLORS[parseInt(Math.random() * COLORS.length)];
+                let randomColor = COLORS[parseInt(Math.random() * COLORS.length)];
                 repeated = searchValueInArray(randomColor, secretCombination);
                 if (!repeated) {
                     secretCombination += randomColor;
                 }
             } while (repeated)
         }
-        //console.writeln(secretCombination);
+        console.writeln(secretCombination);
         return secretCombination;
     }
 
