@@ -56,10 +56,7 @@ function playMastermind() {
     }
 
     function showBoard(attempts) {
-        const attemptText = `${attempts.length} attempt(s):`;
-        const secretCombinationText = `****`;
-        const attemptsLines = getAttemptsLines(attempts);
-        console.writeln(`\n${attemptText}\n${secretCombinationText}${attemptsLines}`);
+        console.writeln(`\n${attempts.length} attempt(s):\n****${getAttemptsLines(attempts)}`);
         
         function getAttemptsLines(attempts){
             let lines = ""
