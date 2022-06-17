@@ -8,7 +8,7 @@ function playMastermind() {
     } while (isResumed());
 
     function playGame(){
-        const COLORS = ['r','g','y','b','m','c'];
+        const COLORS = "rgybmc";
         const secretCombination = generateSecretCombination(COLORS);
         let attempts = [];
         let finished; 
@@ -71,7 +71,7 @@ function playMastermind() {
     
         function validateProposedCombination(proposedCombination, COLORS, combinationLength){
             const WRONG_LENGTH_ERROR = `Wrong proposed combination length`;
-            const WRONG_COLOR_ERROR = `Wrong colors, they must be: ${arrayToString(COLORS)}`;
+            const WRONG_COLOR_ERROR = `Wrong colors, they must be: ${COLORS}`;
             const REPEATED_COLOR_ERROR = `Wrong proposed combination, at least one color is repeated`;
             let correct = proposedCombination.length === combinationLength;
             if(!correct){
@@ -89,14 +89,6 @@ function playMastermind() {
                 }
             }
             return correct;
-
-            function arrayToString(COLORS){
-                let colorsText = "";
-                for (let i = 0; i < COLORS.length; i++) {
-                    colorsText += COLORS[i];
-                }
-                return colorsText;
-            }
 
             function hasRepeatedCharacter(proposedCombination, indexColor){
                 let color = proposedCombination[indexColor];
