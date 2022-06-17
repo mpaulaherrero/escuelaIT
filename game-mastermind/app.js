@@ -29,17 +29,17 @@ function playMastermind() {
             let repeated;
             do {
                 let randomColor = COLORS[parseInt(Math.random() * COLORS.length)];
-                repeated = searchValueInArray(randomColor, secretCombination);
+                repeated = searchColor(randomColor, secretCombination);
                 if (!repeated) {
                     secretCombination += randomColor;
                 }
             } while (repeated)
         }
-        console.writeln(secretCombination);
+        //console.writeln(secretCombination);
         return secretCombination;
     }
 
-    function searchValueInArray(value, COLORS){
+    function searchColor(value, COLORS){
         let found = false;
         for (let i = 0; i < COLORS.length && !found; i++) {
             found = COLORS[i] === value;
@@ -77,7 +77,7 @@ function playMastermind() {
                 console.writeln(WRONG_LENGTH_ERROR);
             }
             for(let i=0; i<proposedCombination.length && correct; i++){
-                correct = searchValueInArray(proposedCombination[i], COLORS);
+                correct = searchColor(proposedCombination[i], COLORS);
                 if(!correct){
                     console.writeln(WRONG_COLOR_ERROR);
                 } else {
