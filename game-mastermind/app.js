@@ -134,7 +134,7 @@ function playMastermind() {
 
     function showAttemptResult(proposedCombination, attempts, result){
         let [black, white] = result;
-        attempts[attempts.length] = proposedCombination + ` --> ${black} blacks and ${white} whites`;
+        attempts[attempts.length] =  `${proposedCombination} --> ${black} blacks and ${white} whites`;
         showBoard(attempts);
         
         const MAX_ATTEMPT=10;
