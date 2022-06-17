@@ -108,20 +108,12 @@ function playMastermind() {
             if(secretCombination[i]===proposedCombination[i]){
                 black++;
             }else{
-                if(isOnSecretCombination(proposedCombination[i], secretCombination)){
+                if(searchColor(proposedCombination[i], secretCombination)){
                     white++;
                 }
             }
         }
         return [black, white];
-
-        function isOnSecretCombination(color, secretCombination){
-            let found=false;
-            for(let i=0; i<secretCombination.length && !found; i++){
-                found = secretCombination[i]===color;
-            }
-            return found;
-        }
     }
 
     function showAttemptResult(proposedCombination, attempts, result){
