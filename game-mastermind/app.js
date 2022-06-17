@@ -64,41 +64,58 @@ function playMastermind() {
         let correctProposedCombination;
         do{
             proposedCombination = console.readString(`Propose a combination: `);
-            correctProposedCombination = validateProposedCombination(proposedCombination, COLORS, combinationLength);
+            let errorCodes = validateProposedCombination(proposedCombination, COLORS, combinationLength);    
+            correctProposedCombination = errorCodes.length === 0;
+            if (!correctProposedCombination) {
+                showMessage(errorCodes, COLORS);
+            }
         } while(!correctProposedCombination);
         return proposedCombination;
     
         function validateProposedCombination(proposedCombination, COLORS, combinationLength){
-            const WRONG_LENGTH_ERROR = `Wrong proposed combination length`;
-            const WRONG_COLOR_ERROR = `Wrong colors, they must be: ${COLORS}`;
-            const REPEATED_COLOR_ERROR = `Wrong proposed combination, at least one color is repeated`;
-            let correct = proposedCombination.length === combinationLength;
-            if(!correct){
-                console.writeln(WRONG_LENGTH_ERROR);
+            const WRONG_LENGTH_ERROR_CODE = 0;
+            const WRONG_COLOR_ERROR_CODE = 1;
+            const REPEATED_COLOR_ERROR_CODE = 2;
+            
+            let errorCodes = [];
+            if(proposedCombination.length !== combinationLength){
+                errorCodes[errorCodes.length] = WRONG_LENGTH_ERROR_CODE;
             }
-            for(let i=0; i<proposedCombination.length && correct; i++){
-                correct = searchColor(proposedCombination[i], COLORS);
-                if(!correct){
-                    console.writeln(WRONG_COLOR_ERROR);
-                } else {
-                    correct = !hasRepeatedCharacter(proposedCombination, i);
-                    if(!correct){
-                        console.writeln(REPEATED_COLOR_ERROR);
-                    }    
-                }
+            if(!validateColors(proposedCombination, COLORS)){
+                errorCodes[errorCodes.length] = WRONG_COLOR_ERROR_CODE;
+            } 
+            if(!validateUniqueColors(proposedCombination)){
+                errorCodes[errorCodes.length] = REPEATED_COLOR_ERROR_CODE;
             }
-            return correct;
+            return errorCodes;
 
-            function hasRepeatedCharacter(proposedCombination, indexColor){
-                let color = proposedCombination[indexColor];
-                let repeated=false;
-                for(let i=0; i<proposedCombination.length && !repeated; i++){
-                    repeated = proposedCombination[i]===color && i!==indexColor;
+            function validateColors(proposedCombination, COLORS){
+                let validColor = true;
+                for(let i=0; validColor && i<proposedCombination.length; i++){
+                    validColor = searchColor(proposedCombination[i], COLORS);
                 }
-                return repeated;
-            }        
+                return validColor;
+            }
+
+            function validateUniqueColors(proposedCombination){
+                let uniqueColor = true;
+                for(let i=0; uniqueColor && i<proposedCombination.length; i++){
+                    for(let j=i+1; uniqueColor && j<proposedCombination.length; j++){
+                        uniqueColor = proposedCombination[j]!==proposedCombination[i];
+                    }
+                }
+                return uniqueColor;
+            }
+        }    
+
+        function showMessage(errorCodes, COLORS){
+            const ERROR_MESSAGES = [`Wrong proposed combination length`, 
+                              `Wrong colors, they must be: ${COLORS}`, 
+                              `Wrong proposed combination, at least one color is repeated`];
+            for(let i=0; i< errorCodes.length; i++){
+                console.writeln(ERROR_MESSAGES[errorCodes[i]]);
+            }
         }
-    
     }
 
     function checkProposedCombination(secretCombination, proposedCombination){
@@ -151,5 +168,4 @@ function playMastermind() {
         } while (error);
         return result;
     }
-
 } 
