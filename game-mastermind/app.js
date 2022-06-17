@@ -21,7 +21,7 @@ function playMastermind() {
     }
 
     function generateSecretCombination(COLORS) {
-        //return "bycr";
+        return "bycr";
         const COMBINATION_LENGHT = 4;
         let secretCombinationArray = [];
         for (let i = 0; i < COMBINATION_LENGHT; i++) {
@@ -38,20 +38,20 @@ function playMastermind() {
         return arrayToString(secretCombinationArray);
     }
 
-    function arrayToString(COLORS){
-        let colorsText = "";
-        for (let i = 0; i < COLORS.length; i++) {
-            colorsText += COLORS[i];
-        }
-        return colorsText;
-    }
-
     function searchValueInArray(value, COLORS){
         let found = false;
         for (let i = 0; i < COLORS.length && !found; i++) {
             found = COLORS[i] === value;
         }
         return found;
+    }
+
+    function arrayToString(COLORS){
+        let colorsText = "";
+        for (let i = 0; i < COLORS.length; i++) {
+            colorsText += COLORS[i];
+        }
+        return colorsText;
     }
 
     function showBoard(attempts) {
@@ -91,7 +91,7 @@ function playMastermind() {
                 if(!correct){
                     console.writeln(WRONG_COLOR_ERROR);
                 } else {
-                    correct = !hasRepeatedCharacter(proposedCombination[i], proposedCombination, i);
+                    correct = !hasRepeatedCharacter(proposedCombination, i);
                     if(!correct){
                         console.writeln(REPEATED_COLOR_ERROR);
                     }    
@@ -99,7 +99,8 @@ function playMastermind() {
             }
             return correct;
 
-            function hasRepeatedCharacter(color, proposedCombination, indexColor){
+            function hasRepeatedCharacter(proposedCombination, indexColor){
+                let color = proposedCombination[indexColor];
                 let repeated=false;
                 for(let i=0; i<proposedCombination.length && !repeated; i++){
                     repeated = proposedCombination[i]===color && i!==indexColor;
@@ -134,7 +135,7 @@ function playMastermind() {
     }
 
     function showAttemptResult(proposedCombination, attempts, result){
-        let [black, ...white] = result;
+        let [black, white] = result;
         attempts[attempts.length] = proposedCombination + ` --> ${black} blacks and ${white} whites`;
         showBoard(attempts);
         
