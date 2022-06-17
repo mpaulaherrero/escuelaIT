@@ -12,6 +12,7 @@ function playMastermind() {
         const secretCombination = generateSecretCombination(COLORS);
         let attempts = [];
         let finished; 
+        console.writeln(`----- MASTERMIND -----`);
         showBoard(attempts);
         do{
             let proposedCombination = getProposedCombination(secretCombination.length, COLORS);
@@ -58,7 +59,7 @@ function playMastermind() {
         const attemptText = `${attempts.length} attempt(s):`;
         const secretCombinationText = `****`;
         const attemptsLines = getAttemptsLines(attempts);
-        console.writeln(`${ attemptsLines.length===0 ? `----- MASTERMIND -----`: ``}\n${attemptText}\n${secretCombinationText}${attemptsLines}`);
+        console.writeln(`\n${attemptText}\n${secretCombinationText}${attemptsLines}`);
         
         function getAttemptsLines(attempts){
             let lines = ""
