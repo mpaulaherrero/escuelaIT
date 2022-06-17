@@ -9,21 +9,24 @@ function playMastermind() {
 
     function playGame(){
         const COLORS = "rgybmc";
-        const secretCombination = generateSecretCombination(COLORS);
+        const COMBINATION_LENGHT = 4;
+        const secretCombination = generateSecretCombination(COLORS, COMBINATION_LENGHT);
         let attempts = [];
-        let finished; 
+        let attemptResult; 
         console.writeln(`----- MASTERMIND -----`);
         showBoard(attempts);
         do{
-            let proposedCombination = getProposedCombination(secretCombination.length, COLORS);
-            let result = checkProposedCombination(secretCombination, proposedCombination);
-            finished = showAttemptResult(proposedCombination, attempts, result);
-        } while(!finished);
+            let proposedCombination = getProposedCombination(COMBINATION_LENGHT, COLORS);
+            let [black, white] = checkProposedCombination(secretCombination, proposedCombination);
+            attempts[attempts.length] = `${proposedCombination} --> ${black} blacks and ${white} whites`;
+            showBoard(attempts);
+            attemptResult = checkEndGame(black, COMBINATION_LENGHT, attempts.length);
+        } while(attemptResult === 'PLAYER_CONTINUE');
+        showGameResult(attemptResult);
     }
 
-    function generateSecretCombination(COLORS) {
+    function generateSecretCombination(COLORS, COMBINATION_LENGHT) {
         //return "bycr";
-        const COMBINATION_LENGHT = 4;
         let secretCombination = "";
         for (let i = 0; i < COMBINATION_LENGHT; i++) {
             let repeated;
@@ -33,29 +36,25 @@ function playMastermind() {
                 if (!repeated) {
                     secretCombination += randomColor;
                 }
-            } while (repeated)
+            } while (repeated);
         }
         //console.writeln(secretCombination);
         return secretCombination;
     }
 
-    function searchColor(value, COLORS){
-        let found = false;
-        for (let i = 0; !found && i < COLORS.length ; i++) {
-            found = COLORS[i] === value;
+    function searchColor(color, COLORS){
+        for (let i = 0; i < COLORS.length ; i++) {
+            if(COLORS[i] === color){
+                return true;
+            }
         }
-        return found;
+        return false;
     }
 
     function showBoard(attempts) {
-        console.writeln(`\n${attempts.length} attempt(s):\n****${getLinesOfTextFromArray(attempts)}`);
-        
-        function getLinesOfTextFromArray(attempts){
-            let lines = ""
-            for(let i=0; i< attempts.length; i++){
-                lines += `\n${attempts[i]}`;
-            }
-            return lines;
+        console.writeln(`\n${attempts.length} attempt(s):\n****`);
+        for(let i=0; i< attempts.length; i++){
+            console.writeln(`${attempts[i]}`);
         }
     }
 
@@ -64,15 +63,15 @@ function playMastermind() {
         let correctProposedCombination;
         do{
             proposedCombination = console.readString(`Propose a combination: `);
-            let errorCodes = validateProposedCombination(proposedCombination, COLORS, combinationLength);    
+            let errorCodes = checkErrorsInProposedCombination(proposedCombination, COLORS, combinationLength);    
             correctProposedCombination = errorCodes.length === 0;
             if (!correctProposedCombination) {
-                showMessage(errorCodes, COLORS);
+                showErrorMessage(errorCodes, COLORS);
             }
         } while(!correctProposedCombination);
         return proposedCombination;
     
-        function validateProposedCombination(proposedCombination, COLORS, combinationLength){
+        function checkErrorsInProposedCombination(proposedCombination, COLORS, combinationLength){
             const WRONG_LENGTH_ERROR_CODE = 0;
             const WRONG_COLOR_ERROR_CODE = 1;
             const REPEATED_COLOR_ERROR_CODE = 2;
@@ -108,7 +107,7 @@ function playMastermind() {
             }
         }    
 
-        function showMessage(errorCodes, COLORS){
+        function showErrorMessage(errorCodes, COLORS){
             const ERROR_MESSAGES = [`Wrong proposed combination length`, 
                               `Wrong colors, they must be: ${COLORS}`, 
                               `Wrong proposed combination, at least one color is repeated`];
@@ -133,39 +132,38 @@ function playMastermind() {
         return [black, white];
     }
 
-    function showAttemptResult(proposedCombination, attempts, result){
-        let [black, white] = result;
-        attempts[attempts.length] =  `${proposedCombination} --> ${black} blacks and ${white} whites`;
-        showBoard(attempts);
-        
+    function checkEndGame(black, COMBINATION_LENGHT, attemptsNumber){
         const MAX_ATTEMPT=10;
-        const SUCCESS_ATTEMPT= "You've won!!! ;-)";
-        const MAX_ATTEMPT_REACHED="You've lost!!! :-(";
-        let success = black === proposedCombination.length;
-        if(success){
-            console.writeln(SUCCESS_ATTEMPT);
-            return success;
+        if(black === COMBINATION_LENGHT){
+            return 'PLAYER_WIN';
+        }
+        if(attemptsNumber === MAX_ATTEMPT){
+            return 'PLAYER_LOOSE';
+        }
+        return 'PLAYER_CONTINUE';
+    }
+
+    function showGameResult(result){
+        const WINNER_MESSAGE= "You've won!!! ;-)";
+        const LOOSER_MESSAGE="You've lost!!! :-(";
+
+        if(result==='PLAYER_LOOSE'){
+            console.writeln(LOOSER_MESSAGE);
         } else {
-            let finished = attempts.length == MAX_ATTEMPT;
-            if(finished){
-                console.writeln(MAX_ATTEMPT_REACHED);
-            }
-            return finished;
+            console.writeln(WINNER_MESSAGE);
         }
     }
 
-    function isResumed(){
-        let result;
+    function isResumed() {
+        let error;
         let answer;
-        let error = false;
         do {
             answer = console.readString(`Do you want to continue? (y/n): `);
-            result = answer === `y`;
-            error = !result && answer !== `n`;
+            error = answer !== `y` && answer !== `n`;
             if (error) {
                 console.writeln(`Please, reply "y" or "n"`);
             }
         } while (error);
-        return result;
+        return answer === `y`;
     }
 } 
