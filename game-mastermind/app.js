@@ -48,9 +48,9 @@ function playMastermind() {
     }
 
     function showBoard(attempts) {
-        console.writeln(`\n${attempts.length} attempt(s):\n****${getAttemptsLines(attempts)}`);
+        console.writeln(`\n${attempts.length} attempt(s):\n****${getTextInLineFromArray(attempts)}`);
         
-        function getAttemptsLines(attempts){
+        function getTextInLineFromArray(attempts){
             let lines = ""
             for(let i=0; i< attempts.length; i++){
                 lines += `\n${attempts[i]}`;
