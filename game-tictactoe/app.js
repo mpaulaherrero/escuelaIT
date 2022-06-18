@@ -19,8 +19,8 @@ function playTicTacToe() {
     ];
     let turn = 0;
     let winner;
-    let playerNumber = getPlayerNumber();
-    let playersPlaceToken = getPlayersPlaceToken(playerNumber, turn);
+    let playersNumber = getPlayersNumber();
+    let playersPlaceToken = getPlayersPlaceToken(playersNumber, turn);
     do {
       writelnTokens(tokens);
       placeToken(tokens, turn, playersPlaceToken);
@@ -32,7 +32,7 @@ function playTicTacToe() {
     writelnTokens(tokens);
     console.writeln(`Victoria para ${getToken(turn)}`);
 
-    function getPlayerNumber() {
+    function getPlayersNumber() {
       let error;
       let answer;
       do {
@@ -45,13 +45,13 @@ function playTicTacToe() {
       return answer;
     }
 
-    function getPlayersPlaceToken(playerNumber, turn) {
+    function getPlayersPlaceToken(playersNumber, turn) {
       let playersPlaceToken = [];
       let getRandomCoordinate = title => parseInt(Math.random() * MAX_TOKENS);
       let placeTokenHuman = (tokens, turn) => plaseToken(readCoordinate, true, tokens, turn);
       let placeTokenMachine = (tokens, turn) => plaseToken(getRandomCoordinate, false, tokens, turn);
 
-      switch(playerNumber){
+      switch(playersNumber){
         case 0:
             playersPlaceToken[turn] = placeTokenMachine;
             playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
