@@ -20,7 +20,7 @@ function playTicTacToe() {
     let turn = 0;
     let winner;
     let playersNumber = getPlayersNumber();
-    let playersPlaceToken = getPlayersPlaceToken(playersNumber, turn);
+    let playersPlaceToken = getPlayersPlaceToken(playersNumber);
     do {
       writelnTokens(tokens);
       placeToken(tokens, turn, playersPlaceToken);
@@ -45,26 +45,14 @@ function playTicTacToe() {
       return answer;
     }
 
-    function getPlayersPlaceToken(playersNumber, turn) {
-      let playersPlaceToken = [];
+    function getPlayersPlaceToken(playersNumber) {
       let getRandomCoordinate = title => parseInt(Math.random() * MAX_TOKENS);
-      let placeTokenHuman = (tokens, turn) => plaseToken(readCoordinate, true, tokens, turn);
-      let placeTokenMachine = (tokens, turn) => plaseToken(getRandomCoordinate, false, tokens, turn);
+      let placeHumanToken = (tokens, turn) => plaseToken(readCoordinate, true, tokens, turn);
+      let placeMachineToken = (tokens, turn) => plaseToken(getRandomCoordinate, false, tokens, turn);
 
-      switch(playersNumber){
-        case 0:
-            playersPlaceToken[turn] = placeTokenMachine;
-            playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
-            break;
-        case 1:
-            playersPlaceToken[turn] = placeTokenHuman;
-            playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
-            break;
-        case 2:    
-            playersPlaceToken[turn] = placeTokenHuman;
-            playersPlaceToken[nextTurn(turn)] = placeTokenHuman;
-      }
-      return playersPlaceToken;
+      return [[placeMachineToken,placeMachineToken],
+            [placeHumanToken,placeMachineToken],
+            [placeHumanToken,placeHumanToken]][playersNumber];
       
       function plaseToken(getCoordinate, showErroMessage, tokens, turn) {
         let error;
