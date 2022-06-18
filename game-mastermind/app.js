@@ -175,7 +175,7 @@ function playMastermind() {
     let result = getLastAttempt(game).result;
     console.writeln(MESSAGES[result]);
     if(result===game.states.PLAYER_LOOSE){
-        console.writeln(`The secret combinatin was ${game.secretCombination}`);
+        console.writeln(`The secret combination was ${game.secretCombination}`);
     }
   }
 
