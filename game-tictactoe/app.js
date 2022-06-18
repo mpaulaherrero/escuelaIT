@@ -51,15 +51,18 @@ function playTicTacToe() {
       let placeTokenHuman = (tokens, turn) => plaseToken(readCoordinate, true, tokens, turn);
       let placeTokenMachine = (tokens, turn) => plaseToken(getRandomCoordinate, false, tokens, turn);
 
-      if (playerNumber == 2) {
-        playersPlaceToken[turn] = placeTokenHuman;
-        playersPlaceToken[nextTurn(turn)] = placeTokenHuman;
-      } else if (playerNumber == 1) {
-        playersPlaceToken[turn] = placeTokenHuman;
-        playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
-      } else {
-        playersPlaceToken[turn] = placeTokenMachine;
-        playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
+      switch(playerNumber){
+        case 0:
+            playersPlaceToken[turn] = placeTokenMachine;
+            playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
+            break;
+        case 1:
+            playersPlaceToken[turn] = placeTokenHuman;
+            playersPlaceToken[nextTurn(turn)] = placeTokenMachine;
+            break;
+        case 2:    
+            playersPlaceToken[turn] = placeTokenHuman;
+            playersPlaceToken[nextTurn(turn)] = placeTokenHuman;
       }
       return playersPlaceToken;
       
