@@ -47,7 +47,7 @@ function playTicTacToe() {
 
     function getPlayersPlaceToken(playerNumber, turn) {
       let playersPlaceToken = [];
-      let getRandomCoordinate = title => parseInt(Math.random() * 3);
+      let getRandomCoordinate = title => parseInt(Math.random() * MAX_TOKENS);
       let placeTokenHuman = (tokens, turn) => plaseToken(readCoordinate, true, tokens, turn);
       let placeTokenMachine = (tokens, turn) => plaseToken(getRandomCoordinate, false, tokens, turn);
 
