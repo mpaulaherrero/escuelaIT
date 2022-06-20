@@ -11,7 +11,6 @@ function playMastermind() {
     let game = initGame();
     showBoard(game);
     do {
-      setAttempt(game);
       getProposedCombination(game);
       checkProposedCombination(game);
       showBoard(game);
@@ -26,7 +25,7 @@ function playMastermind() {
         MAX_ATTEMPT: 10,
         secretCombination: "",
         attempts: [],
-        states: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_CONTINUE: 2 }
+        STATES: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_CONTINUE: 2 }
     }
     game.secretCombination = generateSecretCombination(game.COLORS, game.COMBINATION_LENGHT);
     console.writeln(`----- MASTERMIND -----`);
@@ -50,9 +49,9 @@ function playMastermind() {
     }
   }
 
-  function searchColor(color, values) {
-    for (let i = 0; i < values.length; i++) {
-      if (values[i] === color) {
+  function searchColor(color, colors) {
+    for (let i = 0; i < colors.length; i++) {
+      if (colors[i] === color) {
         return true;
       }
     }
@@ -85,6 +84,7 @@ function playMastermind() {
   }
 
   function getProposedCombination(game) {
+    setAttempt(game);
     let attempt = getLastAttempt(game);
     let correctProposedCombination;
     do {
@@ -161,20 +161,20 @@ function playMastermind() {
   function checkEndGame(game) {
     let attempt = getLastAttempt(game);
     if (attempt.blacks === game.COMBINATION_LENGHT) {
-        attempt.result = game.states.PLAYER_WIN;
+        attempt.result = game.STATES.PLAYER_WIN;
     } else if (game.attempts.length === game.MAX_ATTEMPT) {
-        attempt.result = game.states.PLAYER_LOOSE;
+        attempt.result = game.STATES.PLAYER_LOOSE;
     } else{
-        attempt.result = game.states.PLAYER_CONTINUE;
+        attempt.result = game.STATES.PLAYER_CONTINUE;
     }
-    return attempt.result!==game.states.PLAYER_CONTINUE;
+    return attempt.result!==game.STATES.PLAYER_CONTINUE;
   }
 
   function showGameResult(game) {
     const MESSAGES = ["You've lost!!! :-(", "You've won!!! ;-)"];
     let result = getLastAttempt(game).result;
     console.writeln(MESSAGES[result]);
-    if(result===game.states.PLAYER_LOOSE){
+    if(result===game.STATES.PLAYER_LOOSE){
         console.writeln(`The secret combination was ${game.secretCombination}`);
     }
   }
