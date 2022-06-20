@@ -66,17 +66,12 @@ function playMastermind() {
   }
 
   function setAttempt(game){
-    game.attempts[game.attempts.length] = getAttempt();
-
-    function getAttempt(){
-        let attempt = {
-            proposedCombination: "",
-            blacks:0,
-            whites:0,
-            result: 0
-        }
-        return attempt;
-    }
+    game.attempts[game.attempts.length] = {
+        proposedCombination: "",
+        blacks:0,
+        whites:0,
+        result: 0
+      }
   }
 
   function getLastAttempt(game){
