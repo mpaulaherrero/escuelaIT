@@ -84,14 +84,14 @@ function playMastermind() {
     let correctProposedCombination;
     do {
       attempt.proposedCombination = console.readString(`Propose a combination: `);
-      let errors = checkErrorsInProposedCombination(attempt.proposedCombination, game.COMBINATION_LENGHT, game.COLORS);
+      let errors = checkErrorsInProposedCombination(attempt, game);
       correctProposedCombination = errors.length === 0;
       if (!correctProposedCombination) {
         showErrorMessage(errors);
       }
     } while (!correctProposedCombination);
 
-    function checkErrorsInProposedCombination(proposedCombination, COMBINATION_LENGHT, COLORS) {
+    function checkErrorsInProposedCombination({proposedCombination}, {COMBINATION_LENGHT, COLORS}) {
       let errorCodes = getErrorCodes(COLORS);
       let errors = [];
       if (proposedCombination.length !== COMBINATION_LENGHT) {
