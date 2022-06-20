@@ -62,7 +62,7 @@ function playMastermind() {
   function showBoard({attempts}) {
     console.writeln(`\n${attempts.length} attempt(s):\n****`);
     for (let i = 0; i < attempts.length; i++) {
-      console.writeln(`${attempts[i].proposedCombination} --> ${attempts[i].black} blacks and ${attempts[i].white} whites`);
+      console.writeln(`${attempts[i].proposedCombination} --> ${attempts[i].blacks} blacks and ${attempts[i].whites} whites`);
     }
   }
 
@@ -72,9 +72,9 @@ function playMastermind() {
     function getAttempt(){
         let attempt = {
             proposedCombination: "",
-            black:0,
-            white:0,
-            result: ""
+            blacks:0,
+            whites:0,
+            result: 0
         }
         return attempt;
     }
@@ -149,10 +149,10 @@ function playMastermind() {
     let attempt = getLastAttempt(game);
      for (let i = 0; i < game.COMBINATION_LENGHT; i++) {
       if (game.secretCombination[i] === attempt.proposedCombination[i]) {
-        attempt.black++;
+        attempt.blacks++;
       } else {
         if (searchColor(attempt.proposedCombination[i], game.secretCombination)) {
-            attempt.white++;
+            attempt.whites++;
         }
       }
     }
@@ -160,7 +160,7 @@ function playMastermind() {
 
   function checkEndGame(game) {
     let attempt = getLastAttempt(game);
-    if (attempt.black === game.COMBINATION_LENGHT) {
+    if (attempt.blacks === game.COMBINATION_LENGHT) {
         attempt.result = game.states.PLAYER_WIN;
     } else if (game.attempts.length === game.MAX_ATTEMPT) {
         attempt.result = game.states.PLAYER_LOOSE;
