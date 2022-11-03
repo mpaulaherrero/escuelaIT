@@ -90,6 +90,9 @@ function initCombination(){
     const that = {
        COMBINATION_LENGHT: 4,
        value: "",
+
+       colors: initColors()
+
     }
     return {
         getLenght(){
@@ -105,10 +108,9 @@ function initCombination(){
             return that.COMBINATION_LENGHT !== that.value.length;
         },
         validateColors() {
-            const colors = initColors();
             let validColor = true;
             for (let i = 0; validColor && i < that.value.length; i++) {
-              validColor = colors.validColor(that.value[i]);
+              validColor = that.colors.validColor(that.value[i]);
             }
             return validColor;
         },
