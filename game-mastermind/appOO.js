@@ -38,10 +38,10 @@ function initGame(){
         secretCombination: initSecretCombination(),
         board: initBoard(),
         
-        getLastAttemptProposedCombination(){
+        getLastAttempt(){
             let attempt = initAttempt();
             this.attempts[this.attempts.length] = attempt;
-            return attempt.getProposedCombination();
+            return attempt;
         },
         checkLastAttemptProposedCombination(){
             let lastAttempt = this.attempts[this.attempts.length-1];
@@ -77,7 +77,7 @@ function initGame(){
             that.board.welcome();
             do {
                 that.board.showAttempts(that.attempts);
-                that.board.readCombination(that.getLastAttemptProposedCombination());
+                that.board.readAttemptCombination(that.getLastAttempt());
                 that.checkLastAttemptProposedCombination();
             } while (!that.checkEndGame());
             that.board.showAttempts(that.attempts);
@@ -130,6 +130,9 @@ function initCombination(){
                 }
             }
             return false;
+        },
+        getColors(){
+            return that.colors;
         }
     }
 }
@@ -138,7 +141,7 @@ function initSecretCombination(){
     const that = {
         combination: initCombination(),
         generate(){
-            const colors =  initColors();
+            const colors =  this.combination.getColors();
             for (let i = 0; i < this.combination.getLenght(); i++) {
                 let uniqueColor;
                  do {
@@ -160,11 +163,6 @@ function initSecretCombination(){
 
 function initProposedCombination(){
     const that = {
-        ERROR_CODES: {
-            WRONG_LENGTH_ERROR: `Wrong proposed combination length`,
-            WRONG_COLOR_ERROR: `Wrong colors, they must be: ${initColors().getColors()}`, 
-            REPEATED_COLOR_ERROR: `Wrong proposed combination, at least one color is repeated` 
-        },
         combination: initCombination()
     }
     
@@ -172,13 +170,13 @@ function initProposedCombination(){
         checkErrors(){
             let errors = [];
             if (that.combination.validateLenght()) {
-                errors[errors.length] = that.ERROR_CODES.WRONG_LENGTH_ERROR;
+                errors[errors.length] = `Wrong proposed combination length`;
             }
             if (!that.combination.validateColors()) {
-                errors[errors.length] = that.ERROR_CODES.WRONG_COLOR_ERROR;
+                errors[errors.length] = `Wrong colors, they must be: ${that.combination.getColors().getString()}`;
             }
             if (!that.combination.validateUniqueColors()) {
-                errors[errors.length] = that.ERROR_CODES.REPEATED_COLOR_ERROR;
+                errors[errors.length] = `Wrong proposed combination, at least one color is repeated`;
             }
             return errors;
         },
@@ -211,7 +209,7 @@ function initColors(){
             }
             return false;
         },
-        getColors(){
+        getString(){
             return that.COLORS;
         }
     }
@@ -228,7 +226,8 @@ function initBoard(){
                 console.writeln(`${attempts[i].getProposedCombination().getValue()} --> ${attempts[i].getBlacks()} blacks and ${attempts[i].getWhites()} whites`);
             }
         },
-        readCombination(proposedCombination){
+        readAttemptCombination(attempt){
+            let proposedCombination = attempt.getProposedCombination();
             let correctProposedCombination;
             do {
                 proposedCombination.setValue(console.readString(`Propose a combination: `));
