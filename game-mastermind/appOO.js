@@ -18,10 +18,12 @@ function initGame(){
         STATES: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 },
         STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
         MAX_ATTEMPT: 10,
+        state: 2,
+        
+        attempts: [],
         secretCombination: initSecretCombination(),
         board: initBoard(),
-        attempts: [],
-        state: 2,
+        
         getLastAttemptProposedCombination(){
             let attempt = initAttempt();
             this.attempts[this.attempts.length] = attempt;
@@ -66,29 +68,6 @@ function initGame(){
             } while (!that.checkEndGame());
             that.board.showAttempts(that.attempts);
             that.board.farewell(that.getEndGameMessage());
-        }
-    }
-}
-
-function initColors(){
-    that = {
-        COLORS: "rgybmc"
-    }    
-
-    return {
-        getRandomColor(){
-            return that.COLORS[parseInt(Math.random() * that.COLORS.length)];
-        },
-        validColor(color){
-            for (let i = 0; i < that.COLORS.length; i++) {
-                if (that.COLORS[i] === color) {
-                  return true;
-                }
-            }
-            return false;
-        },
-        getColors(){
-            return that.COLORS;
         }
     }
 }
@@ -159,8 +138,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    console.writeln(`The secret combination is ${that.combination.getValue()}`);
-
+    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
@@ -196,6 +174,29 @@ function initProposedCombination(){
         },
         getLenght(){
             return that.combination.getLenght();
+        }
+    }
+}
+
+function initColors(){
+    that = {
+        COLORS: "rgybmc"
+    }    
+
+    return {
+        getRandomColor(){
+            return that.COLORS[parseInt(Math.random() * that.COLORS.length)];
+        },
+        validColor(color){
+            for (let i = 0; i < that.COLORS.length; i++) {
+                if (that.COLORS[i] === color) {
+                  return true;
+                }
+            }
+            return false;
+        },
+        getColors(){
+            return that.COLORS;
         }
     }
 }
