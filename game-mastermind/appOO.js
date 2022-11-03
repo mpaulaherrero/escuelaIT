@@ -4,14 +4,28 @@ const console = new Console();
 initMastermind().play();
 
 function initMastermind() {
-   return {
-        play(){
-            do {
-                initGame().play();
-            } while (initDialog().askContinue());
-        }
+    const that = {
+         askContinue(){
+             let error;
+             let answer;
+             do {
+               answer = console.readString(`Do you want to continue? (y/n): `);
+               error = answer !== `y` && answer !== `n`;
+               if (error) {
+                 console.writeln(`Please, reply "y" or "n"`);
+               }
+             } while (error);
+             return answer === `y`;
+         }
     }
-}
+    return {
+         play(){
+             do {
+                 initGame().play();
+             } while (that.askContinue());
+         }
+     }
+ }
 
 function initGame(){
     const that = {
@@ -138,7 +152,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
+    console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
@@ -256,20 +270,3 @@ function initAttempt(){
     }
 }
 
-function initDialog(){
-    return {
-        askContinue(){
-            let error;
-            let answer;
-            do {
-              answer = console.readString(`Do you want to continue? (y/n): `);
-              error = answer !== `y` && answer !== `n`;
-              if (error) {
-                console.writeln(`Please, reply "y" or "n"`);
-              }
-            } while (error);
-            return answer === `y`;
-        }
-    }
-
-}
