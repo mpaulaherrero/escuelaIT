@@ -1,0 +1,274 @@
+const { Console } = require("console-mpds");
+const console = new Console();
+
+initMastermind().play();
+
+function initMastermind() {
+   return {
+        play(){
+            do {
+                initGame().play();
+            } while (initDialog().askContinue());
+        }
+    }
+}
+
+function initGame(){
+    const that = {
+        STATES: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 },
+        STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
+        MAX_ATTEMPT: 10,
+        secretCombination: initSecretCombination(),
+        board: initBoard(),
+        attempts: [],
+        state: 2,
+        getLastAttemptProposedCombination(){
+            let attempt = initAttempt();
+            this.attempts[this.attempts.length] = attempt;
+            return attempt.getProposedCombination();
+        },
+        checkLastAttemptProposedCombination(){
+            let lastAttempt = this.attempts[this.attempts.length-1];
+            const proposedCombination = lastAttempt.getProposedCombination();
+            for (let i = 0; i < proposedCombination.getLenght(); i++) {
+                if (this.secretCombination.getValue()[i] === proposedCombination.getValue()[i]) {
+                    lastAttempt.addBlacks();
+                } else {
+                    if (this.secretCombination.hasColor(proposedCombination.getValue()[i])) {
+                        lastAttempt.addWhites();
+                    }
+                }
+              }
+        },
+        checkEndGame(){
+            let lastAttempt = this.attempts[this.attempts.length-1];
+            if (lastAttempt.getBlacks() === lastAttempt.getProposedCombination().getLenght()) {
+                this.state = this.STATES.PLAYER_WIN
+            } else if (this.attempts.length === this.MAX_ATTEMPT) {
+                this.state  = this.STATES.PLAYER_LOOSE;
+            } else{
+                this.state = this.STATES.PLAYER_IN_GAME;
+            }
+            return this.state !== this.STATES.PLAYER_IN_GAME;
+        },
+        getEndGameMessage(){
+            return this.STATES_MESSAGE[this.state];
+        }
+    }
+
+    return {
+        play(){
+            that.board.welcome();
+            do {
+                that.board.showAttempts(that.attempts);
+                that.board.readCombination(that.getLastAttemptProposedCombination());
+                that.checkLastAttemptProposedCombination();
+            } while (!that.checkEndGame());
+            that.board.showAttempts(that.attempts);
+            that.board.farewell(that.getEndGameMessage());
+        }
+    }
+}
+
+function initColors(){
+    that = {
+        COLORS: "rgybmc"
+    }    
+
+    return {
+        getRandomColor(){
+            return that.COLORS[parseInt(Math.random() * that.COLORS.length)];
+        },
+        validColor(color){
+            for (let i = 0; i < that.COLORS.length; i++) {
+                if (that.COLORS[i] === color) {
+                  return true;
+                }
+            }
+            return false;
+        },
+        getColors(){
+            return that.COLORS;
+        }
+    }
+}
+
+function initCombination(){
+    const that = {
+       COMBINATION_LENGHT: 4,
+       value: "",
+    }
+    return {
+        getLenght(){
+            return that.COMBINATION_LENGHT;
+        },
+        setValue(value){
+            that.value=value;
+        },
+        getValue(){
+            return that.value;
+        },
+        validateLenght(){
+            return that.COMBINATION_LENGHT !== that.value.length;
+        },
+        validateColors() {
+            const colors = initColors();
+            let validColor = true;
+            for (let i = 0; validColor && i < that.value.length; i++) {
+              validColor = colors.validColor(that.value[i]);
+            }
+            return validColor;
+        },
+        validateUniqueColors() {
+            let uniqueColor = true;
+            for (let i = 0; uniqueColor && i < that.value.length; i++) {
+              for (let j = i + 1; uniqueColor && j < that.value.length; j++) {
+                uniqueColor = that.value[j] !== that.value[i];
+              }
+            }
+            return uniqueColor;
+        },
+        hasColor(color){
+            for (let i = 0; i < that.value.length; i++) {
+                if (that.value[i] === color) {
+                  return true;
+                }
+            }
+            return false;
+        }
+    }
+}
+
+function initSecretCombination(){
+    const that = {
+        combination: initCombination(),
+        generate(){
+            const colors =  initColors();
+            for (let i = 0; i < this.combination.getLenght(); i++) {
+                let uniqueColor;
+                 do {
+                    let randomColor = colors.getRandomColor();
+                    let originalValue = this.combination.getValue();
+                    this.combination.setValue(originalValue + randomColor);
+                    uniqueColor = this.combination.validateUniqueColors();
+                    if (!uniqueColor) {
+                        this.combination.setValue(originalValue);
+                    }
+                } while (!uniqueColor);
+            }
+        }
+    }
+    that.generate();
+    console.writeln(`The secret combination is ${that.combination.getValue()}`);
+
+    return that.combination;
+}
+
+function initProposedCombination(){
+    const that = {
+        ERROR_CODES: {
+            WRONG_LENGTH_ERROR: `Wrong proposed combination length`,
+            WRONG_COLOR_ERROR: `Wrong colors, they must be: ${initColors().getColors()}`, 
+            REPEATED_COLOR_ERROR: `Wrong proposed combination, at least one color is repeated` 
+        },
+        combination: initCombination()
+    }
+    
+    return {
+        checkErrors(){
+            let errors = [];
+            if (that.combination.validateLenght()) {
+                errors[errors.length] = that.ERROR_CODES.WRONG_LENGTH_ERROR;
+            }
+            if (!that.combination.validateColors()) {
+                errors[errors.length] = that.ERROR_CODES.WRONG_COLOR_ERROR;
+            }
+            if (!that.combination.validateUniqueColors()) {
+                errors[errors.length] = that.ERROR_CODES.REPEATED_COLOR_ERROR;
+            }
+            return errors;
+        },
+        setValue(value){
+            that.combination.setValue(value);
+        },
+        getValue(){
+            return that.combination.getValue();
+        },
+        getLenght(){
+            return that.combination.getLenght();
+        }
+    }
+}
+
+function initBoard(){
+    return {
+        welcome(){
+            console.writeln(`----- MASTERMIND -----`);
+        },
+        showAttempts(attempts){
+            console.writeln(`\n${attempts.length} attempt(s):\n****`);
+            for (let i = 0; i < attempts.length; i++) {
+                console.writeln(`${attempts[i].getProposedCombination().getValue()} --> ${attempts[i].getBlacks()} blacks and ${attempts[i].getWhites()} whites`);
+            }
+        },
+        readCombination(proposedCombination){
+            let correctProposedCombination;
+            do {
+                proposedCombination.setValue(console.readString(`Propose a combination: `));
+                const errors = proposedCombination.checkErrors();
+                correctProposedCombination = errors.length === 0;
+                if (!correctProposedCombination) {
+                    for (let i = 0; i < errors.length; i++) {
+                        console.writeln(errors[i]);
+                    }
+                }
+            } while (!correctProposedCombination);
+        },
+        farewell(resultMessage){
+            console.writeln(resultMessage);
+        }
+    }
+}
+
+function initAttempt(){
+    const that = {
+        proposedCombination: initProposedCombination(),
+        blacks: 0,
+        whites: 0
+    }
+    return {
+        getProposedCombination(){
+            return that.proposedCombination;
+        },
+        getBlacks(){
+            return that.blacks;
+        },
+        getWhites(){
+            return that.whites;
+        },
+        addBlacks(){
+            that.blacks++;
+        },
+        addWhites(){
+            that.whites++;
+        }
+    }
+}
+
+function initDialog(){
+    return {
+        askContinue(){
+            let error;
+            let answer;
+            do {
+              answer = console.readString(`Do you want to continue? (y/n): `);
+              error = answer !== `y` && answer !== `n`;
+              if (error) {
+                console.writeln(`Please, reply "y" or "n"`);
+              }
+            } while (error);
+            return answer === `y`;
+        }
+    }
+
+}
