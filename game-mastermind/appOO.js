@@ -157,7 +157,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    console.writeln(`The secret combination is ${that.combination.getValue()}`);
+    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
@@ -193,7 +193,7 @@ function initProposedCombination(){
 }
 
 function initColors(){
-    that = {
+    const that = {
         COLORS: "rgybmc"
     }    
 
