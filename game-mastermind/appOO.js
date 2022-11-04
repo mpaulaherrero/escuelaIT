@@ -33,24 +33,33 @@ function initGame(){
         STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
         MAX_ATTEMPTS: 10,
         state: 2,
+        attemptsResult: [],
         
-        attempts: [],
+        attempt: initAttempt(),
         secretCombination: initSecretCombination(),
         board: initBoard(),
         
-        getLastAttempt(){
-            let attempt = initAttempt();
-            this.attempts[this.attempts.length] = attempt;
-            return attempt;
+        readAttemptProposeCombination(){
+            let correctProposedCombination;
+            do {
+                this.attempt.setProposedCombinationValue(this.board.readProposeCombination());
+                const errors = this.attempt.checkProposedCombinationErrors();
+                correctProposedCombination = errors.length === 0;
+                if (!correctProposedCombination) {
+                   this.board.printErrors(errors);
+                }
+            } while (!correctProposedCombination);
         },
-        checkLastAttemptProposedCombination(){
-            this.attempts[this.attempts.length-1].checkProposedCombination(this.secretCombination);
+        checkAttemptProposedCombination(){
+            this.attempt.checkProposedCombination(this.secretCombination);
+        },
+        addLastAttemptResult(){
+            this.attemptsResult[this.attemptsResult.length] = this.attempt.getResult();
         },
         checkEndGame(){
-            let lastAttempt = this.attempts[this.attempts.length-1];
-            if (lastAttempt.isWinner()) {
+            if (this.attempt.isWinner()) {
                 this.state = this.STATES.PLAYER_WIN
-            } else if (this.attempts.length === this.MAX_ATTEMPTS) {
+            } else if (this.attemptsResult.length === this.MAX_ATTEMPTS) {
                 this.state  = this.STATES.PLAYER_LOOSE;
             } else{
                 this.state = this.STATES.PLAYER_IN_GAME;
@@ -66,11 +75,12 @@ function initGame(){
         play(){
             that.board.welcome();
             do {
-                that.board.showAttempts(that.attempts);
-                that.board.readAttemptCombination(that.getLastAttempt());
-                that.checkLastAttemptProposedCombination();
+                that.board.showResults(that.attemptsResult);
+                that.readAttemptProposeCombination();
+                that.checkAttemptProposedCombination();
+                that.addLastAttemptResult();
             } while (!that.checkEndGame());
-            that.board.showAttempts(that.attempts);
+            that.board.showResults(that.attemptsResult);
             that.board.farewell(that.getEndGameMessage());
         }
     }
@@ -212,24 +222,19 @@ function initBoard(){
         welcome(){
             console.writeln(`----- MASTERMIND -----`);
         },
-        showAttempts(attempts){
-            console.writeln(`\n${attempts.length} attempt(s):\n****`);
-            for (let i = 0; i < attempts.length; i++) {
-                console.writeln(attempts[i].getResult());
+        showResults(attemptsResult){
+            console.writeln(`\n${attemptsResult.length} attempt(s):\n****`);
+            for (let i = 0; i < attemptsResult.length; i++) {
+                console.writeln(attemptsResult[i]);
             }
         },
-        readAttemptCombination(attempt){
-            let correctProposedCombination;
-            do {
-                attempt.setProposedCombinationValue(console.readString(`Propose a combination: `));
-                const errors = attempt.checkProposedCombinationErrors();
-                correctProposedCombination = errors.length === 0;
-                if (!correctProposedCombination) {
-                    for (let i = 0; i < errors.length; i++) {
-                        console.writeln(errors[i]);
-                    }
-                }
-            } while (!correctProposedCombination);
+        readProposeCombination(){
+            return console.readString(`Propose a combination: `)
+        },
+        printErrors(errors){
+            for (let i = 0; i < errors.length; i++) {
+                console.writeln(errors[i]);
+            }
         },
         farewell(resultMessage){
             console.writeln(resultMessage);
@@ -259,6 +264,8 @@ function initAttempt(){
             return that.blacks === that.proposedCombination.getLenght();
         },
         setProposedCombinationValue(value){
+            that.blacks = 0;
+            that.whites = 0;
             return that.proposedCombination.setValue(value);
         },
         checkProposedCombinationErrors(){
