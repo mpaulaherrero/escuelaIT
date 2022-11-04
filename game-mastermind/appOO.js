@@ -31,7 +31,7 @@ function initGame(){
     const that = {
         STATES: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 },
         STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
-        MAX_ATTEMPT: 10,
+        MAX_ATTEMPTS: 10,
         state: 2,
         
         attempts: [],
@@ -44,23 +44,13 @@ function initGame(){
             return attempt;
         },
         checkLastAttemptProposedCombination(){
-            let lastAttempt = this.attempts[this.attempts.length-1];
-            const proposedCombination = lastAttempt.getProposedCombination();
-            for (let i = 0; i < proposedCombination.getLenght(); i++) {
-                if (this.secretCombination.getValue()[i] === proposedCombination.getValue()[i]) {
-                    lastAttempt.addBlacks();
-                } else {
-                    if (this.secretCombination.hasColor(proposedCombination.getValue()[i])) {
-                        lastAttempt.addWhites();
-                    }
-                }
-              }
+            this.attempts[this.attempts.length-1].checkProposedCombination(this.secretCombination);
         },
         checkEndGame(){
             let lastAttempt = this.attempts[this.attempts.length-1];
-            if (lastAttempt.getBlacks() === lastAttempt.getProposedCombination().getLenght()) {
+            if (lastAttempt.isWinner()) {
                 this.state = this.STATES.PLAYER_WIN
-            } else if (this.attempts.length === this.MAX_ATTEMPT) {
+            } else if (this.attempts.length === this.MAX_ATTEMPTS) {
                 this.state  = this.STATES.PLAYER_LOOSE;
             } else{
                 this.state = this.STATES.PLAYER_IN_GAME;
@@ -131,8 +121,11 @@ function initCombination(){
             }
             return false;
         },
-        getColors(){
-            return that.colors;
+        getRandomColor(){
+            return that.colors.getRandomColor();
+        },
+        getColorsString(){
+            return that.colors.getString();
         }
     }
 }
@@ -141,11 +134,10 @@ function initSecretCombination(){
     const that = {
         combination: initCombination(),
         generate(){
-            const colors =  this.combination.getColors();
             for (let i = 0; i < this.combination.getLenght(); i++) {
                 let uniqueColor;
                  do {
-                    let randomColor = colors.getRandomColor();
+                    let randomColor = this.combination.getRandomColor();
                     let originalValue = this.combination.getValue();
                     this.combination.setValue(originalValue + randomColor);
                     uniqueColor = this.combination.validateUniqueColors();
@@ -157,7 +149,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
+    console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
@@ -173,7 +165,7 @@ function initProposedCombination(){
                 errors[errors.length] = `Wrong proposed combination length`;
             }
             if (!that.combination.validateColors()) {
-                errors[errors.length] = `Wrong colors, they must be: ${that.combination.getColors().getString()}`;
+                errors[errors.length] = `Wrong colors, they must be: ${that.combination.getColorsString()}`;
             }
             if (!that.combination.validateUniqueColors()) {
                 errors[errors.length] = `Wrong proposed combination, at least one color is repeated`;
@@ -223,15 +215,14 @@ function initBoard(){
         showAttempts(attempts){
             console.writeln(`\n${attempts.length} attempt(s):\n****`);
             for (let i = 0; i < attempts.length; i++) {
-                console.writeln(`${attempts[i].getProposedCombination().getValue()} --> ${attempts[i].getBlacks()} blacks and ${attempts[i].getWhites()} whites`);
+                console.writeln(attempts[i].getResult());
             }
         },
         readAttemptCombination(attempt){
-            let proposedCombination = attempt.getProposedCombination();
             let correctProposedCombination;
             do {
-                proposedCombination.setValue(console.readString(`Propose a combination: `));
-                const errors = proposedCombination.checkErrors();
+                attempt.setProposedCombinationValue(console.readString(`Propose a combination: `));
+                const errors = attempt.checkProposedCombinationErrors();
                 correctProposedCombination = errors.length === 0;
                 if (!correctProposedCombination) {
                     for (let i = 0; i < errors.length; i++) {
@@ -253,20 +244,28 @@ function initAttempt(){
         whites: 0
     }
     return {
-        getProposedCombination(){
-            return that.proposedCombination;
+        checkProposedCombination(secretCombination){
+            for (let i = 0; i < that.proposedCombination.getLenght(); i++) {
+                if (secretCombination.getValue()[i] === that.proposedCombination.getValue()[i]) {
+                    that.blacks++;
+                } else {
+                    if (secretCombination.hasColor(that.proposedCombination.getValue()[i])) {
+                        that.whites++;
+                    }
+                }
+            }
         },
-        getBlacks(){
-            return that.blacks;
+        isWinner(){
+            return that.blacks === that.proposedCombination.getLenght();
         },
-        getWhites(){
-            return that.whites;
+        setProposedCombinationValue(value){
+            return that.proposedCombination.setValue(value);
         },
-        addBlacks(){
-            that.blacks++;
+        checkProposedCombinationErrors(){
+            return that.proposedCombination.checkErrors()
         },
-        addWhites(){
-            that.whites++;
+        getResult(){
+            return `${that.proposedCombination.getValue()} --> ${that.blacks} blacks and ${that.whites} whites`;
         }
     }
 }
