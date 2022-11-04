@@ -50,9 +50,6 @@ function initGame(){
                 }
             } while (!correctProposedCombination);
         },
-        checkProposedCombination(){
-            this.proposedCombination.compareSecretCombination(this.secretCombination);
-        },
         addLastAttemptResult(){
             this.attemptsResult[this.attemptsResult.length] = this.proposedCombination.getResult();
         },
@@ -77,7 +74,7 @@ function initGame(){
             do {
                 that.board.showResults(that.attemptsResult);
                 that.readProposeCombination();
-                that.checkProposedCombination();
+                that.proposedCombination.compareSecretCombination(that.secretCombination);
                 that.addLastAttemptResult();
             } while (!that.checkEndGame());
             that.board.showResults(that.attemptsResult);
