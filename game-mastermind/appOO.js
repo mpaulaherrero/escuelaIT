@@ -35,29 +35,29 @@ function initGame(){
         state: 2,
         attemptsResult: [],
         
-        attempt: initAttempt(),
+        proposedCombination: initProposedCombination(),
         secretCombination: initSecretCombination(),
         board: initBoard(),
         
-        readAttemptProposeCombination(){
+        readProposeCombination(){
             let correctProposedCombination;
             do {
-                this.attempt.setProposedCombinationValue(this.board.readProposeCombination());
-                const errors = this.attempt.checkProposedCombinationErrors();
+                this.proposedCombination.setValue(this.board.readProposeCombination());
+                const errors = this.proposedCombination.checkErrors();
                 correctProposedCombination = errors.length === 0;
                 if (!correctProposedCombination) {
                    this.board.printErrors(errors);
                 }
             } while (!correctProposedCombination);
         },
-        checkAttemptProposedCombination(){
-            this.attempt.checkProposedCombination(this.secretCombination);
+        checkProposedCombination(){
+            this.proposedCombination.compareSecretCombination(this.secretCombination);
         },
         addLastAttemptResult(){
-            this.attemptsResult[this.attemptsResult.length] = this.attempt.getResult();
+            this.attemptsResult[this.attemptsResult.length] = this.proposedCombination.getResult();
         },
         checkEndGame(){
-            if (this.attempt.isWinner()) {
+            if (this.proposedCombination.isWinner()) {
                 this.state = this.STATES.PLAYER_WIN
             } else if (this.attemptsResult.length === this.MAX_ATTEMPTS) {
                 this.state  = this.STATES.PLAYER_LOOSE;
@@ -76,8 +76,8 @@ function initGame(){
             that.board.welcome();
             do {
                 that.board.showResults(that.attemptsResult);
-                that.readAttemptProposeCombination();
-                that.checkAttemptProposedCombination();
+                that.readProposeCombination();
+                that.checkProposedCombination();
                 that.addLastAttemptResult();
             } while (!that.checkEndGame());
             that.board.showResults(that.attemptsResult);
@@ -165,10 +165,16 @@ function initSecretCombination(){
 
 function initProposedCombination(){
     const that = {
-        combination: initCombination()
+        combination: initCombination(),
+        blacks: 0,
+        whites: 0,
+        isWinner: false
     }
     
     return {
+        setValue(value){
+            that.combination.setValue(value);
+        },
         checkErrors(){
             let errors = [];
             if (that.combination.validateLenght()) {
@@ -182,14 +188,25 @@ function initProposedCombination(){
             }
             return errors;
         },
-        setValue(value){
-            that.combination.setValue(value);
+        compareSecretCombination(secretCombination){
+            that.blacks = 0;
+            that.whites = 0;
+            for (let i = 0; i < that.combination.getLenght(); i++) {
+                if (secretCombination.getValue()[i] === that.combination.getValue()[i]) {
+                    that.blacks++;
+                } else {
+                    if (secretCombination.hasColor(that.combination.getValue()[i])) {
+                        that.whites++;
+                    }
+                }
+            }
+            that.isWinner = that.blacks === that.combination.getLenght();
         },
-        getValue(){
-            return that.combination.getValue();
+        isWinner(){
+            return that.isWinner;
         },
-        getLenght(){
-            return that.combination.getLenght();
+        getResult(){
+            return `${that.combination.getValue()} --> ${that.blacks} blacks and ${that.whites} whites`;
         }
     }
 }
@@ -241,39 +258,3 @@ function initBoard(){
         }
     }
 }
-
-function initAttempt(){
-    const that = {
-        proposedCombination: initProposedCombination(),
-        blacks: 0,
-        whites: 0
-    }
-    return {
-        checkProposedCombination(secretCombination){
-            for (let i = 0; i < that.proposedCombination.getLenght(); i++) {
-                if (secretCombination.getValue()[i] === that.proposedCombination.getValue()[i]) {
-                    that.blacks++;
-                } else {
-                    if (secretCombination.hasColor(that.proposedCombination.getValue()[i])) {
-                        that.whites++;
-                    }
-                }
-            }
-        },
-        isWinner(){
-            return that.blacks === that.proposedCombination.getLenght();
-        },
-        setProposedCombinationValue(value){
-            that.blacks = 0;
-            that.whites = 0;
-            return that.proposedCombination.setValue(value);
-        },
-        checkProposedCombinationErrors(){
-            return that.proposedCombination.checkErrors()
-        },
-        getResult(){
-            return `${that.proposedCombination.getValue()} --> ${that.blacks} blacks and ${that.whites} whites`;
-        }
-    }
-}
-
