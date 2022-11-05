@@ -33,30 +33,31 @@ function initGame(){
         STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
         MAX_ATTEMPTS: 10,
         state: 2,
-        attemptsResult: [],
-        
-        proposedCombination: initProposedCombination(),
+
+        proposedCombinations: [],
         secretCombination: initSecretCombination(),
         board: initBoard(),
         
         readProposeCombination(){
+            const proposedCombination = initProposedCombination();
             let correctProposedCombination;
             do {
-                this.proposedCombination.setValue(this.board.readProposeCombination());
-                const errors = this.proposedCombination.checkErrors();
+                proposedCombination.setValue(this.board.readProposeCombination());
+                const errors = proposedCombination.checkErrors();
                 correctProposedCombination = errors.length === 0;
                 if (!correctProposedCombination) {
                    this.board.printErrors(errors);
                 }
             } while (!correctProposedCombination);
+            this.proposedCombinations[this.proposedCombinations.length] = proposedCombination;
         },
-        addLastAttemptResult(){
-            this.attemptsResult[this.attemptsResult.length] = this.proposedCombination.getResult();
+        compareSecretCombination(){
+            this.proposedCombinations[that.proposedCombinations.length-1].compareSecretCombination(that.secretCombination);
         },
         checkEndGame(){
-            if (this.proposedCombination.isWinner()) {
+            if (this.proposedCombinations[that.proposedCombinations.length-1].isWinner()) {
                 this.state = this.STATES.PLAYER_WIN
-            } else if (this.attemptsResult.length === this.MAX_ATTEMPTS) {
+            } else if (this.proposedCombinations.length === this.MAX_ATTEMPTS) {
                 this.state  = this.STATES.PLAYER_LOOSE;
             } else{
                 this.state = this.STATES.PLAYER_IN_GAME;
@@ -72,12 +73,11 @@ function initGame(){
         play(){
             that.board.welcome();
             do {
-                that.board.showResults(that.attemptsResult);
+                that.board.showResults(that.proposedCombinations);
                 that.readProposeCombination();
-                that.proposedCombination.compareSecretCombination(that.secretCombination);
-                that.addLastAttemptResult();
+                that.compareSecretCombination();
             } while (!that.checkEndGame());
-            that.board.showResults(that.attemptsResult);
+            that.board.showResults(that.proposedCombinations);
             that.board.farewell(that.getEndGameMessage());
         }
     }
@@ -236,10 +236,10 @@ function initBoard(){
         welcome(){
             console.writeln(`----- MASTERMIND -----`);
         },
-        showResults(attemptsResult){
-            console.writeln(`\n${attemptsResult.length} attempt(s):\n****`);
-            for (let i = 0; i < attemptsResult.length; i++) {
-                console.writeln(attemptsResult[i]);
+        showResults(proposedCombinations){
+            console.writeln(`\n${proposedCombinations.length} attempt(s):\n****`);
+            for (let i = 0; i < proposedCombinations.length; i++) {
+                console.writeln(proposedCombinations[i].getResult());
             }
         },
         readProposeCombination(){
