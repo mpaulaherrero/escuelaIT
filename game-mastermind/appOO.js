@@ -36,7 +36,6 @@ function initGame(){
 
         proposedCombinations: [],
         secretCombination: initSecretCombination(),
-        board: initBoard(),
         
         readProposeCombination(){
             const proposedCombination = initProposedCombination();
