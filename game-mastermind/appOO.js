@@ -42,11 +42,11 @@ function initGame(){
             const proposedCombination = initProposedCombination();
             let correctProposedCombination;
             do {
-                proposedCombination.setValue(this.board.readProposeCombination());
+                proposedCombination.readValue();
                 const errors = proposedCombination.checkErrors();
                 correctProposedCombination = errors.length === 0;
                 if (!correctProposedCombination) {
-                   this.board.printErrors(errors);
+                   this.printErrors(errors);
                 }
             } while (!correctProposedCombination);
             this.proposedCombinations[this.proposedCombinations.length] = proposedCombination;
@@ -66,19 +66,36 @@ function initGame(){
         },
         getEndGameMessage(){
             return this.STATES_MESSAGE[this.state];
+        },
+        welcome(){
+            console.writeln(`----- MASTERMIND -----`);
+        },
+        showResults(){
+            console.writeln(`\n${that.proposedCombinations.length} attempt(s):\n****`);
+            for (let i = 0; i < that.proposedCombinations.length; i++) {
+                console.writeln(that.proposedCombinations[i].getResult());
+            }
+        },
+        printErrors(errors){
+            for (let i = 0; i < errors.length; i++) {
+                console.writeln(errors[i]);
+            }
+        },
+        farewell(){
+            console.writeln(that.getEndGameMessage());
         }
     }
 
     return {
         play(){
-            that.board.welcome();
+            that.welcome();
             do {
-                that.board.showResults(that.proposedCombinations);
+                that.showResults();
                 that.readProposeCombination();
                 that.compareSecretCombination();
             } while (!that.checkEndGame());
-            that.board.showResults(that.proposedCombinations);
-            that.board.farewell(that.getEndGameMessage());
+            that.showResults();
+            that.farewell();
         }
     }
 }
@@ -169,8 +186,8 @@ function initProposedCombination(){
     }
     
     return {
-        setValue(value){
-            that.combination.setValue(value);
+        readValue(){
+            that.combination.setValue(console.readString(`Propose a combination: `));
         },
         checkErrors(){
             let errors = [];
@@ -227,31 +244,6 @@ function initColors(){
         },
         getString(){
             return that.COLORS;
-        }
-    }
-}
-
-function initBoard(){
-    return {
-        welcome(){
-            console.writeln(`----- MASTERMIND -----`);
-        },
-        showResults(proposedCombinations){
-            console.writeln(`\n${proposedCombinations.length} attempt(s):\n****`);
-            for (let i = 0; i < proposedCombinations.length; i++) {
-                console.writeln(proposedCombinations[i].getResult());
-            }
-        },
-        readProposeCombination(){
-            return console.readString(`Propose a combination: `)
-        },
-        printErrors(errors){
-            for (let i = 0; i < errors.length; i++) {
-                console.writeln(errors[i]);
-            }
-        },
-        farewell(resultMessage){
-            console.writeln(resultMessage);
         }
     }
 }
