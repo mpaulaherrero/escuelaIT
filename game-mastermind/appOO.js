@@ -53,7 +53,7 @@ function initGame(){
         compareSecretCombination(){
             this.proposedCombinations[that.proposedCombinations.length-1].compareSecretCombination(that.secretCombination);
         },
-        checkEndGame(){
+        checkEnd(){
             if (this.proposedCombinations[that.proposedCombinations.length-1].isWinner()) {
                 this.state = this.STATES.PLAYER_WIN
             } else if (this.proposedCombinations.length === this.MAX_ATTEMPTS) {
@@ -62,9 +62,6 @@ function initGame(){
                 this.state = this.STATES.PLAYER_IN_GAME;
             }
             return this.state !== this.STATES.PLAYER_IN_GAME;
-        },
-        getEndGameMessage(){
-            return this.STATES_MESSAGE[this.state];
         },
         welcome(){
             console.writeln(`----- MASTERMIND -----`);
@@ -81,7 +78,7 @@ function initGame(){
             }
         },
         farewell(){
-            console.writeln(that.getEndGameMessage());
+            console.writeln(this.STATES_MESSAGE[this.state]);
         }
     }
 
@@ -92,7 +89,7 @@ function initGame(){
                 that.showResults();
                 that.readProposeCombination();
                 that.compareSecretCombination();
-            } while (!that.checkEndGame());
+            } while (!that.checkEnd());
             that.showResults();
             that.farewell();
         }
@@ -172,7 +169,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    console.writeln(`The secret combination is ${that.combination.getValue()}`);
+    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
