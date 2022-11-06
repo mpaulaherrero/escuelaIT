@@ -29,9 +29,6 @@ function initMastermind() {
 
 function initGame(){
     const that = {
-        STATES: { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 },
-        STATES_MESSAGE: ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"],
-        MAX_ATTEMPTS: 10,
         state: 2,
 
         proposedCombinations: [],
@@ -54,14 +51,17 @@ function initGame(){
             this.proposedCombinations[that.proposedCombinations.length-1].compareSecretCombination(that.secretCombination);
         },
         checkEnd(){
+            const STATES = { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 };
+            const MAX_ATTEMPTS = 10;
+    
             if (this.proposedCombinations[that.proposedCombinations.length-1].isWinner()) {
-                this.state = this.STATES.PLAYER_WIN
-            } else if (this.proposedCombinations.length === this.MAX_ATTEMPTS) {
-                this.state  = this.STATES.PLAYER_LOOSE;
+                this.state = STATES.PLAYER_WIN
+            } else if (this.proposedCombinations.length === MAX_ATTEMPTS) {
+                this.state  = STATES.PLAYER_LOOSE;
             } else{
-                this.state = this.STATES.PLAYER_IN_GAME;
+                this.state = STATES.PLAYER_IN_GAME;
             }
-            return this.state !== this.STATES.PLAYER_IN_GAME;
+            return this.state !== STATES.PLAYER_IN_GAME;
         },
         welcome(){
             console.writeln(`----- MASTERMIND -----`);
@@ -78,7 +78,8 @@ function initGame(){
             }
         },
         farewell(){
-            console.writeln(this.STATES_MESSAGE[this.state]);
+            const STATES_MESSAGE = ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"];
+            console.writeln(STATES_MESSAGE[this.state]);
         }
     }
 
