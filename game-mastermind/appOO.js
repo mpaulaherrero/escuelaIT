@@ -48,7 +48,7 @@ function initGame(){
             this.proposedCombinations[this.proposedCombinations.length] = proposedCombination;
         },
         compareSecretCombination(){
-            this.proposedCombinations[that.proposedCombinations.length-1].compareSecretCombination(that.secretCombination);
+            this.proposedCombinations[that.proposedCombinations.length-1].compare(that.secretCombination);
         },
         checkEnd(){
             const STATES = { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 };
@@ -174,12 +174,36 @@ function initSecretCombination(){
     return that.combination;
 }
 
-function initProposedCombination(){
+function initResult(){
     const that = {
-        combination: initCombination(),
         blacks: 0,
         whites: 0,
         isWinner: false
+    }
+
+    return {
+        isWinner(){
+            return that.isWinner;
+        },
+        addWhites(){
+            that.whites++;
+        },
+        addBlacks(){
+            that.blacks++;
+        },
+        setWinner(combinationLenght){
+            that.isWinner = that.blacks === combinationLenght;
+        },
+        show(){
+            return ` --> ${that.blacks} blacks and ${that.whites} whites`;
+        }
+    }
+}
+
+function initProposedCombination(){
+    const that = {
+        combination: initCombination(),
+        result: initResult()
     }
     
     return {
@@ -199,25 +223,23 @@ function initProposedCombination(){
             }
             return errors;
         },
-        compareSecretCombination(secretCombination){
-            that.blacks = 0;
-            that.whites = 0;
+        compare(secretCombination){
             for (let i = 0; i < that.combination.getLenght(); i++) {
                 if (secretCombination.getValue()[i] === that.combination.getValue()[i]) {
-                    that.blacks++;
+                   that.result.addBlacks();
                 } else {
                     if (secretCombination.hasColor(that.combination.getValue()[i])) {
-                        that.whites++;
+                        that.result.addWhites();
                     }
                 }
             }
-            that.isWinner = that.blacks === that.combination.getLenght();
+            that.result.setWinner(that.combination.getLenght());
         },
         isWinner(){
-            return that.isWinner;
+            return that.result.isWinner();
         },
         getResult(){
-            return `${that.combination.getValue()} --> ${that.blacks} blacks and ${that.whites} whites`;
+            return `${that.combination.getValue()} ${that.result.show()}`;
         }
     }
 }
