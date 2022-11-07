@@ -145,7 +145,7 @@ function initCombination(){
         getRandomColor(){
             return that.colors.getRandomColor();
         },
-        getColorsString(){
+        colorsToString(){
             return that.colors.toString();
         }
     }
@@ -190,7 +190,7 @@ function initProposedCombination(){
                 errors[errors.length] = `Wrong proposed combination length`;
             }
             if (!that.combination.validateColors()) {
-                errors[errors.length] = `Wrong colors, they must be: ${that.combination.getColorsString()}`;
+                errors[errors.length] = `Wrong colors, they must be: ${that.combination.colorsToString()}`;
             }
             if (!that.combination.validateUniqueColors()) {
                 errors[errors.length] = `Wrong proposed combination, at least one color is repeated`;
