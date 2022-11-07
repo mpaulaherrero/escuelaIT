@@ -146,7 +146,7 @@ function initCombination(){
             return that.colors.getRandomColor();
         },
         getColorsString(){
-            return that.colors.getString();
+            return that.colors.toString();
         }
     }
 }
@@ -263,7 +263,7 @@ function initColors(){
             }
             return false;
         },
-        getString(){
+        toString(){
             return that.COLORS;
         }
     }
