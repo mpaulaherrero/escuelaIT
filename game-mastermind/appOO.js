@@ -69,7 +69,7 @@ function initGame(){
         showResults(){
             console.writeln(`\n${that.proposedCombinations.length} attempt(s):\n****`);
             for (let i = 0; i < that.proposedCombinations.length; i++) {
-                console.writeln(that.proposedCombinations[i].getResult());
+                console.writeln(that.proposedCombinations[i].toString());
             }
         },
         printErrors(errors){
@@ -174,32 +174,6 @@ function initSecretCombination(){
     return that.combination;
 }
 
-function initResult(){
-    const that = {
-        blacks: 0,
-        whites: 0,
-        isWinner: false
-    }
-
-    return {
-        isWinner(){
-            return that.isWinner;
-        },
-        addWhites(){
-            that.whites++;
-        },
-        addBlacks(){
-            that.blacks++;
-        },
-        setWinner(combinationLenght){
-            that.isWinner = that.blacks === combinationLenght;
-        },
-        show(){
-            return ` --> ${that.blacks} blacks and ${that.whites} whites`;
-        }
-    }
-}
-
 function initProposedCombination(){
     const that = {
         combination: initCombination(),
@@ -238,12 +212,40 @@ function initProposedCombination(){
         isWinner(){
             return that.result.isWinner();
         },
-        getResult(){
-            return `${that.combination.getValue()} ${that.result.show()}`;
+        toString(){
+            return `${that.combination.getValue()}  --> ${that.result.getBlacks()} blacks and ${that.result.getWhites()} whites`;
         }
     }
 }
 
+function initResult(){
+    const that = {
+        blacks: 0,
+        whites: 0,
+        isWinner: false
+    }
+
+    return {
+        addWhites(){
+            that.whites++;
+        },
+        addBlacks(){
+            that.blacks++;
+        },
+        getBlacks(){
+            return that.blacks;
+        },
+        getWhites(){
+            return that.whites;
+        },
+        setWinner(combinationLenght){
+            that.isWinner = that.blacks === combinationLenght;
+        },
+        isWinner(){
+            return that.isWinner;
+        }
+    }
+}
 function initColors(){
     const that = {
         COLORS: "rgybmc"
