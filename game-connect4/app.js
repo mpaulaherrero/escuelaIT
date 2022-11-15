@@ -85,7 +85,6 @@ function Board() {
     this.MAX_ROWS = 6;
     this.tokens = [];
     this.lastCoordinate = new Coordinate();
-    this.lastToken = ` `;
     for (let i = 0; i < this.MAX_ROWS; i++) {
         this.tokens[i] = [];
         for (let j = 0; j < this.MAX_COLUMNS; j++) {
@@ -107,7 +106,6 @@ Board.prototype.putLastCoordinate = function(token){
         if(this.tokens[i][this.lastCoordinate.column] === this.TOKEN_EMPTY){
             this.tokens[i][this.lastCoordinate.column] = token;
             this.lastCoordinate.row = i;
-            this.lastToken = token;
             break;
         }
     }
@@ -133,12 +131,13 @@ Board.prototype.isLastTokenInLine = function (){
 }
 
 Board.prototype.isInLine = function(line) {
+    //esto esta fallando cuando empiezo en la primera columan 1, 2, 3, 4
     for (let coordinate of line.coordinates) { 
         if (!this.isValid(coordinate)) {
             //console.writeln(`invalid ${coordinate.toString()}`);
             return false;
         }
-        if (this.getToken(coordinate) !== this.lastToken) {
+        if (this.getToken(coordinate) !== this.getToken(this.lastCoordinate)) {
             //console.writeln(`invalid token '${this.getToken(coordinate)}'`);
             return false;
         }
@@ -147,7 +146,7 @@ Board.prototype.isInLine = function(line) {
 }
 
 Board.prototype.isValid = function (coordinate){
-    return 0 < coordinate.row && coordinate.row < this.MAX_ROWS && 0 < coordinate.column && coordinate.column < this.MAX_COLUMNS
+    return 0 <= coordinate.row && coordinate.row < this.MAX_ROWS && 0 <= coordinate.column && coordinate.column < this.MAX_COLUMNS
 }
 
 function BoardView(board) {
