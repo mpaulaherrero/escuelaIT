@@ -31,18 +31,11 @@ function initGameView() {
     const that = {
         game: initGame(),
 
-        welcome(){
-            console.writeln(`----- MASTERMIND -----`);
-        },
         showResults(){
             console.writeln(`\n${this.game.getProposedCombinationsLength()} attempt(s):\n****`);
             for (let i = 0; i < this.game.getProposedCombinationsLength(); i++) {
                 console.writeln(this.game.proposedCombinationToString(i));
             }
-        },
-        farewell(){
-            const STATES_MESSAGE = ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"];
-            console.writeln(STATES_MESSAGE[this.game.getState()]);
         },
         readProposedCombination(){
             this.game.setLastProposedCombination(initProposedCombinationView().readValue());
@@ -51,14 +44,15 @@ function initGameView() {
 
     return {
         play(){
-            that.welcome();
+            console.writeln(`----- MASTERMIND -----`);
             do {
                 that.showResults();
                 that.readProposedCombination();
                 that.game.compareSecretCombination();
             } while (!that.game.checkEnd());
             that.showResults();
-            that.farewell();
+            const STATES_MESSAGE = ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"];
+            console.writeln(STATES_MESSAGE[this.game.getState()]);
         }
     }
 }
