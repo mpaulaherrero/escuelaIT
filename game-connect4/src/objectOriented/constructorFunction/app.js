@@ -18,6 +18,10 @@ Coordinate.prototype.toString = function () {
     return `(${this.row},${this.column})`;
 }
 
+Coordinate.prototype.isValid = function (){
+    return 0 <= this.row && this.row < this.MAX_ROWS && 0 <= this.column && this.column < this.MAX_COLUMNS
+}
+
 function CoordinateView(coordinate) {
     this.coordinate = coordinate;
 }    
@@ -134,7 +138,7 @@ Board.prototype.isLastTokenInLine = function (){
 Board.prototype.isInLine = function(line) {
     //esto esta fallando cuando empiezo en la primera columan 1, 2, 3, 4
     for (let coordinate of line.coordinates) { 
-        if (!this.isValid(coordinate)) {
+        if (!coordinate.isValid()) {
             //console.writeln(`invalid ${coordinate.toString()}`);
             return false;
         }
@@ -144,10 +148,6 @@ Board.prototype.isInLine = function(line) {
         }
     }
     return true;    
-}
-
-Board.prototype.isValid = function (coordinate){
-    return 0 <= coordinate.row && coordinate.row < this.lastCoordinate.MAX_ROWS && 0 <= coordinate.column && coordinate.column < this.lastCoordinate.MAX_COLUMNS
 }
 
 function BoardView(board) {

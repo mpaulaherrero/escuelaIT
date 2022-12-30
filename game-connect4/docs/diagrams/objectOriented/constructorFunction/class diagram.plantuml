@@ -16,6 +16,7 @@ package "Model" <<Rectangle>> #aca {
         column
         shifted(directionCoordinate)
         toString()
+        isValid()
     }
 
     class Direction {
@@ -43,7 +44,6 @@ package "Model" <<Rectangle>> #aca {
         putLastCoordinate(token)
         isLastTokenInLine()
         isInLine(line)
-        isValid(coordinate)
     }
 
     class Game {
