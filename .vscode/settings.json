@@ -1,0 +1,7 @@
+{
+    "liveServer.settings.port": 5501,
+    "plantuml.commandArgs": [],
+    "plantuml.exportFormat": "png",
+    "plantuml.diagramsRoot": ".",
+    "plantuml.exportOutDir": "."
+}

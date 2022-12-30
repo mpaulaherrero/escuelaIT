@@ -1,0 +1,125 @@
+@startuml connect4_constructorFunction_classdiagram
+
+package "console-mpds" <<Rectangle>> #ccc {
+    class console {
+        writeln(text)
+        readString(question)
+        readNumber(question)
+    }
+}
+
+package "Model" <<Rectangle>> #aca {
+    class Coordinate {
+        row
+        column
+        shifted(directionCoordinate)
+        toString()
+    }
+
+    class Direction {
+        name
+        coordinate
+        opositeCoordinate
+        toString()
+    }
+
+    class Line {
+        LENGTH
+        direction
+        coordinates
+        toString()
+        oppositeDirection()
+        getVariations()
+    }
+
+    class Board {
+        TOKEN_EMPTY
+        MAX_COLUMNS
+        MAX_ROWS
+        tokens
+        lastCoordinate
+        getToken(coordinate)
+        isLastCoordinateColumnEmpty()
+        putLastCoordinate(token)
+        isLastTokenInLine()
+        isInLine(line)
+        isValid(coordinate)
+    }
+
+    class Game {
+        MAX_PLAYERS
+        players
+        turn
+        board
+        isWinner()
+        nextTurn()
+        getTurnToken()
+    }
+}
+
+package "Views" <<Rectangle>> #caa {
+    class CoordinateView {
+        #coordinate
+        readColumn(max)
+    }
+
+    class BoardView{
+        #board
+        writeTokens()
+        placeToken(token)
+    }
+
+    class GameView {
+        #game
+        #boardView
+        writeWinner()
+        playTurn()
+        play()
+    }
+
+    class YesNoDialog {
+        #question
+        #answer
+        read()
+        isAffirmative()
+        isNegative()
+    }
+}
+
+class Connect4 {
+    #continueDialog
+    play()
+}
+
+Coordinate -> Coordinate
+
+CoordinateView -> Coordinate
+
+Direction -down-> Coordinate
+
+Line -> Line
+Line -down-> Coordinate
+Line -down-> Direction
+
+Board *-down-> Coordinate
+Board *-down-> Direction
+Board *-down-> Line
+
+BoardView *-down-> CoordinateView
+BoardView -down-> Board
+BoardView *-down-> Coordinate
+
+Game *-down-> Board
+
+GameView *-down-> Game
+GameView *-down-> BoardView
+
+Connect4 -down-> YesNoDialog
+Connect4 *-down-> GameView
+
+YesNoDialog .-l-> console
+GameView .-l-> console
+BoardView .-l-> console
+CoordinateView .-l-> console
+
+@enduml
