@@ -22,6 +22,10 @@ Coordinate.prototype.isValid = function (){
     return 0 <= this.row && this.row < this.MAX_ROWS && 0 <= this.column && this.column < this.MAX_COLUMNS
 }
 
+Coordinate.prototype.getOposite = function () {
+    return new Coordinate(this.row * -1, this.column * -1);
+}
+
 function CoordinateView(coordinate) {
     this.coordinate = coordinate;
 }    
@@ -43,14 +47,13 @@ CoordinateView.prototype.readColumn = function () {
     }    
 }
 
-function Direction(name, directionCoordinate, opositeDirectionCoordinate) {
+function Direction(name, directionCoordinate) {
     this.name = name;
     this.coordinate = directionCoordinate;
-    this.opositeCoordinate = opositeDirectionCoordinate;
 }
 
 Direction.prototype.toString = function () {
-    return `(${this.name} -> direction: ${this.coordinate.toString()}, oposite direction: ${this.opositeCoordinate.toString()})`;
+    return `(${this.name} -> direction: ${this.coordinate.toString()}, oposite direction: ${this.coordinate.getOposite().toString()})`;
 }
 
 function Line(origenCoordinate, direction) {
@@ -75,7 +78,7 @@ Line.prototype.toString = function (){
 
 Line.prototype.shift = function(){
     for (let i = 0; i < this.LENGTH; i++) {
-        this.coordinates[i] = this.coordinates[i].shifted(this.direction.opositeCoordinate);
+        this.coordinates[i] = this.coordinates[i].shifted(this.direction.coordinate.getOposite());
     }
 }
 
@@ -119,13 +122,13 @@ Board.prototype.isComplete = function (){
 }
 
 Board.prototype.isLastTokenInLine = function (){
-    const directions = [ new Direction('NORTH', new Coordinate(1, 0), new Coordinate(-1, 0)),
-                         new Direction('NORTH_EAST', new Coordinate(1, 1), new Coordinate(-1, -1)),
-                         new Direction('EAST', new Coordinate(0, 1), new Coordinate(0, -1)),
-                         new Direction('SOUTH_EAST', new Coordinate(-1, 1), new Coordinate(1, -1))]; 
+    const directions = [ new Direction('NORTH', new Coordinate(1, 0)),
+                         new Direction('NORTH_EAST', new Coordinate(1, 1)),
+                         new Direction('EAST', new Coordinate(0, 1)),
+                         new Direction('SOUTH_EAST', new Coordinate(-1, 1))]; 
     
     for (let direction of directions) {
-        //console.writeln(`revisar si hay 4 en línea en dirección ${direction.name}`); 
+        //console.writeln(`revisar si hay 4 en línea en dirección ${direction.toString()}`); 
         const line = new Line(this.lastCoordinate, direction);
         for(let i=0; i < line.LENGTH; i++){
             //console.writeln(lines[i].toString());

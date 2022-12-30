@@ -17,12 +17,12 @@ package "Model" <<Rectangle>> #aca {
         shifted(directionCoordinate)
         toString()
         isValid()
+        getOposite()
     }
 
     class Direction {
         name
         coordinate
-        opositeCoordinate
         toString()
     }
 
