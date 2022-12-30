@@ -2,6 +2,9 @@ const { Console } = require("console-mpds");
 const console = new Console();
 
 function Coordinate(row=undefined, column=undefined) {
+    this.MAX_COLUMNS = 7;
+    this.MAX_ROWS = 6;
+
     this.row = row;
     this.column = column;
 }
@@ -19,8 +22,8 @@ function CoordinateView(coordinate) {
     this.coordinate = coordinate;
 }    
 
-CoordinateView.prototype.readColumn = function (max) {
-    this.coordinate.column = read(`Columna a colocar`, max) - 1;
+CoordinateView.prototype.readColumn = function () {
+    this.coordinate.column = read(`Columna a colocar`, this.coordinate.MAX_COLUMNS) - 1;
 
     function read(title, max) {
         let column;
@@ -81,13 +84,11 @@ Line.prototype.getVariations = function(){
 
 function Board() {
     this.TOKEN_EMPTY = ` `;
-    this.MAX_COLUMNS = 7;
-    this.MAX_ROWS = 6;
     this.tokens = [];
     this.lastCoordinate = new Coordinate();
-    for (let i = 0; i < this.MAX_ROWS; i++) {
+    for (let i = 0; i < this.lastCoordinate.MAX_ROWS; i++) {
         this.tokens[i] = [];
-        for (let j = 0; j < this.MAX_COLUMNS; j++) {
+        for (let j = 0; j < this.lastCoordinate.MAX_COLUMNS; j++) {
             this.tokens[i][j] = this.TOKEN_EMPTY;
         }
     }
@@ -102,7 +103,7 @@ Board.prototype.isLastCoordinateColumnEmpty = function(){
 }
 
 Board.prototype.putLastCoordinate = function(token){
-    for (let i = this.MAX_ROWS-1; i > -1 ; i--) {
+    for (let i = this.lastCoordinate.MAX_ROWS-1; i > -1 ; i--) {
         if(this.tokens[i][this.lastCoordinate.column] === this.TOKEN_EMPTY){
             this.tokens[i][this.lastCoordinate.column] = token;
             this.lastCoordinate.row = i;
@@ -146,7 +147,7 @@ Board.prototype.isInLine = function(line) {
 }
 
 Board.prototype.isValid = function (coordinate){
-    return 0 <= coordinate.row && coordinate.row < this.MAX_ROWS && 0 <= coordinate.column && coordinate.column < this.MAX_COLUMNS
+    return 0 <= coordinate.row && coordinate.row < this.lastCoordinate.MAX_ROWS && 0 <= coordinate.column && coordinate.column < this.lastCoordinate.MAX_COLUMNS
 }
 
 function BoardView(board) {
@@ -156,8 +157,8 @@ function BoardView(board) {
 BoardView.prototype.writeTokens = function () {
     const VERTICAL_SEPARATOR = `|`;
     let boardToString = `\n`;
-    for (let row = 0; row < this.board.MAX_ROWS; row++) {
-      for (let column = 0; column < this.board.MAX_COLUMNS; column++) {
+    for (let row = 0; row < this.board.lastCoordinate.MAX_ROWS; row++) {
+      for (let column = 0; column < this.board.lastCoordinate.MAX_COLUMNS; column++) {
         boardToString += `${VERTICAL_SEPARATOR} ${this.board.getToken(new Coordinate(row,column))} `;
       }
       boardToString += `${VERTICAL_SEPARATOR}\n`;
@@ -171,7 +172,7 @@ BoardView.prototype.placeToken = function (token) {
     this.coordinateView = new CoordinateView(this.board.lastCoordinate);
     let empty;
     do {
-        this.coordinateView.readColumn(this.board.MAX_COLUMNS);
+        this.coordinateView.readColumn(this.board.lastCoordinate.MAX_COLUMNS);
         empty = this.board.isLastCoordinateColumnEmpty();
         if (!empty) {
             console.writeln(`La columna esta llena, intente con otra`);
