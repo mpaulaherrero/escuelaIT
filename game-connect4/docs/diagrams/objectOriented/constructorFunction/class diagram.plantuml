@@ -10,6 +10,8 @@ package "console-mpds" <<Rectangle>> #ccc {
 
 package "Model" <<Rectangle>> #aca {
     class Coordinate {
+        MAX_COLUMNS
+        MAX_ROWS
         row
         column
         shifted(directionCoordinate)
@@ -34,8 +36,6 @@ package "Model" <<Rectangle>> #aca {
 
     class Board {
         TOKEN_EMPTY
-        MAX_COLUMNS
-        MAX_ROWS
         tokens
         lastCoordinate
         getToken(coordinate)
