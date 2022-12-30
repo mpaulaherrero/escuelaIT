@@ -47,9 +47,9 @@ CoordinateView.prototype.readColumn = function () {
     }    
 }
 
-function Direction(name, directionCoordinate) {
+function Direction(name, coordinate) {
     this.name = name;
-    this.coordinate = directionCoordinate;
+    this.coordinate = coordinate;
 }
 
 Direction.prototype.toString = function () {

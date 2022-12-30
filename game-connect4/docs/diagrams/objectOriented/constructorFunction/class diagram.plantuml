@@ -61,7 +61,7 @@ package "Model" <<Rectangle>> #aca {
 package "Views" <<Rectangle>> #caa {
     class CoordinateView {
         #coordinate
-        readColumn(max)
+        readColumn()
     }
 
     class BoardView{
