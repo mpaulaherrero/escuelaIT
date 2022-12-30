@@ -39,7 +39,9 @@ package "Model" <<Rectangle>> #aca {
         TOKEN_EMPTY
         tokens
         lastCoordinate
-        getToken(coordinate)
+        getMaxRows()
+        getMaxColumns()
+        getToken(row, column)
         isLastCoordinateColumnEmpty()
         putLastCoordinate(token)
         isComplete()
@@ -47,9 +49,19 @@ package "Model" <<Rectangle>> #aca {
         isInLine(line)
     }
 
-    class Game {
+    class Player{
+        color
+        getColor()
+    }
+
+    class Turn{
         NUMBER_PLAYERS
-        players
+        activePlayer
+        next()
+        getToken()
+    }
+
+    class Game {
         turn
         board
         isFinished()
@@ -103,14 +115,16 @@ Line -down-> Coordinate
 Line -down-> Direction
 
 Board *-down-> Coordinate
-Board *-down-> Direction
+Board *-down-> "4" Direction
 Board *-down-> Line
 
 BoardView *-down-> CoordinateView
 BoardView -down-> Board
-BoardView *-down-> Coordinate
+
+Turn *-down-> "2" Player
 
 Game *-down-> Board
+Game *-down-> Turn
 
 GameView *-down-> Game
 GameView *-down-> BoardView

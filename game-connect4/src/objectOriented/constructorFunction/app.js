@@ -98,8 +98,16 @@ function Board() {
     }
 }  
 
-Board.prototype.getToken = function (coordinate){
-    return this.tokens[coordinate.row][coordinate.column];
+Board.prototype.getMaxRows = function (){
+    return this.lastCoordinate.MAX_ROWS;
+}
+
+Board.prototype.getMaxColumns = function (){
+    return this.lastCoordinate.MAX_COLUMNS;
+}
+
+Board.prototype.getToken = function (row, column){
+    return this.tokens[row][column];
 }
 
 Board.prototype.isLastCoordinateColumnEmpty = function(){
@@ -107,7 +115,7 @@ Board.prototype.isLastCoordinateColumnEmpty = function(){
 }
 
 Board.prototype.putLastCoordinate = function(token){
-    for (let i = this.lastCoordinate.MAX_ROWS-1; i > -1 ; i--) {
+    for (let i = this.getMaxRows()-1; i > -1 ; i--) {
         if(this.tokens[i][this.lastCoordinate.column] === this.TOKEN_EMPTY){
             this.tokens[i][this.lastCoordinate.column] = token;
             this.lastCoordinate.row = i;
@@ -117,7 +125,7 @@ Board.prototype.putLastCoordinate = function(token){
 }
 
 Board.prototype.isComplete = function (){
-    for (let i = 0; i < this.lastCoordinate.MAX_COLUMNS; i++) {
+    for (let i = 0; i < this.getMaxColumns(); i++) {
         if (this.tokens[0][i] === this.TOKEN_EMPTY) {
           return false;
         }
@@ -130,7 +138,7 @@ Board.prototype.isLastTokenInLine = function (){
                          new Direction('NORTH_EAST', new Coordinate(1, 1)),
                          new Direction('EAST', new Coordinate(0, 1)),
                          new Direction('SOUTH_EAST', new Coordinate(-1, 1))]; 
-    
+
     for (let direction of directions) {
         //console.writeln(`revisar si hay 4 en línea en dirección ${direction.toString()}`); 
         const line = new Line(this.lastCoordinate, direction);
@@ -152,7 +160,7 @@ Board.prototype.isInLine = function(line) {
             //console.writeln(`invalid ${coordinate.toString()}`);
             return false;
         }
-        if (this.getToken(coordinate) !== this.getToken(this.lastCoordinate)) {
+        if (this.getToken(coordinate.row, coordinate.column) !== this.getToken(this.lastCoordinate.row, this.lastCoordinate.column)) {
             //console.writeln(`invalid token '${this.getToken(coordinate)}'`);
             return false;
         }
@@ -167,9 +175,9 @@ function BoardView(board) {
 BoardView.prototype.writeTokens = function () {
     const VERTICAL_SEPARATOR = `|`;
     let boardToString = `\n`;
-    for (let row = 0; row < this.board.lastCoordinate.MAX_ROWS; row++) {
-      for (let column = 0; column < this.board.lastCoordinate.MAX_COLUMNS; column++) {
-        boardToString += `${VERTICAL_SEPARATOR} ${this.board.getToken(new Coordinate(row,column))} `;
+    for (let row = 0; row < this.board.getMaxRows(); row++) {
+      for (let column = 0; column < this.board.getMaxColumns(); column++) {
+        boardToString += `${VERTICAL_SEPARATOR} ${this.board.getToken(row,column)} `;
       }
       boardToString += `${VERTICAL_SEPARATOR}\n`;
     }
@@ -182,19 +190,39 @@ BoardView.prototype.placeToken = function (token) {
     this.coordinateView = new CoordinateView(this.board.lastCoordinate);
     let empty;
     do {
-        this.coordinateView.readColumn(this.board.lastCoordinate.MAX_COLUMNS);
+        this.coordinateView.readColumn();
         empty = this.board.isLastCoordinateColumnEmpty();
         if (!empty) {
             console.writeln(`La columna esta llena, intente con otra`);
         }
     } while (!empty);
     this.board.putLastCoordinate(token);
-}    
+}
+
+function Player(color){
+    this.color = color;
+}
+
+Player.prototype.getColor = function () {
+    return this.color
+}
+
+function Turn(){
+    this.NUMBER_PLAYERS = 2;
+    this.players = [new Player('R'), new Player('Y')];
+    this.activePlayer = 0;
+}
+
+Turn.prototype.next = function () {
+    this.activePlayer = (this.activePlayer + 1) % this.NUMBER_PLAYERS;
+}
+
+Turn.prototype.getToken = function () {
+    return this.players[this.activePlayer].getColor();
+}
 
 function Game() {
-    this.NUMBER_PLAYERS = 2;
-    this.players = ['R','Y'];
-    this.turn = 0;
+    this.turn = new Turn();
     this.board = new Board();
 }    
 
@@ -207,11 +235,11 @@ Game.prototype.isWinner = function () {
 }
 
 Game.prototype.nextTurn = function () {
-    this.turn = (this.turn + 1) % this.NUMBER_PLAYERS;
+    this.turn.next();
 }
 
 Game.prototype.getTurnToken = function () {
-    return this.players[this.turn];
+    return this.turn.getToken();
 }
 
 function GameView() {
