@@ -14,7 +14,7 @@ package "Model" <<Rectangle>> #aca {
         MAX_ROWS
         row
         column
-        shifted(directionCoordinate)
+        shifted(coordinate)
         toString()
         isValid()
         getOposite()
@@ -48,7 +48,7 @@ package "Model" <<Rectangle>> #aca {
     }
 
     class Game {
-        MAX_PLAYERS
+        NUMBER_PLAYERS
         players
         turn
         board

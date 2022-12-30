@@ -9,9 +9,9 @@ function Coordinate(row=undefined, column=undefined) {
     this.column = column;
 }
 
-Coordinate.prototype.shifted = function (directionCoordinate) {
-    return new Coordinate(this.row + directionCoordinate.row,
-                          this.column + directionCoordinate.column);
+Coordinate.prototype.shifted = function (coordinate) {
+    return new Coordinate(this.row + coordinate.row,
+                          this.column + coordinate.column);
 }
 
 Coordinate.prototype.toString = function () {
@@ -192,7 +192,7 @@ BoardView.prototype.placeToken = function (token) {
 }    
 
 function Game() {
-    this.MAX_PLAYERS = 2;
+    this.NUMBER_PLAYERS = 2;
     this.players = ['R','Y'];
     this.turn = 0;
     this.board = new Board();
@@ -207,7 +207,7 @@ Game.prototype.isWinner = function () {
 }
 
 Game.prototype.nextTurn = function () {
-    this.turn = (this.turn + 1) % this.MAX_PLAYERS;
+    this.turn = (this.turn + 1) % this.NUMBER_PLAYERS;
 }
 
 Game.prototype.getTurnToken = function () {
