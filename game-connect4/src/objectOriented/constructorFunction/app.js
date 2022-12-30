@@ -56,6 +56,10 @@ Direction.prototype.toString = function () {
     return `(${this.name} -> direction: ${this.coordinate.toString()}, oposite direction: ${this.coordinate.getOposite().toString()})`;
 }
 
+Direction.prototype.getOpositeCoordinate = function () {
+    return this.coordinate.getOposite();
+}
+
 function Line(origenCoordinate, direction) {
     this.LENGTH = 4;
     this.direction = direction;
@@ -78,7 +82,7 @@ Line.prototype.toString = function (){
 
 Line.prototype.shift = function(){
     for (let i = 0; i < this.LENGTH; i++) {
-        this.coordinates[i] = this.coordinates[i].shifted(this.direction.coordinate.getOposite());
+        this.coordinates[i] = this.coordinates[i].shifted(this.direction.getOpositeCoordinate());
     }
 }
 
