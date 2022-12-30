@@ -31,7 +31,6 @@ package "Model" <<Rectangle>> #aca {
         direction
         coordinates
         toString()
-        oppositeDirection()
         shift()
     }
 
@@ -99,7 +98,6 @@ CoordinateView -> Coordinate
 
 Direction -down-> Coordinate
 
-Line -> Line
 Line -down-> Coordinate
 Line -down-> Direction
 

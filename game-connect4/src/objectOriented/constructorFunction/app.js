@@ -73,10 +73,6 @@ Line.prototype.toString = function (){
     return msg;
 }
 
-Line.prototype.oppositeDirection = function (){
-    return new Line(this.coordinates[0].shifted(this.direction.opositeCoordinate), this.direction);
-}
-
 Line.prototype.shift = function(){
     for (let i = 0; i < this.LENGTH; i++) {
         this.coordinates[i] = this.coordinates[i].shifted(this.direction.opositeCoordinate);
