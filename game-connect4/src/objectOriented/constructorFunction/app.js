@@ -77,13 +77,10 @@ Line.prototype.oppositeDirection = function (){
     return new Line(this.coordinates[0].shifted(this.direction.opositeCoordinate), this.direction);
 }
 
-Line.prototype.getVariations = function(){
-    let lines = [];
-    lines[0] = this;
-    for (let i = 1; i < lines[0].LENGTH; i++) {
-        lines[i] = lines[i - 1].oppositeDirection();
+Line.prototype.shift = function(){
+    for (let i = 0; i < this.LENGTH; i++) {
+        this.coordinates[i] = this.coordinates[i].shifted(this.direction.opositeCoordinate);
     }
-    return lines;
 }
 
 function Board() {
@@ -133,14 +130,15 @@ Board.prototype.isLastTokenInLine = function (){
     
     for (let direction of directions) {
         //console.writeln(`revisar si hay 4 en línea en dirección ${direction.name}`); 
-        const lines = new Line(this.lastCoordinate, direction).getVariations();
-        for(let i=0; i < lines.length; i++){
+        const line = new Line(this.lastCoordinate, direction);
+        for(let i=0; i < line.LENGTH; i++){
             //console.writeln(lines[i].toString());
-            if(this.isInLine(lines[i])){
+            if(this.isInLine(line)){
                 return true;
             }
-        }  
-    }            
+            line.shift();
+        }
+    }
     return false;
 }
 
@@ -229,7 +227,7 @@ GameView.prototype.writeFinish = function () {
 GameView.prototype.playTurn = function () {
     console.writeln(`Turno para ${this.game.getTurnToken()}`);
     this.boardView.placeToken(this.game.getTurnToken());
-}    
+}
 
 GameView.prototype.play = function () {
     let finished;

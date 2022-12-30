@@ -32,7 +32,7 @@ package "Model" <<Rectangle>> #aca {
         coordinates
         toString()
         oppositeDirection()
-        getVariations()
+        shift()
     }
 
     class Board {
