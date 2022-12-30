@@ -42,6 +42,7 @@ package "Model" <<Rectangle>> #aca {
         getToken(coordinate)
         isLastCoordinateColumnEmpty()
         putLastCoordinate(token)
+        isComplete()
         isLastTokenInLine()
         isInLine(line)
     }
@@ -51,6 +52,7 @@ package "Model" <<Rectangle>> #aca {
         players
         turn
         board
+        isFinished()
         isWinner()
         nextTurn()
         getTurnToken()
@@ -72,7 +74,7 @@ package "Views" <<Rectangle>> #caa {
     class GameView {
         #game
         #boardView
-        writeWinner()
+        writeFinish()
         playTurn()
         play()
     }

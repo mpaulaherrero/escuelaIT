@@ -116,6 +116,15 @@ Board.prototype.putLastCoordinate = function(token){
     }
 }
 
+Board.prototype.isComplete = function (){
+    for (let i = 0; i < this.lastCoordinate.MAX_COLUMNS; i++) {
+        if (this.tokens[0][i] === this.TOKEN_EMPTY) {
+          return false;
+        }
+    }
+    return true;
+}
+
 Board.prototype.isLastTokenInLine = function (){
     const directions = [ new Direction('NORTH', new Coordinate(1, 0), new Coordinate(-1, 0)),
                          new Direction('NORTH_EAST', new Coordinate(1, 1), new Coordinate(-1, -1)),
@@ -188,8 +197,12 @@ function Game() {
     this.board = new Board();
 }    
 
+Game.prototype.isFinished = function () {
+    return this.board.isComplete() || this.board.isLastTokenInLine()
+}
+
 Game.prototype.isWinner = function () {
-    return this.board.isLastTokenInLine();
+    return this.board.isLastTokenInLine()
 }
 
 Game.prototype.nextTurn = function () {
@@ -205,8 +218,12 @@ function GameView() {
     this.boardView = new BoardView(this.game.board);
 }    
 
-GameView.prototype.writeWinner = function () {
-    console.writeln(`Victoria para ${this.game.getTurnToken()}`);
+GameView.prototype.writeFinish = function () {
+    if(this.game.isWinner()){
+        console.writeln(`Victoria para ${this.game.getTurnToken()}`);
+    } else {
+        console.writeln(`¡Empate!`);
+    }
 }
 
 GameView.prototype.playTurn = function () {
@@ -215,18 +232,18 @@ GameView.prototype.playTurn = function () {
 }    
 
 GameView.prototype.play = function () {
-    let winner;
+    let finished;
     console.writeln(`--------- Connecta 4 --------`);  
     do {
       this.boardView.writeTokens();
       this.playTurn();
-      winner = this.game.isWinner();
-      if (!winner) {
+      finished = this.game.isFinished();
+      if (!finished) {
         this.game.nextTurn();
       }
-    } while (!winner);
+    } while (!finished);
     this.boardView.writeTokens();
-    this.writeWinner();
+    this.writeFinish();
 }
 
 function YesNoDialog(question) {
