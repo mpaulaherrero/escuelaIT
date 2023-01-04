@@ -186,19 +186,6 @@ BoardView.prototype.writeTokens = function () {
     console.writeln(boardToString);
 };
 
-BoardView.prototype.placeToken = function (token) {
-    this.coordinateView = new CoordinateView(this.board.lastCoordinate);
-    let empty;
-    do {
-        this.coordinateView.readColumn();
-        empty = this.board.isLastCoordinateColumnEmpty();
-        if (!empty) {
-            console.writeln(`La columna esta llena, intente con otra`);
-        }
-    } while (!empty);
-    this.board.putLastCoordinate(token);
-}
-
 function Player(color){
     this.color = color;
 }
@@ -207,7 +194,8 @@ Player.prototype.getColor = function () {
     return this.color
 }
 
-function Turn(){
+function Turn(board){
+    this.board = board;
     this.NUMBER_PLAYERS = 2;
     this.players = [new Player('R'), new Player('Y')];
     this.activePlayer = 0;
@@ -221,9 +209,43 @@ Turn.prototype.getToken = function () {
     return this.players[this.activePlayer].getColor();
 }
 
+Turn.prototype.coordinateColumnEmpty = function () {
+    return this.board.isLastCoordinateColumnEmpty();
+}
+
+Turn.prototype.getCoordinate = function () {
+    return this.board.lastCoordinate;
+}
+
+Turn.prototype.putCoordinate = function () {
+    this.board.putLastCoordinate(this.getToken());
+}
+
+function TurnView(turn) {
+    this.turn = turn;
+}
+
+TurnView.prototype.playTurn = function () {
+    console.writeln(`Turno para ${this.turn.getToken()}`);
+    let empty;
+    do {
+        this.getColumn(this.turn.getCoordinate());
+        empty = this.turn.coordinateColumnEmpty();
+        if (!empty) {
+            console.writeln(`La columna esta llena, intente con otra`);
+        }
+    } while (!empty);
+    this.turn.putCoordinate(this.turn.getToken());
+}
+
+TurnView.prototype.getColumn = function (coordinate) {
+    let coordinateView = new CoordinateView(coordinate);
+    coordinateView.readColumn();
+}
+
 function Game() {
-    this.turn = new Turn();
     this.board = new Board();
+    this.turn = new Turn(this.board);
 }    
 
 Game.prototype.isFinished = function () {
@@ -234,38 +256,35 @@ Game.prototype.isWinner = function () {
     return this.board.isLastTokenInLine()
 }
 
-Game.prototype.nextTurn = function () {
-    this.turn.next();
+Game.prototype.getWinnerToken = function () {
+    return this.turn.getToken();
 }
 
-Game.prototype.getTurnToken = function () {
-    return this.turn.getToken();
+Game.prototype.nextTurn = function () {
+    this.turn.next();
 }
 
 function GameView() {
     this.game = new Game();
     this.boardView = new BoardView(this.game.board);
+    this.turnView = new TurnView(this.game.turn);
 }    
 
 GameView.prototype.writeFinish = function () {
     if(this.game.isWinner()){
-        console.writeln(`Victoria para ${this.game.getTurnToken()}`);
+        console.writeln(`Victoria para ${this.game.getWinnerToken()}`);
     } else {
         console.writeln(`¡Empate!`);
     }
 }
 
-GameView.prototype.playTurn = function () {
-    console.writeln(`Turno para ${this.game.getTurnToken()}`);
-    this.boardView.placeToken(this.game.getTurnToken());
-}
 
 GameView.prototype.play = function () {
     let finished;
     console.writeln(`--------- Connecta 4 --------`);  
     do {
       this.boardView.writeTokens();
-      this.playTurn();
+      this.turnView.playTurn();
       finished = this.game.isFinished();
       if (!finished) {
         this.game.nextTurn();

@@ -59,35 +59,35 @@ package "Model" <<Rectangle>> #aca {
         activePlayer
         next()
         getToken()
+        coordinateColumnEmpty()
+        getCoordinate()
+        putCoordinate()
     }
 
     class Game {
-        turn
-        board
         isFinished()
         isWinner()
         nextTurn()
-        getTurnToken()
+        getWinnerToken()
     }
 }
 
 package "Views" <<Rectangle>> #caa {
     class CoordinateView {
-        #coordinate
         readColumn()
     }
 
     class BoardView{
-        #board
         writeTokens()
-        placeToken(token)
+    }
+
+    class TurnView {
+        playTurn()
+        getColumn()
     }
 
     class GameView {
-        #game
-        #boardView
         writeFinish()
-        playTurn()
         play()
     }
 
@@ -118,16 +118,20 @@ Board *-down-> Coordinate
 Board *-down-> "4" Direction
 Board *-down-> Line
 
-BoardView *-down-> CoordinateView
 BoardView -down-> Board
 
 Turn *-down-> "2" Player
+Turn -down-> Board
+
+TurnView -down-> Turn
+TurnView *-down-> CoordinateView
 
 Game *-down-> Board
 Game *-down-> Turn
 
 GameView *-down-> Game
 GameView *-down-> BoardView
+GameView *-down-> TurnView
 
 Connect4 -down-> YesNoDialog
 Connect4 *-down-> GameView
