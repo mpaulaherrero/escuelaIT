@@ -47,9 +47,9 @@ CoordinateView.prototype.readColumn = function () {
     }    
 }
 
-function Direction(name, coordinate) {
+function Direction(name, row, column) {
     this.name = name;
-    this.coordinate = coordinate;
+    this.coordinate = new Coordinate(row, column);
 }
 
 Direction.prototype.toString = function () {
@@ -134,10 +134,10 @@ Board.prototype.isComplete = function (){
 }
 
 Board.prototype.isLastTokenInLine = function (){
-    const directions = [ new Direction('NORTH', new Coordinate(1, 0)),
-                         new Direction('NORTH_EAST', new Coordinate(1, 1)),
-                         new Direction('EAST', new Coordinate(0, 1)),
-                         new Direction('SOUTH_EAST', new Coordinate(-1, 1))]; 
+    const directions = [ new Direction('NORTH', 1, 0),
+                         new Direction('NORTH_EAST', 1, 1),
+                         new Direction('EAST', 0, 1),
+                         new Direction('SOUTH_EAST', -1, 1)]; 
 
     for (let direction of directions) {
         //console.writeln(`revisar si hay 4 en línea en dirección ${direction.toString()}`); 

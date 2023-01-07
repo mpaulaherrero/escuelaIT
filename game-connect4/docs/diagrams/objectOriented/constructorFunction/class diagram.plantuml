@@ -111,7 +111,7 @@ Coordinate -> Coordinate
 
 CoordinateView -> Coordinate
 
-Direction -down-> Coordinate
+Direction *-down-> Coordinate
 
 Line -down-> Coordinate
 Line -down-> Direction
