@@ -60,10 +60,7 @@ export class Board {
     }
     
     isLastTokenInLine(){
-        const directions = [ new Direction('NORTH', new Coordinate(1, 0)),
-                             new Direction('NORTH_EAST', new Coordinate(1, 1)),
-                             new Direction('EAST', new Coordinate(0, 1)),
-                             new Direction('SOUTH_EAST', new Coordinate(-1, 1))]; 
+        const directions = Direction.getValues(); 
     
         for (let direction of directions) {
             const line = new Line(this.#lastCoordinate, direction);

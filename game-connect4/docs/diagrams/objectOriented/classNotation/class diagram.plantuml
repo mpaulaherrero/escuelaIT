@@ -26,19 +26,32 @@ package "Types" <<Rectangle>> #aca {
     }
 
     class Direction {
+        {static} NORTH
+        {static} NORTH_EAST
+        {static} EAST
+        {static} SOUTH_EAST
         -name
         -coordinate
         constructor(name, coordinate)
+        {static} getValues()
         toString()
         getOpositeCoordinate()
         getCoordinate()
     }
+
+    class Color {
+        {static} RED
+        {static} YELLOW
+        {static} NULL
+        -string;
+        constructor(string) 
+        getCode()
+    }    
 }    
 
 package "Model" <<Rectangle>> #aca {
 
     class Board {
-        {static} TOKEN_EMPTY
         -tokens
         -lastCoordinate
         constructor()
@@ -81,7 +94,7 @@ package "Model" <<Rectangle>> #aca {
     }
 
     class Turn{
-        static NUMBER_PLAYERS
+        {static} NUMBER_PLAYERS
         -board
         -players
         -activePlayer
@@ -150,17 +163,21 @@ package "Views" <<Rectangle>> #caa {
 
 Coordinate -> Coordinate
 
-Direction -down-> Coordinate
+Direction *-down-> Coordinate
 
 Line -down-> Coordinate
 Line -down-> Direction
 
 Board *-down-> Coordinate
-Board *-down-> "4" Direction
+Board -down-> Direction
 Board *-down-> Line
+Board -down-> Color
+
+Player -down-> Color
 
 Turn *-down-> "2" Player
 Turn -down-> Board
+Turn -down-> Color
 
 Game *-down-> Board
 Game *-down-> Turn
