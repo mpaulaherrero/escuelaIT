@@ -1,11 +1,10 @@
 import { Line } from './Line.mjs'
 import { Direction } from '../types/Direction.mjs'
 import { Coordinate } from '../types/Coordinate.mjs'
+import { Color } from '../types/Color.mjs'
 
 
 export class Board {
-    static TOKEN_EMPTY = ` `;
-    
     #tokens
     #lastCoordinate
 
@@ -16,7 +15,7 @@ export class Board {
         for (let i = 0; i < Coordinate.MAX_ROWS; i++) {
             this.#tokens[i] = [];
             for (let j = 0; j < Coordinate.MAX_COLUMNS; j++) {
-                this.#tokens[i][j] = Board.TOKEN_EMPTY;
+                this.#tokens[i][j] = Color.NULL;
             }
         }
     }
@@ -38,12 +37,12 @@ export class Board {
     }
     
     isLastCoordinateColumnEmpty(){
-       return this.#tokens[0][this.#lastCoordinate.getColumn()] === Board.TOKEN_EMPTY;
+       return this.#tokens[0][this.#lastCoordinate.getColumn()] === Color.NULL;
     }
     
     putLastCoordinate(token){
         for (let i = this.getMaxRows()-1; i > -1 ; i--) {
-            if(this.#tokens[i][this.#lastCoordinate.getColumn()] === Board.TOKEN_EMPTY){
+            if(this.#tokens[i][this.#lastCoordinate.getColumn()] === Color.NULL){
                 this.#tokens[i][this.#lastCoordinate.getColumn()] = token;
                 this.#lastCoordinate.setRow(i);
                 break;
@@ -53,7 +52,7 @@ export class Board {
     
     isComplete(){
         for (let i = 0; i < this.getMaxColumns(); i++) {
-            if (this.#tokens[0][i] === Board.TOKEN_EMPTY) {
+            if (this.#tokens[0][i] === Color.NULL) {
               return false;
             }
         }

@@ -17,7 +17,7 @@ export class GameView {
     
     writeFinish() {
         if(this.#game.isWinner()){
-            this.#console.writeln(`Victoria para ${this.#game.getWinnerToken()}`);
+            this.#console.writeln(`Victoria para ${this.#game.getWinnerToken().getCode()}`);
         } else {
             this.#console.writeln(`¡Empate!`);
         }

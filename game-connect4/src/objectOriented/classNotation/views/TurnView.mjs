@@ -10,7 +10,7 @@ export class TurnView{
     }
 
     playTurn() {
-        this.#console.writeln(`Turno para ${this.#turn.getToken()}`);
+        this.#console.writeln(`Turno para ${this.#turn.getToken().getCode()}`);
         let empty;
         do {
             this.getColumn();

@@ -1,4 +1,5 @@
 import { Player } from '../models/Player.mjs'
+import { Color } from '../types/Color.mjs'
 
 export class Turn {
     static NUMBER_PLAYERS  = 2;
@@ -9,7 +10,7 @@ export class Turn {
 
     constructor(board){
         this.#board = board;
-        this.#players = [new Player('R'), new Player('Y')];
+        this.#players = [new Player(Color.RED), new Player(Color.YELLOW)];
         this.#activePlayer = 0;
     }
 

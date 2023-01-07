@@ -12,7 +12,7 @@ export class BoardView {
         let boardToString = `\n`;
         for (let row = 0; row < this.#board.getMaxRows(); row++) {
           for (let column = 0; column < this.#board.getMaxColumns(); column++) {
-            boardToString += `${VERTICAL_SEPARATOR} ${this.#board.getToken(row,column)} `;
+            boardToString += `${VERTICAL_SEPARATOR} ${this.#board.getToken(row,column).getCode()} `;
           }
           boardToString += `${VERTICAL_SEPARATOR}\n`;
         }
