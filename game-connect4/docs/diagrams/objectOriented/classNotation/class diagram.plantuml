@@ -1,0 +1,189 @@
+@startuml connect4_constructorFunction_classdiagram
+
+package "console-mpds" <<Rectangle>> #ccc {
+    class console {
+        writeln(text)
+        readString(question)
+        readNumber(question)
+    }
+}
+
+package "Types" <<Rectangle>> #aca {
+    class Coordinate {
+        {static} MAX_COLUMNS
+        {static} MAX_ROWS
+        -row
+        -column
+        constructor(row, column)
+        shifted(coordinate)
+        toString()
+        isValid()
+        getOposite()
+        getRow()
+        getColumn()
+        setRow(value)
+        setColumn(value)
+    }
+
+    class Direction {
+        -name
+        -coordinate
+        constructor(name, coordinate)
+        toString()
+        getOpositeCoordinate()
+        getCoordinate()
+    }
+}    
+
+package "Model" <<Rectangle>> #aca {
+
+    class Board {
+        {static} TOKEN_EMPTY
+        -tokens
+        -lastCoordinate
+        constructor()
+        getMaxRows()
+        getMaxColumns()
+        getLastCoordinate()
+        getToken(row, column)
+        isLastCoordinateColumnEmpty()
+        putLastCoordinate(token)
+        isComplete()
+        isLastTokenInLine()
+        isInLine(line)
+    }
+
+    class Game {
+        -board
+        -turn
+        constructor()
+        getBoard()
+        getTurn()
+        isFinished()
+        isWinner()
+        getWinnerToken()
+        nextTurn()
+    }
+
+    class Line {
+        {static} LENGTH
+        -direction
+        -coordinates
+        toString()
+        shift()
+        getCoordinates()
+    }
+
+    class Player{
+        -color
+        constructor(color)
+        getColor()
+    }
+
+    class Turn{
+        static NUMBER_PLAYERS
+        -board
+        -players
+        -activePlayer
+        constructor(board)
+        next()
+        getToken()
+        coordinateColumnEmpty()
+        getCoordinate()
+        putCoordinate()
+    }
+}
+
+package "Views" <<Rectangle>> #caa {
+    class BoardView{
+        -board
+        -console
+        constructor(board,console)
+        writeTokens()
+    }
+
+    class Connect4View {
+        -continueDialog
+        -console
+        constructor()
+        play()
+    }
+
+    class CoordinateView {
+        -coordinate
+        -console
+        constructor(coordinate, console)
+        -read(title)
+        readColumn()
+    }
+
+    class GameView {
+        -game
+        -boardView
+        -turnView
+        -console
+        constructor(console)
+        writeFinish()
+        play()
+    }
+
+    class TurnView {
+        -turn
+        -console
+        constructor(turn, console) 
+        playTurn()
+        getColumn()
+    }
+
+    class YesNoDialog {
+        -question
+        -answer
+        -console
+        constructor(question, console)
+        read()
+        isAffirmative()
+        isNegative()
+    }
+}
+
+
+
+Coordinate -> Coordinate
+
+Direction -down-> Coordinate
+
+Line -down-> Coordinate
+Line -down-> Direction
+
+Board *-down-> Coordinate
+Board *-down-> "4" Direction
+Board *-down-> Line
+
+Turn *-down-> "2" Player
+Turn -down-> Board
+
+Game *-down-> Board
+Game *-down-> Turn
+
+CoordinateView -> Coordinate
+
+BoardView -down-> Board
+
+TurnView -down-> Turn
+TurnView *-down-> CoordinateView
+
+GameView *-down-> Game
+GameView *-down-> BoardView
+GameView *-down-> TurnView
+
+Connect4View -down-> YesNoDialog
+Connect4View *-down-> GameView
+
+Connect4View *-down-> console
+YesNoDialog .-l-> console
+GameView .-l-> console
+BoardView .-l-> console
+TurnView .-l-> console
+CoordinateView .-l-> console
+
+@enduml

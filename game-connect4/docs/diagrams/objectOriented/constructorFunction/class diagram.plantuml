@@ -8,7 +8,7 @@ package "console-mpds" <<Rectangle>> #ccc {
     }
 }
 
-package "Model" <<Rectangle>> #aca {
+package "Types" <<Rectangle>> #aca {
     class Coordinate {
         MAX_COLUMNS
         MAX_ROWS
@@ -26,7 +26,9 @@ package "Model" <<Rectangle>> #aca {
         toString()
         getOpositeCoordinate()
     }
+}
 
+package "Model" <<Rectangle>> #aca {
     class Line {
         LENGTH
         direction
@@ -67,8 +69,8 @@ package "Model" <<Rectangle>> #aca {
     class Game {
         isFinished()
         isWinner()
-        nextTurn()
         getWinnerToken()
+        nextTurn()
     }
 }
 
@@ -139,6 +141,7 @@ Connect4 *-down-> GameView
 YesNoDialog .-l-> console
 GameView .-l-> console
 BoardView .-l-> console
+TurnView .-l-> console
 CoordinateView .-l-> console
 
 @enduml

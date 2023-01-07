@@ -154,7 +154,6 @@ Board.prototype.isLastTokenInLine = function (){
 }
 
 Board.prototype.isInLine = function(line) {
-    //esto esta fallando cuando empiezo en la primera columan 1, 2, 3, 4
     for (let coordinate of line.coordinates) { 
         if (!coordinate.isValid()) {
             //console.writeln(`invalid ${coordinate.toString()}`);
