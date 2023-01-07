@@ -10,6 +10,7 @@ package "console-mpds" <<Rectangle>> #ccc {
 
 package "Types" <<Rectangle>> #aca {
     class Coordinate {
+        {static} MIN_COLUMNS
         {static} MAX_COLUMNS
         {static} MAX_ROWS
         -row

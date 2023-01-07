@@ -14,15 +14,15 @@ export class CoordinateView {
         let error;
         do {
             column = this.#console.readNumber(`${title}: `);
-            error = column < 1 || Coordinate.MAX_COLUMNS < column;
+            error = column < Coordinate.MIN_COLUMNS || Coordinate.MAX_COLUMNS < column;
             if (error) {
-                this.#console.writeln(`Por favor un numero entre 1 y ${Coordinate.MAX_COLUMNS} inclusives`)
+                this.#console.writeln(`Por favor un numero entre  ${Coordinate.MIN_COLUMNS} y ${Coordinate.MAX_COLUMNS} inclusives`)
             }
         } while (error);
         return column
     }
 
     readColumn() {
-        this.#coordinate.setColumn( this.#read(`Columna a colocar`)- 1);
+        this.#coordinate.setColumn( this.#read(`Columna a colocar`) - 1);
     }    
 }    

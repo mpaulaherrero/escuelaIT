@@ -1,4 +1,5 @@
 export class Coordinate {
+    static MIN_COLUMNS = 1;
     static MAX_COLUMNS = 7;
     static MAX_ROWS = 6;
     
