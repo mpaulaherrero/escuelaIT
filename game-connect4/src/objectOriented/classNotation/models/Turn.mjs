@@ -1,4 +1,5 @@
-import { Player } from '../models/Player.mjs'
+import { UserPlayer } from '../models/UserPlayer.mjs'
+import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
 import { Color } from '../types/Color.mjs'
 
 export class Turn {
@@ -8,10 +9,16 @@ export class Turn {
     #players
     #activePlayer
 
-    constructor(board){
+    constructor(board, numOfPlayers){
         this.#board = board;
-        this.#players = [new Player(Color.RED), new Player(Color.YELLOW)];
+        this.#players = [];
         this.#activePlayer = 0;
+
+        for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
+            this.#players[i] = i < numOfPlayers ?
+              new UserPlayer(Color.get(i)) :
+              new RandomMachinePlayer(Color.get(i));
+        }
     }
 
     next() {
@@ -20,6 +27,10 @@ export class Turn {
     
     getToken() {
         return this.#players[this.#activePlayer].getColor();
+    }
+
+    getActivePlayer() {
+        return this.#players[this.#activePlayer];
     }
 
     coordinateColumnEmpty() {

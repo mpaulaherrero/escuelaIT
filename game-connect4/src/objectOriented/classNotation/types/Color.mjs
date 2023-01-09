@@ -9,6 +9,14 @@ export class Color {
         this.#string = string;
     }
 
+    static values() {
+        return [Color.RED, Color.YELLOW];
+    }
+    
+    static get(ordinal) {
+        return Color.values()[ordinal];
+    }
+
     getCode(){
         return this.#string[0];
     }

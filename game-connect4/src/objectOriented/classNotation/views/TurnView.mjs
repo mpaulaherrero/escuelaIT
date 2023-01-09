@@ -23,7 +23,15 @@ export class TurnView{
     }
 
     getColumn() {
+        this.#turn.getActivePlayer().accept(this);
+    }
+
+    visitUserPlayer(userPlayer) {
         let coordinateView = new CoordinateView(this.#turn.getCoordinate(),this.#console);
         coordinateView.readColumn();
+    }
+    
+    visitMachinePlayer(machinePlayer) {
+        this.#turn.getCoordinate().setColumn(machinePlayer.getColumn());
     }
 }

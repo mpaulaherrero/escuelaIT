@@ -47,6 +47,8 @@ package "Types" <<Rectangle>> #aca {
         -string;
         constructor(string) 
         getCode()
+        {static} values()
+        {static} get(ordinal)
     }    
 }    
 
@@ -94,14 +96,21 @@ package "Model" <<Rectangle>> #aca {
         getColor()
     }
 
+    class MachinePlayer extends Player{
+        constructor(color)
+        accept(visitor)    
+        getColumn()
+    }    
+
     class Turn{
         {static} NUMBER_PLAYERS
         -board
         -players
         -activePlayer
-        constructor(board)
+        constructor(board, numOfPlayers)
         next()
         getToken()
+        getActivePlayer()
         coordinateColumnEmpty()
         getCoordinate()
         putCoordinate()
@@ -176,9 +185,10 @@ Board -down-> Color
 
 Player -down-> Color
 
-Turn *-down-> "2" Player
 Turn -down-> Board
 Turn -down-> Color
+Turn *-down-> UserPlayer
+Turn *-down-> RandomMachinePlayer
 
 Game *-down-> Board
 Game *-down-> Turn

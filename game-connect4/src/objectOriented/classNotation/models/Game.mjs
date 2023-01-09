@@ -7,7 +7,7 @@ export class Game {
 
     constructor(){
         this.#board = new Board();
-        this.#turn = new Turn(this.#board);
+        this.#turn = new Turn(this.#board,1);
     }
 
     getBoard(){
