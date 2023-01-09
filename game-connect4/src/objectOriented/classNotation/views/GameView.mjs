@@ -8,8 +8,8 @@ export class GameView {
     #turnView
     #console
 
-    constructor(console){
-        this.#game = new Game();
+    constructor(numPlayers, console){
+        this.#game = new Game(numPlayers);
         this.#boardView = new BoardView(this.#game.getBoard(),console);
         this.#turnView = new TurnView(this.#game.getTurn(),console);
         this.#console = console;

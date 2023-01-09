@@ -72,7 +72,7 @@ package "Model" <<Rectangle>> #aca {
     class Game {
         -board
         -turn
-        constructor()
+        constructor(numPlayers)
         getBoard()
         getTurn()
         isFinished()
@@ -139,6 +139,7 @@ package "Views" <<Rectangle>> #caa {
 
     class Connect4View {
         -continueDialog
+        -numPlayersMenu
         -console
         constructor()
         play()
@@ -157,7 +158,7 @@ package "Views" <<Rectangle>> #caa {
         -boardView
         -turnView
         -console
-        constructor(console)
+        constructor(numPlayers, console)
         writeFinish()
         play()
     }
@@ -181,6 +182,35 @@ package "Views" <<Rectangle>> #caa {
         isAffirmative()
         isNegative()
     }
+
+    class Option {
+        -title
+        -value
+        constructor(title, value) 
+        getValue()
+        getTitle()
+    }
+
+    class Menu {
+        -console
+        -title
+        -options
+        -answer
+        constructor(title, console)
+        add(option)
+        interact()
+        show()
+        -showTitle()
+        execChoosedOption()
+        -readInt(prompt)
+        getChoosedOptionValue()
+    }
+
+    class NumPlayersMenu extends Menu {
+        constructor(console)
+        read()
+    }
+
 }
 
 
@@ -220,7 +250,11 @@ GameView *-down-> BoardView
 GameView *-down-> TurnView
 
 Connect4View -down-> YesNoDialog
+Connect4View -down-> NumPlayersMenu
 Connect4View *-down-> GameView
+
+Menu --> Option
+NumPlayersMenu *-down-> Option
 
 Connect4View *-down-> console
 YesNoDialog .-l-> console
@@ -228,5 +262,6 @@ GameView .-l-> console
 BoardView .-l-> console
 TurnView .-l-> console
 CoordinateView .-l-> console
+Menu .-l-> console
 
 @enduml

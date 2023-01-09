@@ -5,9 +5,9 @@ export class Game {
     #board
     #turn
 
-    constructor(){
+    constructor(numPlayers){
         this.#board = new Board();
-        this.#turn = new Turn(this.#board,1);
+        this.#turn = new Turn(this.#board,numPlayers);
     }
 
     getBoard(){

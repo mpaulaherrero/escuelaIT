@@ -1,19 +1,23 @@
 import { Console } from 'console-mpds'
 import { YesNoDialog } from './YesNoDialog.mjs'
+import { NumPlayersMenu } from './NumPlayersMenu.mjs'
 import { GameView } from './GameView.mjs'
 
 export class Connect4View {
     #continueDialog 
     #console
+    #numPlayersMenu
   
     constructor(){
         this.#console = new Console();
         this.#continueDialog = new YesNoDialog(`¿Quieres jugar otra partida? `, this.#console);
+        this.#numPlayersMenu = new NumPlayersMenu(this.#console);
     }
 
     play() {
         do {
-            const gameView = new GameView(this.#console);
+            const numPlayers = this.#numPlayersMenu.read();
+            const gameView = new GameView(numPlayers,this.#console);
             gameView.play();
             this.#continueDialog.read();
         } while (this.#continueDialog.isAffirmative());
