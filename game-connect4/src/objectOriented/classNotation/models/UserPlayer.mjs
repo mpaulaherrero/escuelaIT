@@ -1,4 +1,5 @@
 import { Player } from './Player.mjs';
+import { assert} from "../utils/assert.mjs";
 
 export class UserPlayer extends Player {
     
@@ -10,4 +11,8 @@ export class UserPlayer extends Player {
         visitor.visitUserPlayer();
     }
 
+    getColumn(){
+        assert(false,"El usuario escoge su columna mediante la vista");
+    }
+    
 }
