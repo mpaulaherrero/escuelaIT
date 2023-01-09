@@ -7,7 +7,7 @@ export class UserPlayer extends Player {
     }
 
     accept(visitor){
-        visitor.visitUserPlayer(this);
+        visitor.visitUserPlayer();
     }
 
 }

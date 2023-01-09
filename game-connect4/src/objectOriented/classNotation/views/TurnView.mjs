@@ -11,14 +11,7 @@ export class TurnView{
 
     playTurn() {
         this.#console.writeln(`Turno para ${this.#turn.getToken().getCode()}`);
-        let empty;
-        do {
-            this.getColumn();
-            empty = this.#turn.coordinateColumnEmpty();
-            if (!empty) {
-                this.#console.writeln(`La columna esta llena, intente con otra`);
-            }
-        } while (!empty);
+        this.getColumn();
         this.#turn.putCoordinate(this.#turn.getToken());
     }
 
@@ -26,12 +19,20 @@ export class TurnView{
         this.#turn.getActivePlayer().accept(this);
     }
 
-    visitUserPlayer(userPlayer) {
+    visitUserPlayer() {
         let coordinateView = new CoordinateView(this.#turn.getCoordinate(),this.#console);
-        coordinateView.readColumn();
+        let empty;
+        do {
+            coordinateView.readColumn();
+            empty = this.#turn.coordinateColumnEmpty();
+            if (!empty) {
+                this.#console.writeln(`La columna esta llena, intente con otra`);
+            }
+        } while (!empty);
     }
     
     visitMachinePlayer(machinePlayer) {
-        this.#turn.getCoordinate().setColumn(machinePlayer.getColumn());
+        machinePlayer.getColumn(this.#turn);
+        this.#console.writeln(`Columna a colocar: ${this.#turn.getCoordinate().getColumn()+1}`); 
     }
 }

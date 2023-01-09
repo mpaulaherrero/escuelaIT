@@ -7,8 +7,12 @@ export class RandomMachinePlayer extends MachinePlayer {
         super(color);
     }
 
-    getColumn(){
-        return  Math.floor(Math.random() * Coordinate.MAX_COLUMNS);
+    getColumn(turn){
+        let empty;
+        do {
+            turn.getCoordinate().setColumn(Math.floor(Math.random() * Coordinate.MAX_COLUMNS));
+            empty = turn.coordinateColumnEmpty();
+        } while (!empty);    
     }
 
     accept(visitor){
