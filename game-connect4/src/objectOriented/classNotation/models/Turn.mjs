@@ -43,4 +43,10 @@ export class Turn {
     putCoordinate() {
         this.#board.putLastCoordinate(this.getToken());
     }
+
+    setActivePlayerColumn(){
+        do {
+            this.getCoordinate().setColumn(this.getActivePlayer().getColumn());
+        } while (!this.isCoordinateColumnEmpty());    
+    }
 }

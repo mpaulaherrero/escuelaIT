@@ -1,11 +1,8 @@
 import { Player } from './Player.mjs';
 
 export class MachinePlayer extends Player {
-    turn
-
-    constructor(color,turn) {
+    constructor(color) {
         super(color);
-        this.turn = turn;
     }
 
     accept(visitor){}

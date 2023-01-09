@@ -3,8 +3,8 @@ import { Coordinate } from "../types/Coordinate.mjs";
 
 export class RandomMachinePlayer extends MachinePlayer {
 
-    constructor(color, turn) {
-        super(color, turn);
+    constructor(color) {
+        super(color);
     }
 
     accept(visitor){
@@ -12,10 +12,6 @@ export class RandomMachinePlayer extends MachinePlayer {
     }
 
     getColumn(){
-        let empty;
-        do {
-            this.turn.getCoordinate().setColumn(Math.floor(Math.random() * Coordinate.MAX_COLUMNS));
-            empty = this.turn.isCoordinateColumnEmpty();
-        } while (!empty);    
+        return Math.floor(Math.random() * Coordinate.MAX_COLUMNS);
     }
 }

@@ -37,7 +37,7 @@ export class Menu {
     execChoosedOption() {
         let ok;
         do {
-            this.#answer = this.#readInt("Escoger una Opción [1-" + this.#options.length + "]: ") - 1;
+            this.#answer = this.#readInt("Escoge una opción [1-" + this.#options.length + "]: ") - 1;
             ok = 0 <= this.#answer && this.#answer <= this.#options.length - 1;
             if (!ok) {
                 this.#console.writeln("¡Error! la opción debe ser un número entre [1-" + this.#options.length + "]");

@@ -102,14 +102,13 @@ package "Model" <<Rectangle>> #aca {
     }
 
     class MachinePlayer extends Player{
-        turn
-        constructor(color,turn)
+        constructor(color)
         accept(visitor)    
         getColumn()
     }    
 
     class RandomMachinePlayer extends MachinePlayer{
-        constructor(color,turn)
+        constructor(color)
         accept(visitor)    
         getColumn()
     }  
@@ -126,6 +125,7 @@ package "Model" <<Rectangle>> #aca {
         isCoordinateColumnEmpty()
         getCoordinate()
         putCoordinate()
+        setActivePlayerColumn()
     }
 }
 
@@ -170,7 +170,7 @@ package "Views" <<Rectangle>> #caa {
         playTurn()
         getColumn()
         visitUserPlayer()
-        visitMachinePlayer(machinePlayer)
+        visitMachinePlayer()
     }
 
     class YesNoDialog {
@@ -229,7 +229,7 @@ Board -down-> Color
 
 Player -down-> Color
 
-MachinePlayer --> Turn
+RandomMachinePlayer --> Coordinate
 
 Turn *-down-> "2" Player
 Turn -down-> Board
