@@ -17,7 +17,7 @@ export class Turn {
         for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
             this.#players[i] = i < numOfPlayers ?
               new UserPlayer(Color.get(i)) :
-              new RandomMachinePlayer(Color.get(i));
+              new RandomMachinePlayer(Color.get(i), this);
         }
     }
 

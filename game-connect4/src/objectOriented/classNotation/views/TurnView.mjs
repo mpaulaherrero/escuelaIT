@@ -32,7 +32,7 @@ export class TurnView{
     }
     
     visitMachinePlayer(machinePlayer) {
-        machinePlayer.getColumn(this.#turn);
+        machinePlayer.getColumn();
         this.#console.writeln(`Columna a colocar: ${this.#turn.getCoordinate().getColumn()+1}`); 
     }
 }

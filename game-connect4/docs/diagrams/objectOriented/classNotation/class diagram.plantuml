@@ -96,11 +96,23 @@ package "Model" <<Rectangle>> #aca {
         getColor()
     }
 
-    class MachinePlayer extends Player{
+    class UserPlayer extends Player{
         constructor(color)
+        accept(visitor) 
+    }
+
+    class MachinePlayer extends Player{
+        turn
+        constructor(color,turn)
         accept(visitor)    
         getColumn()
     }    
+
+    class RandomMachinePlayer extends MachinePlayer{
+        constructor(color,turn)
+        accept(visitor)    
+        getColumn()
+    }  
 
     class Turn{
         {static} NUMBER_PLAYERS
@@ -156,6 +168,8 @@ package "Views" <<Rectangle>> #caa {
         constructor(turn, console) 
         playTurn()
         getColumn()
+        visitUserPlayer()
+        visitMachinePlayer(machinePlayer)
     }
 
     class YesNoDialog {
@@ -175,7 +189,7 @@ Coordinate -> Coordinate
 
 Direction *-down-> Coordinate
 
-Line -down-> Coordinate
+Line -down-> "4" Coordinate
 Line -down-> Direction
 
 Board *-down-> Coordinate
@@ -185,10 +199,11 @@ Board -down-> Color
 
 Player -down-> Color
 
+MachinePlayer --> Turn
+
+Turn *-down-> "2" Player
 Turn -down-> Board
 Turn -down-> Color
-Turn *-down-> UserPlayer
-Turn *-down-> RandomMachinePlayer
 
 Game *-down-> Board
 Game *-down-> Turn
@@ -199,6 +214,7 @@ BoardView -down-> Board
 
 TurnView -down-> Turn
 TurnView *-down-> CoordinateView
+TurnView .-> MachinePlayer
 
 GameView *-down-> Game
 GameView *-down-> BoardView
