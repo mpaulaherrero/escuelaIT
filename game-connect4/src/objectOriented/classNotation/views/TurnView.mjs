@@ -24,7 +24,7 @@ export class TurnView{
         let empty;
         do {
             coordinateView.readColumn();
-            empty = this.#turn.coordinateColumnEmpty();
+            empty = this.#turn.isCoordinateColumnEmpty();
             if (!empty) {
                 this.#console.writeln(`La columna esta llena, intente con otra`);
             }

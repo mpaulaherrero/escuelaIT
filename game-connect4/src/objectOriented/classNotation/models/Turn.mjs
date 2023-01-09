@@ -1,6 +1,5 @@
 import { UserPlayer } from '../models/UserPlayer.mjs'
 import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
-import { Color } from '../types/Color.mjs'
 
 export class Turn {
     static NUMBER_PLAYERS  = 2;
@@ -16,8 +15,8 @@ export class Turn {
 
         for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
             this.#players[i] = i < numOfPlayers ?
-              new UserPlayer(Color.get(i)) :
-              new RandomMachinePlayer(Color.get(i), this);
+              new UserPlayer(i) :
+              new RandomMachinePlayer(i, this);
         }
     }
 
@@ -33,7 +32,7 @@ export class Turn {
         return this.#players[this.#activePlayer];
     }
 
-    coordinateColumnEmpty() {
+    isCoordinateColumnEmpty() {
         return this.#board.isLastCoordinateColumnEmpty();
     }
     

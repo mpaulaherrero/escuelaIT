@@ -1,8 +1,10 @@
+import { Color } from '../types/Color.mjs'
+
 export class Player{
     #color
 
-    constructor(color){
-        this.#color = color;
+    constructor(indexColor){
+        this.#color = Color.get(indexColor);
     }
     
     getColor() {

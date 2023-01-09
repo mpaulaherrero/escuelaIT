@@ -15,7 +15,7 @@ export class RandomMachinePlayer extends MachinePlayer {
         let empty;
         do {
             this.turn.getCoordinate().setColumn(Math.floor(Math.random() * Coordinate.MAX_COLUMNS));
-            empty = this.turn.coordinateColumnEmpty();
+            empty = this.turn.isCoordinateColumnEmpty();
         } while (!empty);    
     }
 }

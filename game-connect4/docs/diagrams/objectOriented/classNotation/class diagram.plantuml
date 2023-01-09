@@ -92,7 +92,7 @@ package "Model" <<Rectangle>> #aca {
 
     class Player{
         -color
-        constructor(color)
+        constructor(indexColor)
         getColor()
     }
 
@@ -123,7 +123,7 @@ package "Model" <<Rectangle>> #aca {
         next()
         getToken()
         getActivePlayer()
-        coordinateColumnEmpty()
+        isCoordinateColumnEmpty()
         getCoordinate()
         putCoordinate()
     }
@@ -203,7 +203,6 @@ MachinePlayer --> Turn
 
 Turn *-down-> "2" Player
 Turn -down-> Board
-Turn -down-> Color
 
 Game *-down-> Board
 Game *-down-> Turn
