@@ -56,8 +56,8 @@ export class ConsoleBrowser extends ConsoleView {
         do {
           input = parseInt(this.readString(question));
           if (isNaN(input)) {
-            //console.log('FORMAT ERROR!!! Enter a number formatted value.');
-            this.#documentBody.getElementById('console').innerHTML += '\nFORMAT ERROR!!! Enter a number formatted value.';
+            console.log('FORMAT ERROR!!! Enter a number formatted value.');
+            this.#documentBody.getElementById('console').innerHTML += 'FORMAT ERROR!!! Enter a number formatted value\n';
           }
         } while (isNaN(input));
         //document.getElementById('console').innerHTML +=  ' ' + input + `\n`;
