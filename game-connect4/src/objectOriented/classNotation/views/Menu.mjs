@@ -43,7 +43,7 @@ export class Menu {
                 this.#console.writeln("¡Error! la opción debe ser un número entre [1-" + this.#options.length + "]");
             }
         } while (!ok);
-        this.#console.writeln("");
+        this.#console.writeln("\n");
     }
 
     #readInt(prompt){
