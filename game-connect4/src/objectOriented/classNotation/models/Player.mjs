@@ -2,13 +2,27 @@ import { Color } from '../types/Color.mjs'
 
 export class Player{
     #color
+    board
 
-    constructor(indexColor){
+    constructor(indexColor, board){
         this.#color = Color.get(indexColor);
+        this.board = board;
     }
     
     getColor() {
         return this.#color
+    }
+
+    isCoordinateColumnEmpty() {
+        return this.board.isLastCoordinateColumnEmpty();
+    }
+    
+    getCoordinate() {
+        return this.board.getLastCoordinate();
+    }
+    
+    putCoordinate() {
+        this.board.putLastCoordinate(this.getColor());
     }
 }
 

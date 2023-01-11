@@ -3,20 +3,18 @@ import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
 
 export class Turn {
     static NUMBER_PLAYERS  = 2;
-    
-    #board
+
     #players
     #activePlayer
 
     constructor(board, numOfPlayers){
-        this.#board = board;
         this.#players = [];
         this.#activePlayer = 0;
 
         for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
             this.#players[i] = i < numOfPlayers ?
-              new UserPlayer(i) :
-              new RandomMachinePlayer(i, this);
+              new UserPlayer(i,board) :
+              new RandomMachinePlayer(i, board);
         }
     }
 
@@ -30,23 +28,5 @@ export class Turn {
 
     getActivePlayer() {
         return this.#players[this.#activePlayer];
-    }
-
-    isCoordinateColumnEmpty() {
-        return this.#board.isLastCoordinateColumnEmpty();
-    }
-    
-    getCoordinate() {
-        return this.#board.getLastCoordinate();
-    }
-    
-    putCoordinate() {
-        this.#board.putLastCoordinate(this.getToken());
-    }
-
-    setActivePlayerColumn(){
-        do {
-            this.getCoordinate().setColumn(this.getActivePlayer().getColumn());
-        } while (!this.isCoordinateColumnEmpty());    
     }
 }

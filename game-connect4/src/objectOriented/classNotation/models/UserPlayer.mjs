@@ -3,8 +3,8 @@ import { assert} from "../utils/assert.mjs";
 
 export class UserPlayer extends Player {
     
-    constructor(color) {
-        super(color);
+    constructor(color, board) {
+        super(color, board);
     }
 
     accept(visitor){

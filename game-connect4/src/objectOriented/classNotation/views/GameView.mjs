@@ -1,17 +1,15 @@
 import { Game } from '../models/Game.mjs'
-import { TurnView } from '../views/TurnView.mjs'
+import { PlayerView } from './PlayerView.mjs'
 import { BoardView } from '../views/BoardView.mjs'
 
 export class GameView {
     #game
     #boardView
-    #turnView
     #console
 
     constructor(numPlayers, console){
         this.#game = new Game(numPlayers);
         this.#boardView = new BoardView(this.#game.getBoard(),console);
-        this.#turnView = new TurnView(this.#game.getTurn(),console);
         this.#console = console;
     }
     
@@ -28,7 +26,7 @@ export class GameView {
         this.#console.writeln(`--------- Connecta 4 --------`);  
         do {
             this.#boardView.writeTokens();
-            this.#turnView.playTurn();
+            new PlayerView(this.#game.getTurn().getActivePlayer(),this.#console).playTurn();
             finished = this.#game.isFinished();
             if (!finished) {
                 this.#game.nextTurn();

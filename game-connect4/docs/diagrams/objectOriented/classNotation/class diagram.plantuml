@@ -96,19 +96,24 @@ package "Model" <<Rectangle>> #aca {
 
     class Player{
         -color
-        constructor(indexColor)
+        board
+        constructor(indexColor,board)
         getColor()
+        isCoordinateColumnEmpty()
+        getCoordinate()
+        putCoordinate()
     }
 
     class UserPlayer extends Player{
-        constructor(color)
+        constructor(color,board)
         accept(visitor) 
     }
 
     class MachinePlayer extends Player{
-        constructor(color)
+        constructor(color,board)
         accept(visitor)    
         getColumn()
+        setColumn()
     }    
 
     class RandomMachinePlayer extends MachinePlayer{
@@ -119,17 +124,12 @@ package "Model" <<Rectangle>> #aca {
 
     class Turn{
         {static} NUMBER_PLAYERS
-        -board
         -players
         -activePlayer
         constructor(board, numOfPlayers)
         next()
         getToken()
         getActivePlayer()
-        isCoordinateColumnEmpty()
-        getCoordinate()
-        putCoordinate()
-        setActivePlayerColumn()
     }
 }
 
@@ -160,19 +160,17 @@ package "Views" <<Rectangle>> #caa {
     class GameView {
         -game
         -boardView
-        -turnView
         -console
         constructor(numPlayers, console)
         writeFinish()
         play()
     }
 
-    class TurnView {
-        -turn
+    class PlayerView {
+        -player
         -console
-        constructor(turn, console) 
+        constructor(player, console) 
         playTurn()
-        getColumn()
         visitUserPlayer()
         visitMachinePlayer()
     }
@@ -254,7 +252,9 @@ RandomMachinePlayer --> Coordinate
 UserPlayer --> assert
 
 Turn *-down-> "2" Player
-Turn -down-> Board
+Turn .-> Board
+
+Player -r-> Board
 
 Game *-down-> Board
 Game *-down-> Turn
@@ -263,13 +263,12 @@ CoordinateView -> Coordinate
 
 BoardView -down-> Board
 
-TurnView -down-> Turn
-TurnView *-down-> CoordinateView
-TurnView .-> MachinePlayer
+PlayerView -down-> Player
+PlayerView *-down-> CoordinateView
 
 GameView *-down-> Game
 GameView *-down-> BoardView
-GameView *-down-> TurnView
+GameView *-down-> PlayerView
 
 Connect4View -down-> YesNoDialog
 Connect4View -down-> NumPlayersMenu

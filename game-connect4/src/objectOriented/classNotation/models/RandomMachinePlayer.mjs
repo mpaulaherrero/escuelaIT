@@ -3,8 +3,8 @@ import { Coordinate } from "../types/Coordinate.mjs";
 
 export class RandomMachinePlayer extends MachinePlayer {
 
-    constructor(color) {
-        super(color);
+    constructor(color, board) {
+        super(color, board);
     }
 
     accept(visitor){
