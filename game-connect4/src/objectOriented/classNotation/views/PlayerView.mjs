@@ -15,6 +15,11 @@ export class PlayerView{
         this.#player.putCoordinate();
     }
 
+    putToken(message){
+        this.#player.setColumn();
+        this.#console.writeln(`${message}: ${this.#player.getCoordinate().getColumn()+1}`); 
+    }
+
     visitUserPlayer() {
         let coordinateView = new CoordinateView(this.#player.getCoordinate(),this.#console);
         let empty;
@@ -28,7 +33,10 @@ export class PlayerView{
     }
     
     visitMachinePlayer() {
-        this.#player.setColumn();
-        this.#console.writeln(`Columna a colocar: ${this.#player.getCoordinate().getColumn()+1}`); 
+        this.putToken(`Columna a colocar`);
+    }
+
+    visitMinimaxMachinePlayer() {
+        this.putToken(`Columna a colocar inteligente`);
     }
 }

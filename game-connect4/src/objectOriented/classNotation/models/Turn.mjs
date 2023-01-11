@@ -1,5 +1,6 @@
 import { UserPlayer } from '../models/UserPlayer.mjs'
-import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
+//import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
+import { MinimaxMachinePlayer } from '../models/MinimaxMachinePlayer.mjs'
 
 export class Turn {
     static NUMBER_PLAYERS  = 2;
@@ -14,7 +15,7 @@ export class Turn {
         for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
             this.#players[i] = i < numOfPlayers ?
               new UserPlayer(i,board) :
-              new RandomMachinePlayer(i, board);
+              new MinimaxMachinePlayer(i, board);
         }
     }
 
