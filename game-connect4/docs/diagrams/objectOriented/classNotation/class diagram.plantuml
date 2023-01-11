@@ -52,6 +52,10 @@ package "Types" <<Rectangle>> #aca {
     }    
 }    
 
+package "Utils" <<Rectangle>> #aca {
+    class assert
+}   
+
 package "Model" <<Rectangle>> #aca {
 
     class Board {
@@ -141,7 +145,7 @@ package "Views" <<Rectangle>> #caa {
         -continueDialog
         -numPlayersMenu
         -console
-        constructor()
+        constructor(console)
         play()
     }
 
@@ -211,9 +215,26 @@ package "Views" <<Rectangle>> #caa {
         read()
     }
 
+    class ConsoleView {
+        writeln(text)
+        readString(question)
+        readNumber(question)
+    }   
+
+    class ConsoleNode extends ConsoleView {
+        writeln(text)
+        readString(question)
+        readNumber(question)
+    }
+
+    class ConsoleBrowser extends ConsoleView {
+        constructor()
+        writeln(text)
+        readString(question)
+        readNumber(question)
+    }
+
 }
-
-
 
 Coordinate -> Coordinate
 
@@ -230,6 +251,7 @@ Board -down-> Color
 Player -down-> Color
 
 RandomMachinePlayer --> Coordinate
+UserPlayer --> assert
 
 Turn *-down-> "2" Player
 Turn -down-> Board
@@ -256,12 +278,19 @@ Connect4View *-down-> GameView
 Menu --> Option
 NumPlayersMenu *-down-> Option
 
-Connect4View *-down-> console
-YesNoDialog .-l-> console
-GameView .-l-> console
-BoardView .-l-> console
-TurnView .-l-> console
-CoordinateView .-l-> console
-Menu .-l-> console
+Connect4View .-down-> ConsoleView
+YesNoDialog .-right-> ConsoleView
+GameView .-down-> ConsoleView
+BoardView .-down-> ConsoleView
+TurnView .-down-> ConsoleView
+CoordinateView .-right-> ConsoleView
+Menu .-down-> ConsoleView
+
+ConsoleNode *-down-> console
+
+app *-> ConsoleNode
+app *-> Connect4View
+appBrowser *-> ConsoleBrowser
+appBrowser *-> Connect4View
 
 @enduml
