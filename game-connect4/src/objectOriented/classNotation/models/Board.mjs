@@ -52,13 +52,17 @@ export class Board {
     
     isComplete(){
         for (let i = 0; i < this.getMaxColumns(); i++) {
-            if (this.#tokens[0][i] === Color.NULL) {
+            if (this.isColumnEmpty(i)) {
               return false;
             }
         }
         return true;
     }
     
+    isColumnEmpty(column) {
+        return this.#tokens[0][column] === Color.NULL;
+    }
+
     isLastTokenInLine(){
         const directions = Direction.getValues(); 
     
