@@ -49,7 +49,22 @@ export class Board {
             }
         }
     }
+
+    putCoordinate(column, token){
+        this.#lastCoordinate.setColumn(column);
+        this.putLastCoordinate(token);
+        return this.#lastCoordinate.getRow();
+    }
     
+    removeCoordinate(column){
+        for (let i = 0; i < this.getMaxRows(); i++) {
+            if(this.#tokens[i][column] !== Color.NULL){
+                this.#tokens[i][column] = Color.NULL;
+                break;
+            }
+        }
+    }
+
     isComplete(){
         for (let i = 0; i < this.getMaxColumns(); i++) {
             if (this.isColumnEmpty(i)) {
@@ -61,6 +76,16 @@ export class Board {
     
     isColumnEmpty(column) {
         return this.#tokens[0][column] === Color.NULL;
+    }
+
+    getEmptyColumns() {
+        let emptyColumns = [];
+        for (let i = 0; i < Coordinate.MAX_COLUMNS; i++) {
+            if (this.isColumnEmpty(i)) {
+                emptyColumns.push(i);
+            }
+        }
+        return emptyColumns;
     }
 
     isLastTokenInLine(){
