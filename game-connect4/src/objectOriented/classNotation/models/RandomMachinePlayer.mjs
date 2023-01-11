@@ -8,7 +8,7 @@ export class RandomMachinePlayer extends MachinePlayer {
     }
 
     accept(visitor){
-        visitor.visitMachinePlayer(this);
+        visitor.visitMachinePlayer();
     }
 
     setColumn(){
