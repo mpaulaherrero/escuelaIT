@@ -11,7 +11,9 @@ export class RandomMachinePlayer extends MachinePlayer {
         visitor.visitMachinePlayer(this);
     }
 
-    getColumn(){
-        return Math.floor(Math.random() * Coordinate.MAX_COLUMNS);
+    setColumn(){
+        do {
+           this.getCoordinate().setColumn(Math.floor(Math.random() * Coordinate.MAX_COLUMNS));
+        } while (!this.isCoordinateColumnEmpty());
     }
 }

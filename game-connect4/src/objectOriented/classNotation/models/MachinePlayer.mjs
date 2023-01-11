@@ -7,12 +7,6 @@ export class MachinePlayer extends Player {
 
     accept(visitor){}
     
-    getColumn(){}
-
-    setColumn(){
-        do {
-            this.getCoordinate().setColumn(this.getColumn());
-        } while (!this.isCoordinateColumnEmpty());    
-    }
+    setColumn(){}
 
 }
