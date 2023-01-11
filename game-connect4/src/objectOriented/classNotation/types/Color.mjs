@@ -21,4 +21,17 @@ export class Color {
         return this.#string[0];
     }
 
+    getOpposite() {
+        return Color.values()[(this.#ordinal() + 1) % Color.values().length];
+    }
+
+    #ordinal() {
+        for(let i = 0; i < Color.values().length; i++){
+            if (this == Color.values()[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }    
