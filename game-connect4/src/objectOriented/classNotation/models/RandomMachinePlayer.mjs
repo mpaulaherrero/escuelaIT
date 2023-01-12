@@ -11,7 +11,7 @@ export class RandomMachinePlayer extends MachinePlayer {
     }
 
     setColumn(){
-       const emptyColumns = this.board.getEmptyColumns();
+       const emptyColumns = this.getBoard().getEmptyColumns();
        this.getCoordinate().setColumn(emptyColumns[Math.floor(Math.random() * emptyColumns.length)]);
     }
 }
