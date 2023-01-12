@@ -55,7 +55,7 @@ export class Board {
         this.putLastCoordinate(token);
         return this.#lastCoordinate.getRow();
     }
-    
+  
     removeCoordinate(column){
         for (let i = 0; i < this.getMaxRows(); i++) {
             if(this.#tokens[i][column] !== Color.NULL){
@@ -115,4 +115,18 @@ export class Board {
         return true;    
     }
 
+    toString(){
+        const VERTICAL_SEPARATOR = `|`;
+        let boardToString = `\n`;
+        for (let row = 0; row < this.getMaxRows(); row++) {
+          for (let column = 0; column < this.getMaxColumns(); column++) {
+            boardToString += `${VERTICAL_SEPARATOR} ${this.getToken(row,column).getCode()} `;
+          }
+          boardToString += `${VERTICAL_SEPARATOR}\n`;
+        }
+        boardToString +=  `+---------------------------+\n`;
+        boardToString +=  `  1   2   3   4   5   6   7  \n`;
+        boardToString +=  `\nlastCoordinate:  ${this.#lastCoordinate.toString()}\n`;
+        return boardToString;
+    }
 } 

@@ -1,16 +1,16 @@
 import { MachinePlayer } from "./MachinePlayer.mjs";
-import { Console } from 'console-mpds';
+//import { Console } from 'console-mpds';
 
 export class MinimaxMachinePlayer extends MachinePlayer {
 
-    static #MAX_STEPS = 1;
+    static #MAX_STEPS = 3; 
     static #MAX_COST = 1;
     static #OTHER_COST = 0;
     static #MIN_COST = -1;
 
     #opositeColor
     #bestColumn 
-    #console = new Console();
+    //#console = new Console();
 
     constructor(color, board) {
         super(color, board);
@@ -21,75 +21,45 @@ export class MinimaxMachinePlayer extends MachinePlayer {
         visitor.visitMinimaxMachinePlayer();
     }
 
-    //getCost(-1, this.getColor(), MinimaxMachinePlayer.#MIN_COST, this.#getMinCost, this.#nextColumnCost (hay que hacer bestColumn general y no se revisa el if)    
     setColumn(){
-        this.#bestColumn = this.board.getEmptyColumns()[0];
-        this.#console.writeln('bestColumn: ' + this.#bestColumn );
-        let maxCost = MinimaxMachinePlayer.#MIN_COST;
-        let emptyColumns = this.board.getEmptyColumns();
-        for (let column of emptyColumns) {
-            this.#console.writeln('setColumn column: ' + column + ', Token: ' + this.getColor().getCode() + "\n");
-            this.board.putCoordinate(column, this.getColor());
-            let minCost = this.#getMinCost(0);
-            this.board.removeCoordinate(column);
-            this.#console.writeln('setColumn minCost: ' + minCost + ', maxCost: ' + maxCost );
-            if (minCost > maxCost) {
-                maxCost = minCost;
-                this.#bestColumn = column;
-            }
-            this.#console.writeln('bestColumn: ' + this.#bestColumn + ', maxCost: ' + maxCost);
+        const emptyColumns = this.board.getEmptyColumns();
+        this.#bestColumn = emptyColumns[0];
+        //this.#console.writeln('bestColumn: ' + this.#bestColumn );
+        const cost = this.getCost(-1, this.getColor(), MinimaxMachinePlayer.#MIN_COST, this.getMinCost, this.nextColumnCost);
+        if (cost === MinimaxMachinePlayer.#OTHER_COST && this.#bestColumn === emptyColumns[0]){
+            this.#bestColumn = emptyColumns[Math.floor(Math.random() * emptyColumns.length)];
         }
         this.getCoordinate().setColumn(this.#bestColumn);
     }
     
-    //getCost(steps,this.#opositeColor, MinimaxMachinePlayer.#MAX_COST, this.#getMaxCost, this.#nextMinCost)
-    #getMinCost(steps) {
-        if (this.#isEnd(steps)) {
-            this.#console.writeln('getMinCost isEnd steps: ' + steps);
-            return this.#getEndCost(this.getColor());
+    getCost(steps, color, costLimit, getNextCost, nextCost) {
+        if (this.isEnd(steps)) {
+            const endCost = this.getEndCost(color.getOpposite())
+            //this.#console.writeln('steps: ' + steps + ' isEnd. endCost: ' + endCost );
+            return endCost;
         }
-        let minCost = MinimaxMachinePlayer.#MAX_COST;
+        let cost = costLimit;
         let emptyColumns = this.board.getEmptyColumns();
         for (let column of emptyColumns) {
-            this.#console.writeln('getMinCost column: ' + column + ', Token: ' + this.#opositeColor.getCode() + "\n");
-            this.board.putCoordinate(column, this.#opositeColor);
-            let maxCost = this.#getMaxCost(steps + 1);
+            this.board.putCoordinate(column, color);
+            //this.#console.writeln(this.board.toString());
+            let oppositeCost = getNextCost(steps + 1, this);
             this.board.removeCoordinate(column);
-            if (maxCost < minCost){
-                minCost = maxCost;
-            }
-            this.#console.writeln('getMinCost minCost: ' + minCost + ', maxCost: ' + maxCost );
+            cost = nextCost(cost, oppositeCost, column, this);
+            //this.#console.writeln('steps: ' + steps + ', cost: ' + cost + ', oppositeCost: ' + oppositeCost );
         }
-        return minCost;
+        return cost;
     }
 
-    //getCost(steps, this.getColor(), MinimaxMachinePlayer.#MIN_COST, this.#getMinCost, this.#nextMaxCost)
-    #getMaxCost(steps) {
-        if (this.#isEnd(steps)) {
-            //this.#console.writeln('getMaxCost isEnd steps: ' + steps);
-            return this.#getEndCost(this.#opositeColor);
-        }
-        let maxCost = MinimaxMachinePlayer.#MIN_COST;
-        let emptyColumns = this.board.getEmptyColumns();
-        for (let column of emptyColumns) {
-            this.#console.writeln('getMaxCost column: ' + column + ', Token: ' + this.getColor().getCode() + "\n");
-            this.board.putCoordinate(column, this.getColor());
-            let minCost = this.#getMinCost(steps + 1);
-            this.board.removeCoordinate(column);
-            if (minCost > maxCost){
-                maxCost = minCost;
-            }
-            this.#console.writeln('getMaxCost minCost: ' + minCost + ', maxCost: ' + maxCost );
-        }
-        return maxCost;
+    isEnd(steps) {
+        return steps ==  MinimaxMachinePlayer.#MAX_STEPS || this.isFinished();
     }
 
-    #isEnd(steps) {
-        //this.#console.writeln('isEnd steps: ' + steps);
-        return steps == MinimaxMachinePlayer.#MAX_STEPS || this.isFinished();
+    isFinished() {
+        return this.board.isComplete() || this.board.isLastTokenInLine();
     }
 
-    #getEndCost(color) {
+    getEndCost(color) {
         //this.#console.writeln('getEndCost LastToken: ' + this.board.getLastCoordinate().toString());
         if (this.isAWinner() && this.getColor() == color) {
             //this.#console.writeln('getEndCost Winner: ' + color.getCode());
@@ -103,45 +73,34 @@ export class MinimaxMachinePlayer extends MachinePlayer {
         return MinimaxMachinePlayer.#OTHER_COST;
     }
 
-    isFinished() {
-        return this.board.isComplete() || this.board.isLastTokenInLine();
-    }
-
     isAWinner() {
         return this.board.isLastTokenInLine();
     }
-    
-    #getCost(steps, color, costLimit, getNextCost, nextCost) {
-        if (this.#isEnd(steps)) {
-            return this.#getEndCost(color.getOpposite());
-        }
-        let cost = costLimit;
-        let emptyColumns = this.board.getEmptyColumns();
-        for (let column of emptyColumns) {
-            this.board.putCoordinate(column, color);
-            let oppositeCost = getNextCost(steps + 1);
-            this.board.removeCoordinate(column);
-            cost = nextCost(cost, oppositeCost, column);
-        }
-        return cost;
+
+    getMinCost(steps,self) {
+        return self.getCost(steps,self.#opositeColor, MinimaxMachinePlayer.#MAX_COST, self.getMaxCost, self.nextMinCost);
     }
 
-    #nextColumnCost(maxCost, minCost, column){
+    getMaxCost(steps,self) {
+        return self.getCost(steps, self.getColor(), MinimaxMachinePlayer.#MIN_COST, self.getMinCost, self.nextMaxCost);
+    }
+    
+    nextColumnCost(maxCost, minCost, column, self){
         if (minCost > maxCost) {
             maxCost = minCost;
-            this.#bestColumn = column;
+            self.#bestColumn = column;
         }
         return maxCost;
     }
 
-    #nextMinCost(minCost, maxCost, column){
+    nextMinCost(minCost, maxCost, column, self){
         if (maxCost < minCost){
             minCost = maxCost;
         }
         return minCost;
     }
 
-    #nextMaxCost(maxCost, cost, column){
+    nextMaxCost(maxCost, cost, column, self){
         if (cost > maxCost){
             maxCost = cost;
         }
