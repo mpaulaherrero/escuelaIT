@@ -43,4 +43,8 @@ export class Coordinate {
     setColumn(value){
         this.#column=value;
     }
+
+    clone(){
+        return new Coordinate(this.#row, this.#column);
+    }
 }

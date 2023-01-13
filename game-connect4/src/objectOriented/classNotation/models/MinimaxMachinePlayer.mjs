@@ -1,16 +1,15 @@
 import { MachinePlayer } from "./MachinePlayer.mjs";
-//import { Console } from 'console-mpds';
+import { Console } from 'console-mpds';
 
 export class MinimaxMachinePlayer extends MachinePlayer {
 
-    static #MAX_STEPS = 3; 
+    static #MAX_STEPS = 4; 
     static #MAX_COST = 1;
     static #OTHER_COST = 0;
     static #MIN_COST = -1;
 
     #opositeColor
-    #bestColumn 
-    //#console = new Console();
+    #console = new Console();
 
     constructor(color, board) {
         super(color, board);
@@ -22,89 +21,73 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     }
 
     setColumn(){
-        const emptyColumns = this.getBoard().getEmptyColumns();
-        this.#bestColumn = emptyColumns[0];
-        //this.#console.writeln('bestColumn: ' + this.#bestColumn );
-        const cost = this.getCost(-1, this.getColor(), MinimaxMachinePlayer.#MIN_COST, this.getMinCost, this.nextColumnCost);
-        if (cost === MinimaxMachinePlayer.#OTHER_COST && this.#bestColumn === emptyColumns[0]){
-            this.#bestColumn = emptyColumns[Math.floor(Math.random() * emptyColumns.length)];
-        }
-        this.getCoordinate().setColumn(this.#bestColumn);
+        let cost = this.#maximizePlay(0,this.getBoard());
+        this.#console.writeln("bestColumn: " + cost[0]);
+        this.getCoordinate().setColumn(cost[0]);
     }
     
-    getCost(steps, color, costLimit, getNextCost, nextCost) {
-        if (this.isEnd(steps)) {
-            const endCost = this.getEndCost(color.getOpposite())
-            //this.#console.writeln('steps: ' + steps + ' isEnd. endCost: ' + endCost );
-            return endCost;
-        }
-        let cost = costLimit;
-        let emptyColumns = this.getBoard().getEmptyColumns();
+    #maximizePlay(steps, board) {
+        //break
+        if (this.#isEnd(steps, board)) return this.#getEndCost(board, MinimaxMachinePlayer.#MIN_COST);
+         
+        // Column, Score
+        let max = [null, MinimaxMachinePlayer.#MIN_COST];
+
+        // For all possible moves
+        let emptyColumns = board.getEmptyColumns();
         for (let column of emptyColumns) {
-            this.getBoard().putCoordinate(column, color);
-            //this.#console.writeln(this.getBoard().toString());
-            let oppositeCost = getNextCost(steps + 1, this);
-            this.getBoard().removeCoordinate(column);
-            cost = nextCost(cost, oppositeCost, column, this);
-            //this.#console.writeln('steps: ' + steps + ', cost: ' + cost + ', oppositeCost: ' + oppositeCost );
+            let newBoard = board.clone(); // Create new board
+            newBoard.putCoordinate(column, this.getColor());
+            //this.#console.writeln("maximizePlay steps: " + steps + ", maxCost: " + max[1] + ", column: " + column);
+            //this.#console.writeln(newBoard.toString());
+            let next_move = this.#minimizePlay(steps + 1, newBoard); // Recursive calling
+            //this.#console.writeln("maximizePlay steps: " + steps + ", maxCost: " + max[1] + ", nextMoveCost: " + next_move[1]+ ", column: " + column);
+            // Evaluate new move
+            if (max[0] == null || next_move[1] > max[1]) {
+                max[0] = column;
+                max[1] = next_move[1];
+                //this.#console.writeln("maximizePlay steps: " + steps + ", newCost: " + max[1] + ", newColumn: " + max[0]);
+            }
         }
-        return cost;
+        return max;
     }
 
-    isEnd(steps) {
-        return steps ==  MinimaxMachinePlayer.#MAX_STEPS || this.isFinished();
-    }
+    #minimizePlay(steps, board) {
+        //break
+        if (this.#isEnd(steps, board)) return this.#getEndCost(board, MinimaxMachinePlayer.#MAX_COST);
 
-    isFinished() {
-        return this.getBoard().isComplete() || this.getBoard().isLastTokenInLine();
-    }
+        // Column, Score
+        let min = [null, MinimaxMachinePlayer.#MAX_COST];
 
-    getEndCost(color) {
-        //this.#console.writeln('getEndCost LastToken: ' + this.getBoard().getLastCoordinate().toString());
-        if (this.isAWinner() && this.getColor() == color) {
-            //this.#console.writeln('getEndCost Winner: ' + color.getCode());
-            return MinimaxMachinePlayer.#MAX_COST;
+        // For all possible moves
+        let emptyColumns = board.getEmptyColumns();
+        for (let column of emptyColumns) {
+            let newBoard = board.clone();
+            newBoard.putCoordinate(column, this.#opositeColor);
+            //this.#console.writeln("minimizePlay steps: " + steps + ", minCost: " + min[1] + ", column: " + column);
+            //this.#console.writeln(newBoard.toString());
+            let next_move = this.#maximizePlay(steps + 1, newBoard); // Recursive calling
+            //this.#console.writeln("minimizePlay steps: " + steps + ", minCost: " + min[1] + ", nextMoveCost: " + next_move[1] + ", column: " + column);
+            // Evaluate new move
+            if (min[0] == null || next_move[1] < min[1]) {
+                min[0] = column;
+                min[1] = next_move[1];
+                //this.#console.writeln("minimizePlay steps: " + steps + ", newCost: " + min[1] + ", newColumn: " + min[0]);
+            }
         }
-        if (this.isAWinner() && this.#opositeColor == color) {
-            //this.#console.writeln('getEndCost Winner: ' + color.getCode());
-            return MinimaxMachinePlayer.#MIN_COST;
+        return min;
+    }
+
+    #isEnd(steps, board) {
+        return steps ===  MinimaxMachinePlayer.#MAX_STEPS || board.isFinished();
+    }
+
+    #getEndCost(board, cost){
+        let result = [null, cost];
+        if(!board.isLastTokenInLine()){
+            result[1] = MinimaxMachinePlayer.#OTHER_COST;
         }
-        //this.#console.writeln('getEndCost return OTHER_COST: '+ MinimaxMachinePlayer.#OTHER_COST);
-        return MinimaxMachinePlayer.#OTHER_COST;
+        //this.#console.writeln("end cost: " + result[1]);
+        return result; 
     }
-
-    isAWinner() {
-        return this.getBoard().isLastTokenInLine();
-    }
-
-    getMinCost(steps,self) {
-        return self.getCost(steps,self.#opositeColor, MinimaxMachinePlayer.#MAX_COST, self.getMaxCost, self.nextMinCost);
-    }
-
-    getMaxCost(steps,self) {
-        return self.getCost(steps, self.getColor(), MinimaxMachinePlayer.#MIN_COST, self.getMinCost, self.nextMaxCost);
-    }
-    
-    nextColumnCost(maxCost, minCost, column, self){
-        if (minCost > maxCost) {
-            maxCost = minCost;
-            self.#bestColumn = column;
-        }
-        return maxCost;
-    }
-
-    nextMinCost(minCost, maxCost, column, self){
-        if (maxCost < minCost){
-            minCost = maxCost;
-        }
-        return minCost;
-    }
-
-    nextMaxCost(maxCost, cost, column, self){
-        if (cost > maxCost){
-            maxCost = cost;
-        }
-        return maxCost;
-    }
-
 }

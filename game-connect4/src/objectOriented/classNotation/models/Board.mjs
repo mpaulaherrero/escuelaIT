@@ -32,6 +32,18 @@ export class Board {
     getLastCoordinate(){
         return this.#lastCoordinate;
     }
+
+    setLastCoordinate(lastCoordinate){
+        this.#lastCoordinate = lastCoordinate;
+    }
+
+    setTokens(tokens){
+        this.#tokens = tokens;
+    }
+
+    setWinnerLine(winnerLine){
+        this.#winnerLine = winnerLine;
+    }
     
     getToken(row, column){
         return this.#tokens[row][column];
@@ -56,15 +68,6 @@ export class Board {
         this.#lastCoordinate.setColumn(column);
         this.putLastCoordinate(token);
         return this.#lastCoordinate.getRow();
-    }
-  
-    removeCoordinate(column){
-        for (let i = 0; i < this.getMaxRows(); i++) {
-            if(this.#tokens[i][column] !== Color.NULL){
-                this.#tokens[i][column] = Color.NULL;
-                break;
-            }
-        }
     }
 
     isComplete(){
@@ -123,6 +126,10 @@ export class Board {
         return true;    
     }
 
+    isFinished() {
+        return this.isComplete() || this.isLastTokenInLine();
+    }
+
     toString(){
         const VERTICAL_SEPARATOR = `|`;
         let boardToString = `\n`;
@@ -137,4 +144,21 @@ export class Board {
         boardToString +=  `\nlastCoordinate:  ${this.#lastCoordinate.toString()}\n`;
         return boardToString;
     }
+
+    clone(){
+        let newTokens = [];
+        for (let i = 0; i < Coordinate.MAX_ROWS; i++) {
+            newTokens[i] = [];
+            for (let j = 0; j < Coordinate.MAX_COLUMNS; j++) {
+                newTokens[i][j] = this.#tokens[i][j];
+            }
+        }
+        let newBoard = new Board();
+        newBoard.setTokens(newTokens);
+        newBoard.setLastCoordinate(this.#lastCoordinate.clone());
+        newBoard.setWinnerLine(this.#winnerLine ? this.#winnerLine.clone():undefined);
+        //let newBoard = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        return newBoard;
+    }
+    
 } 

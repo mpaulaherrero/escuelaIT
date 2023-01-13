@@ -24,6 +24,7 @@ package "Types" <<Rectangle>> #aca {
         getColumn()
         setRow(value)
         setColumn(value)
+        clone()
     }
 
     class Direction {
@@ -38,6 +39,7 @@ package "Types" <<Rectangle>> #aca {
         toString()
         getOpositeCoordinate()
         getCoordinate()
+        clone()
     }
 
     class Color {
@@ -66,14 +68,22 @@ package "Model" <<Rectangle>> #aca {
         getMaxRows()
         getMaxColumns()
         getLastCoordinate()
+        setLastCoordinate(lastCoordinate)
+        setTokens(tokens)
+        setWinnerLine(winnerLine)
         getToken(row, column)
         isLastCoordinateColumnEmpty()
         putLastCoordinate(token)
+        putCoordinate(column, token)
         isComplete()
         isColumnEmpty(column)
+        getEmptyColumns()
         isLastTokenInLine()
         -checkLastTokenInLine
         -isInLine(line)
+        isFinished()
+        toString()
+        clone()
     }
 
     class Game {
@@ -95,6 +105,7 @@ package "Model" <<Rectangle>> #aca {
         toString()
         shift()
         getCoordinates()
+        clone()
     }
 
     class Player{
@@ -130,20 +141,12 @@ package "Model" <<Rectangle>> #aca {
         {static} -OTHER_COST 
         {static} -MIN_COST
         -opositeColor
-        -bestColumn
         constructor(color, board)
         accept(visitor)    
-        setColumn()
-        getCost(steps, color, costLimit, getNextCost, nextCost)
-        isEnd(steps)
-        isFinished()
-        getEndCost(color)
-        isAWinner()
-        getMinCost(steps,self)
-        getMaxCost(steps,self)
-        nextColumnCost(maxCost, minCost, column, self)
-        nextMinCost(minCost, maxCost, column, self)
-        nextMaxCost(maxCost, cost, column, self)
+        -maximizePlay(steps, board)
+        -minimizePlay(steps, board)
+        -isEnd(steps, board)
+        -getEndCost(board, cost)
     }  
 
     class Turn{

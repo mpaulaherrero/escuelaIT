@@ -29,4 +29,8 @@ export class Direction{
     getCoordinate(){
         return this.#coordinate;
     }
+
+    clone(){
+        return new Direction(this.#name, this.#coordinate.getRow(), this.#coordinate.getColumn());
+    }
 }

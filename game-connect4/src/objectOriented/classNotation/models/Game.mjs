@@ -19,7 +19,7 @@ export class Game {
     }
 
     isFinished() {
-        return this.#board.isComplete() || this.#board.isLastTokenInLine()
+        return this.#board.isFinished()
     }
 
     isWinner() {

@@ -31,4 +31,8 @@ export class Line {
     getCoordinates(){
         return this.#coordinates;
     }
+
+    clone(){
+        return new Line(this.#coordinates[0].clone(), this.#direction.clone());
+    }
 }
