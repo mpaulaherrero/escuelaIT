@@ -114,15 +114,36 @@ package "Model" <<Rectangle>> #aca {
 
     class MachinePlayer extends Player{
         constructor(color,board)
-        accept(visitor)    
-        getColumn()
+        accept(visitor)
         setColumn()
     }    
 
     class RandomMachinePlayer extends MachinePlayer{
-        constructor(color)
+        constructor(color, board)
         accept(visitor)    
-        getColumn()
+        setColumn()
+    }  
+
+    class MinimaxMachinePlayer extends MachinePlayer{
+        {static} -MAX_STEPS
+        {static} -MAX_COST
+        {static} -OTHER_COST 
+        {static} -MIN_COST
+        -opositeColor
+        -bestColumn
+        constructor(color, board)
+        accept(visitor)    
+        setColumn()
+        getCost(steps, color, costLimit, getNextCost, nextCost)
+        isEnd(steps)
+        isFinished()
+        getEndCost(color)
+        isAWinner()
+        getMinCost(steps,self)
+        getMaxCost(steps,self)
+        nextColumnCost(maxCost, minCost, column, self)
+        nextMinCost(minCost, maxCost, column, self)
+        nextMaxCost(maxCost, cost, column, self)
     }  
 
     class Turn{
