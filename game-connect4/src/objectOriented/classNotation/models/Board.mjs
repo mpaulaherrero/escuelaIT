@@ -95,8 +95,8 @@ export class Board {
     
     isLastTokenInLine(){
         return this.#winnerLine !== undefined;
-    }    
-
+    }
+    
     #checkLastTokenInLine(){
         const directions = Direction.getValues();
         this.#winnerLine = undefined;
@@ -134,14 +134,16 @@ export class Board {
         const VERTICAL_SEPARATOR = `|`;
         let boardToString = `\n`;
         for (let row = 0; row < this.getMaxRows(); row++) {
+          boardToString += `${row} `;
           for (let column = 0; column < this.getMaxColumns(); column++) {
-            boardToString += `${VERTICAL_SEPARATOR} ${this.getToken(row,column).getCode()} `;
+            boardToString += `${VERTICAL_SEPARATOR}${this.getToken(row,column).getCode()}`;
           }
           boardToString += `${VERTICAL_SEPARATOR}\n`;
         }
-        boardToString +=  `+---------------------------+\n`;
-        boardToString +=  `  1   2   3   4   5   6   7  \n`;
+        boardToString +=  `  +-------------+\n`;
+        boardToString +=  `   0 1 2 3 4 5 6 \n`;
         boardToString +=  `\nlastCoordinate:  ${this.#lastCoordinate.toString()}\n`;
+        boardToString +=  `winnerLine:  ${this.#winnerLine ? this.#winnerLine.toString():'undefined'}\n`;
         return boardToString;
     }
 
@@ -157,7 +159,6 @@ export class Board {
         newBoard.setTokens(newTokens);
         newBoard.setLastCoordinate(this.#lastCoordinate.clone());
         newBoard.setWinnerLine(this.#winnerLine ? this.#winnerLine.clone():undefined);
-        //let newBoard = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
         return newBoard;
     }
     
