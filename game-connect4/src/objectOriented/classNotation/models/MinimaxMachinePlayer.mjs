@@ -1,5 +1,7 @@
 import { MachinePlayer } from "./MachinePlayer.mjs";
 import { Line } from './Line.mjs'
+import { Coordinate } from "../types/Coordinate.mjs";
+import { Direction } from "../types/Direction.mjs";
 //import { logger } from "../utils/logger.mjs";
 
 export class MinimaxMachinePlayer extends MachinePlayer {
@@ -28,6 +30,7 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     
     #maximizePlay(steps, board) {
         if (this.#isEnd(steps, board)) return this.#getEndCost(board, MinimaxMachinePlayer.#MIN_COST);
+        
         let max = [undefined, MinimaxMachinePlayer.#MIN_COST];
         let emptyColumns = board.getEmptyColumns();
         for (let column of emptyColumns) {
@@ -47,13 +50,9 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     }
 
     #minimizePlay(steps, board) {
-        //break
         if (this.#isEnd(steps, board)) return this.#getEndCost(board, MinimaxMachinePlayer.#MAX_COST);
 
-        // Column, Score
         let min = [undefined, MinimaxMachinePlayer.#MAX_COST];
-
-        // For all possible moves
         let emptyColumns = board.getEmptyColumns();
         for (let column of emptyColumns) {
             let newBoard = board.clone();
@@ -62,7 +61,6 @@ export class MinimaxMachinePlayer extends MachinePlayer {
             //logger.info(newBoard.toString());
             let next_move = this.#maximizePlay(steps + 1, newBoard); // Recursive calling
             //logger.info("minimizePlay steps: " + steps + ", minCost: " + min[1] + ", nextMoveCost: " + next_move[1] + ", column: " + column);
-            // Evaluate new move
             if (min[0] == undefined || next_move[1] < min[1]) {
                 min[0] = column;
                 min[1] = next_move[1];
@@ -89,40 +87,37 @@ export class MinimaxMachinePlayer extends MachinePlayer {
         let point = 0;
         for (let row = 0; row < board.getMaxRows() - 3; row++) {
             for (let column = 0; column < board.getMaxColumns(); column++) {
-                point += this.#getInLinePoint(board, row, column, 1, 0);
+                point += this.#getInLinePoint(board, new Line(new Coordinate(row, column), Direction.NORTH));
             }    
         }
         for (let row = 0; row < board.getMaxRows(); row++) {
             for (let column = 0; column < board.getMaxColumns() - 3; column++) { 
-                point += this.#getInLinePoint(board, row, column, 0, 1); 
+                point += this.#getInLinePoint(board, new Line(new Coordinate(row, column), Direction.EAST)); 
             } 
         }
         for (let row = 0; row < board.getMaxRows() - 3; row++) {
             for (let column = 0; column < board.getMaxColumns() - 3; column++) {
-                point += this.#getInLinePoint(board, row, column, 1, 1);
+                point += this.#getInLinePoint(board, new Line(new Coordinate(row, column), Direction.NORTH_EAST));
             }            
         }
         for (let row = 3; row < board.getMaxRows(); row++) {
             for (let column = 0; column <= board.getMaxColumns() - 4; column++) {
-                point += this.#getInLinePoint(board, row, column, -1, +1);
+                point += this.#getInLinePoint(board, new Line(new Coordinate(row, column), Direction.SOUTH_EAST));
             }
         }
-        //logger.info(`Board.getLastTokenPoints-> Total points: ${point}`);
+        //logger.info(`getBestScore-> Total points: ${point}`);
         return point;
     }
     
-    #getInLinePoint(board, row, column, delta_y, delta_x) {
+    #getInLinePoint(board, line) {
         let point = 0;
-        //let stringLogger = `Board.isInLinePoint-> Coordination (${row},${column}) Direction (${delta_y},${delta_x})`
-        for (let i = 0; i < Line.LENGTH; i++) {
-            if (board.getToken(row, column) === this.getColor()) {
+        let coordinates = line.getCoordinates();   
+        for(let i = 0; i < coordinates.length; i++) {
+            if (board.getToken(coordinates[i].getRow(), coordinates[i].getColumn()) === this.getColor()) {
                 point += 1;
             }
-            row += delta_y;
-            column += delta_x;
         }
-        //logger.info(`${stringLogger} point: ${point}`);
+        //logger.info(`isInLinePoint-> Line: (${line.toString()}), point: ${point}`);
         return point;
     }
-
 }
