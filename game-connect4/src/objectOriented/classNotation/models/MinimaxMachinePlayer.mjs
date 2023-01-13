@@ -22,7 +22,7 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     }
 
     setColumn(){
-        const emptyColumns = this.board.getEmptyColumns();
+        const emptyColumns = this.getBoard().getEmptyColumns();
         this.#bestColumn = emptyColumns[0];
         //this.#console.writeln('bestColumn: ' + this.#bestColumn );
         const cost = this.getCost(-1, this.getColor(), MinimaxMachinePlayer.#MIN_COST, this.getMinCost, this.nextColumnCost);
@@ -39,12 +39,12 @@ export class MinimaxMachinePlayer extends MachinePlayer {
             return endCost;
         }
         let cost = costLimit;
-        let emptyColumns = this.board.getEmptyColumns();
+        let emptyColumns = this.getBoard().getEmptyColumns();
         for (let column of emptyColumns) {
-            this.board.putCoordinate(column, color);
-            //this.#console.writeln(this.board.toString());
+            this.getBoard().putCoordinate(column, color);
+            //this.#console.writeln(this.getBoard().toString());
             let oppositeCost = getNextCost(steps + 1, this);
-            this.board.removeCoordinate(column);
+            this.getBoard().removeCoordinate(column);
             cost = nextCost(cost, oppositeCost, column, this);
             //this.#console.writeln('steps: ' + steps + ', cost: ' + cost + ', oppositeCost: ' + oppositeCost );
         }
@@ -56,11 +56,11 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     }
 
     isFinished() {
-        return this.board.isComplete() || this.board.isLastTokenInLine();
+        return this.getBoard().isComplete() || this.getBoard().isLastTokenInLine();
     }
 
     getEndCost(color) {
-        //this.#console.writeln('getEndCost LastToken: ' + this.board.getLastCoordinate().toString());
+        //this.#console.writeln('getEndCost LastToken: ' + this.getBoard().getLastCoordinate().toString());
         if (this.isAWinner() && this.getColor() == color) {
             //this.#console.writeln('getEndCost Winner: ' + color.getCode());
             return MinimaxMachinePlayer.#MAX_COST;
@@ -74,7 +74,7 @@ export class MinimaxMachinePlayer extends MachinePlayer {
     }
 
     isAWinner() {
-        return this.board.isLastTokenInLine();
+        return this.getBoard().isLastTokenInLine();
     }
 
     getMinCost(steps,self) {

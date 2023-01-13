@@ -61,6 +61,7 @@ package "Model" <<Rectangle>> #aca {
     class Board {
         -tokens
         -lastCoordinate
+        -winnerLine
         constructor()
         getMaxRows()
         getMaxColumns()
@@ -71,7 +72,8 @@ package "Model" <<Rectangle>> #aca {
         isComplete()
         isColumnEmpty(column)
         isLastTokenInLine()
-        isInLine(line)
+        -checkLastTokenInLine
+        -isInLine(line)
     }
 
     class Game {

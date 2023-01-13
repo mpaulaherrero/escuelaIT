@@ -7,6 +7,7 @@ import { Color } from '../types/Color.mjs'
 export class Board {
     #tokens
     #lastCoordinate
+    #winnerLine
 
     constructor(){
         this.#tokens = [];
@@ -48,6 +49,7 @@ export class Board {
                 break;
             }
         }
+        this.#checkLastTokenInLine();
     }
 
     putCoordinate(column, token){
@@ -87,14 +89,20 @@ export class Board {
         }
         return emptyColumns;
     }
-
+    
     isLastTokenInLine(){
-        const directions = Direction.getValues(); 
+        return this.#winnerLine !== undefined;
+    }    
+
+    #checkLastTokenInLine(){
+        const directions = Direction.getValues();
+        this.#winnerLine = undefined;
     
         for (let direction of directions) {
             const line = new Line(this.#lastCoordinate, direction);
             for(let i=0; i < Line.LENGTH; i++){
-                if(this.isInLine(line)){
+                if(this.#isInLine(line)){
+                    this.#winnerLine = line;
                     return true;
                 }
                 line.shift();
@@ -103,7 +111,7 @@ export class Board {
         return false;
     }
     
-    isInLine (line) {
+    #isInLine (line) {
         for (let coordinate of line.getCoordinates()) { 
             if (!coordinate.isValid()) {
                 return false;
