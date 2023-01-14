@@ -136,21 +136,50 @@ package "Model" <<Rectangle>> #aca {
     }  
 
     class MinimaxMachinePlayer extends MachinePlayer{
+        constructor(color, board)
+        accept(visitor)
+        setColumn()
+    }  
+
+    class Minimax {
         {static} -MAX_STEPS
         {static} -MAX_COST
         {static} -MIN_COST
         {static} -MAX_LIMIT 
-        -opositeColor
-        constructor(color, board)
-        accept(visitor)
-        setColumn()
-        -maximizePlay(steps, board)
-        -minimizePlay(steps, board)
+        color
+        -lowerLimit
+        -opposite
+        -bestScoreToken
+        constructor(color, lowerLimit, isMainPlayer)
+        setOpposite(opposite)
+        getCost(steps, board)
+        nextCost(cost, nextMoveCost)
         -isEnd(steps, board)
         -getEndCost(board, cost)
         -getBestScore(board)
         -getInLinePoint(board,line)
-    }  
+    }
+
+    class MaxPlayer extends Minimax {
+        constructor(color)
+        nextCost(maxCost, minCost, column)
+    }
+
+    class MinPlayer extends Minimax {
+        constructor(color)
+        nextCost(minCost, maxCost, column)
+    }
+
+    class MinimaxCost {
+        -column
+        -value
+
+        constructor(value)
+        setColumn(column)
+        getColumn()
+        setValue(value)
+        getValue()
+    }
 
     class Turn{
         {static} NUMBER_PLAYERS
@@ -264,8 +293,6 @@ package "Views" <<Rectangle>> #caa {
 
 }
 
-Coordinate -> Coordinate
-
 Direction *-down-> Coordinate
 
 Line -down-> "4" Coordinate
@@ -280,9 +307,14 @@ Player -down-> Color
 
 RandomMachinePlayer --> Coordinate
 
-MinimaxMachinePlayer --> Line
-MinimaxMachinePlayer --> Coordinate
-MinimaxMachinePlayer --> Direction
+MinimaxMachinePlayer *-d-> MaxPlayer
+MinimaxMachinePlayer *-d-> MinPlayer
+
+Minimax -d-> Line
+Minimax -d-> Coordinate
+Minimax -d-> Direction
+Minimax *-d-> MinimaxCost
+Minimax --> assert
 
 UserPlayer --> assert
 
@@ -316,7 +348,7 @@ Connect4View .-down-> ConsoleView
 YesNoDialog .-right-> ConsoleView
 GameView .-down-> ConsoleView
 BoardView .-down-> ConsoleView
-TurnView .-down-> ConsoleView
+PlayerView .-down-> ConsoleView
 CoordinateView .-right-> ConsoleView
 Menu .-down-> ConsoleView
 
