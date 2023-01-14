@@ -1,6 +1,6 @@
 import { Game } from '../models/Game.mjs'
 import { PlayerView } from './PlayerView.mjs'
-import { BoardView } from '../views/BoardView.mjs'
+import { BoardView } from './BoardView.mjs'
 
 export class GameView {
     #game
