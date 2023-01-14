@@ -79,7 +79,7 @@ package "Model" <<Rectangle>> #aca {
         isColumnEmpty(column)
         getEmptyColumns()
         isLastTokenInLine()
-        -checkLastTokenInLine 
+        -checkLastTokenInLine() 
         -isInLine(line)
         isFinished()
         toString()
@@ -298,9 +298,9 @@ Direction *-down-> Coordinate
 Line -down-> "4" Coordinate
 Line -down-> Direction
 
-Board *-down-> Coordinate
+Board -down-> Coordinate
 Board -down-> Direction
-Board *-down-> Line
+Board -down-> Line
 Board -down-> Color
 
 Player -down-> Color
@@ -352,7 +352,7 @@ PlayerView .-down-> ConsoleView
 CoordinateView .-right-> ConsoleView
 Menu .-down-> ConsoleView
 
-ConsoleNode *-down-> console
+ConsoleNode -down-> console
 
 app *-> ConsoleNode
 app *-> Connect4View
