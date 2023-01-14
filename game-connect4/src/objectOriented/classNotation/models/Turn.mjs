@@ -1,5 +1,5 @@
 import { UserPlayer } from '../models/UserPlayer.mjs'
-//import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
+import { RandomMachinePlayer } from '../models/RandomMachinePlayer.mjs'
 import { MinimaxMachinePlayer } from '../models/MinimaxMachinePlayer.mjs'
 
 export class Turn {
@@ -12,10 +12,18 @@ export class Turn {
         this.#players = [];
         this.#activePlayer = 0;
 
-        for (let i = 0; i < Turn.NUMBER_PLAYERS; i++) {
-            this.#players[i] = i < numOfPlayers ?
-              new UserPlayer(i,board) :
-              new MinimaxMachinePlayer(i, board);
+        switch(numOfPlayers){
+            case 0: 
+                this.#players[0] = new RandomMachinePlayer(0, board);
+                this.#players[1] = new MinimaxMachinePlayer(1, board);
+                break;
+            case 1:
+                this.#players[0] = new UserPlayer(0, board);
+                this.#players[1] = new MinimaxMachinePlayer(1, board);
+                break;
+            default:
+                this.#players[0] = new UserPlayer(0, board);
+                this.#players[1] = new UserPlayer(1, board);
         }
     }
 

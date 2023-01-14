@@ -33,7 +33,7 @@ export class PlayerView{
     }
     
     visitMachinePlayer() {
-        this.putToken(`Columna a colocar`);
+        this.putToken(`Columna a colocar random`);
     }
 
     visitMinimaxMachinePlayer() {
