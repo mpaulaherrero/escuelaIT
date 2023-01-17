@@ -1,0 +1,336 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+    font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Main */
+
+body {
+    background: #fff;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    overflow-y: hidden;
+}
+
+a, a:visited{
+    color: #551A8B;
+}
+
+h1 {
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    position: absolute;
+    left: 50%;
+    margin-top: 20px;
+    margin-left: -255px;
+}
+
+.turn {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+#game_board{
+    overflow: hidden;
+    border-collapse:collapse;
+}
+
+.turn_board{
+    opacity: 0.2;
+    overflow: hidden;
+    border-collapse:collapse;
+}
+
+.turn_active {
+    opacity: 1;
+}
+
+#coinfeld {
+    position: relative;
+    width: 100%;
+    height: 55px;
+}
+
+#game_board td, .turn_board td {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+    vertical-align: top;
+}
+
+#game_board td {
+    border: 1px dashed #808080;
+}
+    
+
+.userPlayer td:hover::after {
+    background-color: #F4F4F4;
+    content: '';
+    height: 10000px;
+    left: 0;
+    position: absolute;
+    top: -5000px;
+    width: 100%;
+    z-index: -1;
+}
+
+#coin {
+    position: absolute;
+    display: none;
+    left: 0px;
+    top: 0px;
+    width: 51px;
+    height: 51px;
+    border-radius: 50%;
+}
+
+.finished td:hover::after{
+    background-color: transparent !important;
+}
+
+#game_board .coin {
+    cursor: default;
+}
+
+#game_board tr {
+    width: 100%;
+    height: 100%;
+}
+
+.playerR-coin {
+    border-radius: 50%;
+    background: #333;
+}
+
+.playerY-coin {
+    border-radius: 50%;
+    background: #DC143C;
+}
+
+#game_board .win {
+    border-radius: 50%;
+    animation: animationFrames 1s infinite;
+    -webkit-animation: animationFrames 1s infinite;
+    -moz-animation: animationFrames 1s infinite;
+    -o-animation: animationFrames 1s infinite;
+    -ms-animation: animationFrames 1s infinite;
+}
+
+@keyframes animationFrames{
+    50% {
+        opacity:0.6;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@-moz-keyframes animationFrames{
+    50% {
+        opacity:0.6;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@-webkit-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@-o-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+@-ms-keyframes animationFrames {
+    50% {
+        opacity:0.6;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
+.box-right {
+    margin-bottom: 10px;
+    float: left;
+    width: 140px;
+}
+
+.turn-text {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}    
+
+.box-left {
+    position: relative;
+    margin: 0px 10px 10px 0;
+    float: left;
+    overflow: hidden;
+}
+
+#options {
+    font-size: 13px;
+}
+
+input {
+    border: 1px solid #808080;
+    margin-bottom: 5px;
+    outline: none;
+}
+
+.input {
+    width: 20px;
+}
+
+.save {
+    border: 1px dashed #DC143C;
+    border-radius: 8px;
+    outline: none;
+    width: 140px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background: #dadada;
+    color: #DC143C;
+}
+
+.save:hover, .save:active {
+    background: #c1bfbf;
+}
+
+#loading {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    background: #DC143C;
+    color: #fff;
+    padding: 4px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    font-size: 2rem;
+}
+
+select {
+    background: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #808080;
+    outline: none;
+    width: 140px;
+}
+
+.text {
+    font-size: 1rem;
+    font-weight:bold;
+    color: #4C4C4C;
+}
+
+.text a {
+    color:#333;
+}
+
+.header-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.header-text span {
+    color:#DC143C;
+}
+
+.dialog {
+    height: 2rem;
+    padding: 0.5rem 0;
+    width: 55%;
+    overflow-y: hidden;
+    font-size: 0.8rem;
+    display: flex;
+    align-items:center;
+}
+
+@media screen and (max-width: 600px) {
+    #container {
+        margin: 0;
+        top: 50px;
+        left: 0;
+        padding: 0 5px;
+    }
+
+    .box-left {
+        float: none;
+    }
+
+    .box-right {
+        display: block;
+        float: none;
+    }
+}
