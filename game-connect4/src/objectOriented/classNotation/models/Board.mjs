@@ -44,6 +44,10 @@ export class Board {
     setWinnerLine(winnerLine){
         this.#winnerLine = winnerLine;
     }
+
+    getWinnerLine(){
+        return this.#winnerLine;
+    }
     
     getToken(row, column){
         return this.#tokens[row][column];

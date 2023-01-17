@@ -68,6 +68,7 @@ package "Model" <<Rectangle>> #aca {
         getMaxRows()
         getMaxColumns()
         getLastCoordinate()
+        getWinnerLine()
         setLastCoordinate(lastCoordinate)
         setTokens(tokens)
         setWinnerLine(winnerLine)
