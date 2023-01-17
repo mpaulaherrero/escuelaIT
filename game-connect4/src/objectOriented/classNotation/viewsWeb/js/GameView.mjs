@@ -1,6 +1,7 @@
 import { Game } from '../../models/Game.mjs'
 import { BoardView } from './BoardView.mjs'
 import { PlayerView } from './PlayerView.mjs'
+import { DialogView } from './DialogView.mjs'
 
 export class GameView {
     #game
@@ -9,15 +10,23 @@ export class GameView {
     constructor(numPlayers){
         this.#game = new Game(numPlayers);
         this.#boardView = new BoardView(this.#game.getBoard());
+        DialogView.writeIfNotWelcome('');
     }
     
     #writeFinish() {
         if(this.#game.isWinner()){
-            document.getElementById('dialog').innerHTML=`Victoria para ${this.#game.getWinnerToken().getCode()}`;
+            const winnerTable = document.getElementsByClassName('turn_active')[0];
+            winnerTable.id="winnerDisplay";
+            winnerTable.style.width="24px";
+            winnerTable.style.display="inline-block";
+            winnerTable.style.marginLeft="5px";
+            DialogView.writeWinner(`Victoria para`, winnerTable);
+            document.getElementById('turn').innerHTML="";
+            this.#boardView.displayWinnerLine();
         } else {
-            document.getElementById('dialog').innerHTML=`¡Empate!`;
+            DialogView.write(`¡Empate!`);
+            document.getElementById('turn').innerHTML="";
         }
-        this.#boardView.displayWinnerLine();
     }
 
     play() {

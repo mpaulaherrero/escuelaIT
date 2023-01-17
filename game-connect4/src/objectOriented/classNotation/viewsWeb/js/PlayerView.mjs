@@ -1,5 +1,5 @@
-import { Color } from "../../types/Color.mjs";
-
+import { Color } from "../../types/Color.mjs"
+import { DialogView } from './DialogView.mjs'
 export class PlayerView{
     #player
     #boardView
@@ -53,10 +53,11 @@ export class PlayerView{
     getBoardColumn(column){
         this.#player.getCoordinate().setColumn(column);
         if (!this.#player.isCoordinateColumnEmpty()) {
-            document.getElementById('dialog').innerHTML=`La columna esta llena, intente con otra`;
+            DialogView.write(`La columna esta llena, intente con otra`);
         } else {
             this.#player.putCoordinate();
             document.getElementById('game_board').classList.remove('userPlayer');
+            DialogView.write('');
             this.#boardView.removeEvent();
             this.#callback();
         }
@@ -64,6 +65,7 @@ export class PlayerView{
 
     visitUserPlayer() {
         document.getElementById('game_board').classList.add('userPlayer');
+        DialogView.writeIfNotWelcome(`Selecciona una columna`);
         this.#boardView.addEvent(this.getBoardColumn.bind(this));
     }
     

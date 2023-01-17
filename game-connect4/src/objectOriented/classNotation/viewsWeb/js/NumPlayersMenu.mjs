@@ -1,3 +1,4 @@
+import { DialogView } from './DialogView.mjs'
 export class NumPlayersMenu {
 
     #options
@@ -30,6 +31,7 @@ export class NumPlayersMenu {
         let button = document.createElement('button');
         button.innerText = text
         button.addEventListener('click', () => {
+            DialogView.write(''); 
             callback();
         })
         return button;

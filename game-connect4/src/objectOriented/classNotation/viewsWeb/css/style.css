@@ -73,16 +73,22 @@ h1 {
     margin-left: -255px;
 }
 
+#turn {
+    display: flex;
+    justify-content: space-between;
+    width:110px;
+    padding-left: 10px;
+}
+
 .turn {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
+    width: 50%;
 }
 
-#game_board{
-    overflow: hidden;
-    border-collapse:collapse;
-}
+.turn-text {
+    font-size: 0.9rem;
+}    
 
 .turn_board{
     opacity: 0.2;
@@ -94,13 +100,26 @@ h1 {
     opacity: 1;
 }
 
+.turn_board td {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: top;
+}
+
 #coinfeld {
     position: relative;
     width: 100%;
     height: 55px;
 }
 
-#game_board td, .turn_board td {
+#game_board{
+    overflow: hidden;
+    border-collapse:collapse;
+}
+
+#game_board td {
     position: relative;
     width: 50px;
     height: 50px;
@@ -218,12 +237,6 @@ h1 {
     width: 140px;
 }
 
-.turn-text {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}    
-
 .box-left {
     position: relative;
     margin: 0px 10px 10px 0;
@@ -307,14 +320,19 @@ select {
     color:#DC143C;
 }
 
+#dialog {
+    width: 340px;
+}
+
 .dialog {
     height: 2rem;
     padding: 0.5rem 0;
-    width: 55%;
+    width: 350px;
     overflow-y: hidden;
     font-size: 0.8rem;
     display: flex;
     align-items:center;
+    justify-content: space-between;
 }
 
 @media screen and (max-width: 600px) {

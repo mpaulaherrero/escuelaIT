@@ -1,11 +1,13 @@
 import { NumPlayersMenu } from './NumPlayersMenu.mjs'
 import { GameView } from './GameView.mjs'
+import { DialogView } from './DialogView.mjs';
 
 export class Connect4View {
     #numPlayersMenu
    
     constructor(){
         this.#numPlayersMenu = new NumPlayersMenu(this.play.bind(this));
+        DialogView.writeWelcome();
     }
 
     play() {
