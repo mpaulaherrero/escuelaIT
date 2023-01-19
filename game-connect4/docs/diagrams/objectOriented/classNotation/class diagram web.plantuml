@@ -1,0 +1,312 @@
+@startuml connect4_classNotation_viewsWeb_classdiagram
+
+package "Types" <<Rectangle>> #aca {
+    class Coordinate {
+        {static} MIN_COLUMNS
+        {static} MAX_COLUMNS
+        {static} MAX_ROWS
+        -row
+        -column
+        constructor(row, column)
+        shifted(coordinate)
+        toString()
+        isValid()
+        getOposite()
+        getRow()
+        getColumn()
+        setRow(value)
+        setColumn(value)
+        clone()
+    }
+
+    class Direction {
+        {static} NORTH
+        {static} NORTH_EAST
+        {static} EAST
+        {static} SOUTH_EAST
+        -name
+        -coordinate
+        constructor(name, coordinate)
+        {static} getValues()
+        toString()
+        getOpositeCoordinate()
+        getCoordinate()
+        clone()
+    }
+
+    class Color {
+        {static} RED
+        {static} YELLOW
+        {static} NULL
+        -string;
+        constructor(string) 
+        {static} values()
+        {static} get(ordinal)
+        getCode()
+        getOpposite()
+        #ordinal()
+    }    
+}    
+
+package "Utils" <<Rectangle>> #aca {
+    class assert
+    class logger
+}   
+
+package "Models" <<Rectangle>> #aca {
+
+    class Board {
+        -tokens
+        -lastCoordinate
+        -winnerLine
+        constructor()
+        getMaxRows()
+        getMaxColumns()
+        getLastCoordinate()
+        getWinnerLine()
+        setLastCoordinate(lastCoordinate)
+        setTokens(tokens)
+        setWinnerLine(winnerLine)
+        getToken(row, column)
+        isLastCoordinateColumnEmpty()
+        putLastCoordinate(token)
+        putCoordinate(column, token)
+        isComplete()
+        isColumnEmpty(column)
+        getEmptyColumns()
+        isLastTokenInLine()
+        -checkLastTokenInLine() 
+        -isInLine(line)
+        isFinished()
+        toString()
+        clone()
+    }
+
+    class Game {
+        -board
+        -turn
+        constructor(numPlayers)
+        getBoard()
+        getTurn()
+        isFinished()
+        isWinner()
+        getWinnerToken()
+        nextTurn()
+    }
+
+    class Line {
+        {static} LENGTH
+        -direction
+        -coordinates
+        constructor (origenCoordinate, direction)
+        toString()
+        shift()
+        getCoordinates()
+        clone()
+    }
+
+    class Player{
+        -color
+        board
+        constructor(indexColor,board)
+        getColor()
+        getBoard()
+        isCoordinateColumnEmpty()
+        getCoordinate()
+        putCoordinate()
+    }
+
+    class UserPlayer extends Player{
+        constructor(color,board)
+        accept(visitor) 
+    }
+
+    class MachinePlayer extends Player{
+        constructor(color,board)
+        accept(visitor)
+        setColumn()
+    }    
+
+    class RandomMachinePlayer extends MachinePlayer{
+        constructor(color, board)
+        accept(visitor)    
+        setColumn()
+    }  
+
+    class MinimaxMachinePlayer extends MachinePlayer{
+        constructor(color, board)
+        accept(visitor)
+        setColumn()
+    }  
+
+    class Minimax {
+        {static} -MAX_STEPS
+        {static} -MAX_COST
+        {static} -MIN_COST
+        {static} -MAX_LIMIT 
+        color
+        -lowerLimit
+        -opposite
+        -bestScoreToken
+        constructor(color, lowerLimit, isMainPlayer)
+        setOpposite(opposite)
+        getCost(steps, board)
+        nextCost(cost, nextMoveCost)
+        -isEnd(steps, board)
+        -getEndCost(board, cost)
+        -getBestScore(board)
+        -getInLinePoint(board,line)
+    }
+
+    class MaxPlayer extends Minimax {
+        constructor(color)
+        nextCost(maxCost, minCost, column)
+    }
+
+    class MinPlayer extends Minimax {
+        constructor(color)
+        nextCost(minCost, maxCost, column)
+    }
+
+    class MinimaxCost {
+        -column
+        -value
+
+        constructor(value)
+        setColumn(column)
+        getColumn()
+        setValue(value)
+        getValue()
+    }
+
+    class Turn{
+        {static} NUMBER_PLAYERS
+        -players
+        -activePlayer
+        constructor(board, numOfPlayers)
+        next()
+        getToken()
+        getActivePlayer()
+    }
+}
+
+package "ViewsWeb" <<Rectangle>> #caa {
+    class BoardView{
+        {static} GAME_BOARD_ID
+        -board
+        -tBody
+        -eventListener
+        constructor(board)
+        -renderHTML()
+        addEvent(callback)
+        removeEvent()
+        writeTokens()
+        displayWinnerLine()
+    }
+
+    class Connect4View {
+        -numPlayersMenu
+        
+        constructor(console)
+        play()
+    }
+
+    class DialogView {
+        {static} welcomeText
+        {static} writeWelcome()
+        {static} write(text)
+        {static} writeIfNotWelcome(text)
+        {static} writeWinner(text, element)
+    }    
+
+    class GameView {
+        -game
+        -boardView
+        
+        constructor(numPlayers)
+        -writeFinish()
+        play()
+        isFinished()
+    }
+
+    class NumPlayersMenu {
+        -options
+        constructor(callback)
+        -getOption(text,value,selected)
+        -getButton(text, callback)
+        read()
+    }
+
+    class PlayerView {
+        -player
+        -cboardView
+        -callback
+        -thinking
+
+        constructor(player, boardView, callback)
+        -renderHTML()
+        -getTurnPlayerTable(playerCode)
+        playTurn()
+        getBoardColumn(column)
+        putToken(message)
+        visitUserPlayer()
+        visitMachinePlayer()
+        visitMinimaxMachinePlayer()
+    }
+}
+
+Direction *-down-> Coordinate
+
+Line -down-> "4" Coordinate
+Line -down-> Direction
+
+Board -down-> Coordinate
+Board -down-> Direction
+Board -down-> Line
+Board -down-> Color
+
+Player -down-> Color
+
+RandomMachinePlayer --> Coordinate
+
+MinimaxMachinePlayer *-d-> MaxPlayer
+MinimaxMachinePlayer *-d-> MinPlayer
+
+Minimax -d-> Line
+Minimax -d-> Coordinate
+Minimax -d-> Direction
+Minimax *-d-> MinimaxCost
+Minimax --> assert
+
+UserPlayer --> assert
+
+Turn *-down-> "2" Player
+Turn .-> Board
+
+Player -r-> Board
+
+Game *-down-> Board
+Game *-down-> Turn
+
+BoardView -down-> Board
+BoardView -down-> Line
+BoardView -down-> Color
+
+PlayerView -down-> Player
+PlayerView -down-> BoardView
+PlayerView -down-> DialogView
+PlayerView -down-> Color
+
+GameView *-down-> Game
+GameView *-down-> BoardView
+GameView *-down-> PlayerView
+
+Connect4View -down-> DialogView
+Connect4View -down-> NumPlayersMenu
+Connect4View *-down-> GameView
+
+NumPlayersMenu -down-> DialogView
+
+indexHTML *-> Connect4View
+
+@enduml
