@@ -48,17 +48,20 @@ package "Types" <<Rectangle>> #aca {
         {static} NULL
         -string;
         constructor(string) 
-        getCode()
         {static} values()
         {static} get(ordinal)
+        getCode()
+        getOpposite()
+        #ordinal()
     }    
 }    
 
 package "Utils" <<Rectangle>> #aca {
     class assert
+    class logger
 }   
 
-package "Model" <<Rectangle>> #aca {
+package "Models" <<Rectangle>> #aca {
 
     class Board {
         -tokens
@@ -103,6 +106,7 @@ package "Model" <<Rectangle>> #aca {
         {static} LENGTH
         -direction
         -coordinates
+        constructor (origenCoordinate, direction)
         toString()
         shift()
         getCoordinates()
@@ -114,6 +118,7 @@ package "Model" <<Rectangle>> #aca {
         board
         constructor(indexColor,board)
         getColor()
+        getBoard()
         isCoordinateColumnEmpty()
         getCoordinate()
         putCoordinate()
@@ -231,8 +236,10 @@ package "Views" <<Rectangle>> #caa {
         -console
         constructor(player, console) 
         playTurn()
+        putToken(message)
         visitUserPlayer()
         visitMachinePlayer()
+        visitMinimaxMachinePlayer()
     }
 
     class YesNoDialog {
@@ -280,12 +287,14 @@ package "Views" <<Rectangle>> #caa {
     }   
 
     class ConsoleNode extends ConsoleView {
+        -console
         writeln(text)
         readString(question)
         readNumber(question)
     }
 
     class ConsoleBrowser extends ConsoleView {
+        -documentBody
         constructor()
         writeln(text)
         readString(question)
