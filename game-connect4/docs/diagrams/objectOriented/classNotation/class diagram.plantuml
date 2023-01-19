@@ -1,4 +1,4 @@
-@startuml connect4_constructorFunction_classdiagram
+@startuml connect4_classNotation_classdiagram
 
 package "console-mpds" <<Rectangle>> #ccc {
     class console {
