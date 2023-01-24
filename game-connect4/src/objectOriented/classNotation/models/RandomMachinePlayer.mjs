@@ -2,8 +2,8 @@ import { MachinePlayer } from "./MachinePlayer.mjs";
 
 export class RandomMachinePlayer extends MachinePlayer {
 
-    constructor(color, board) {
-        super(color, board);
+    constructor(indexColor, board) {
+        super(indexColor, board);
     }
 
     accept(visitor){

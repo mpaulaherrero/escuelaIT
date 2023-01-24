@@ -125,24 +125,24 @@ package "Models" <<Rectangle>> #aca {
     }
 
     class UserPlayer extends Player{
-        constructor(color,board)
+        constructor(indexColor,board)
         accept(visitor) 
     }
 
     class MachinePlayer extends Player{
-        constructor(color,board)
+        constructor(indexColor,board)
         accept(visitor)
         setColumn()
     }    
 
     class RandomMachinePlayer extends MachinePlayer{
-        constructor(color, board)
+        constructor(indexColor, board)
         accept(visitor)    
         setColumn()
     }  
 
     class MinimaxMachinePlayer extends MachinePlayer{
-        constructor(color, board)
+        constructor(indexColor, board)
         accept(visitor)
         setColumn()
     }  
