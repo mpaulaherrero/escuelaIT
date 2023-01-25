@@ -8,65 +8,151 @@ package "console-mpds" <<Rectangle>> #ccc {
     }
 }
 
+package "Utils" <<Rectangle>> #aca {
+    class assert
+    class logger
+}   
+
 package "Types" <<Rectangle>> #aca {
     class Coordinate {
-        MAX_COLUMNS
-        MAX_ROWS
+        {static} MIN_COLUMNS
+        {static} MAX_COLUMNS
+        {static} MAX_ROWS
         row
         column
         shifted(coordinate)
         toString()
         isValid()
-        getOposite()
+        getOpposite()
+        clone()
     }
 
     class Direction {
+        {static} NORTH
+        {static} NORTH_EAST
+        {static} EAST
+        {static} SOUTH_EAST
         name
         coordinate
+        {static} getValues()
         toString()
-        getOpositeCoordinate()
+        getOppositeCoordinate()
+        clone()
     }
+
+    class Color {
+        {static} RED
+        {static} YELLOW
+        {static} NULL
+        string
+        getCode()
+        getOpposite()
+        ordinal()
+        {static} values()
+        {static} get(ordinal)
+    }    
 }
 
 package "Model" <<Rectangle>> #aca {
     class Line {
-        LENGTH
+        {static} LENGTH
         direction
         coordinates
         toString()
         shift()
+        clone()
     }
 
     class Board {
-        TOKEN_EMPTY
         tokens
         lastCoordinate
+        winnerLine
         getMaxRows()
         getMaxColumns()
         getToken(row, column)
         isLastCoordinateColumnEmpty()
         putLastCoordinate(token)
+        putCoordinate(column, token)
         isComplete()
+        isColumnEmpty(column)
+        getEmptyColumns()
         isLastTokenInLine()
+        checkLastTokenInLine()
         isInLine(line)
+        isFinished()
+        toString()
+        clone()
     }
 
     class Player{
         color
-        getColor()
-    }
-
-    class Turn{
-        NUMBER_PLAYERS
-        activePlayer
-        next()
-        getToken()
-        coordinateColumnEmpty()
+        board
+        isCoordinateColumnEmpty()
         getCoordinate()
         putCoordinate()
     }
 
+    class UserPlayer extends Player{
+        accept(visitor) 
+    }
+
+    class MachinePlayer extends Player{
+        accept(visitor)
+        setColumn()
+    }    
+
+    class RandomMachinePlayer extends MachinePlayer{
+        accept(visitor)    
+        setColumn()
+    }  
+
+    class MinimaxMachinePlayer extends MachinePlayer{
+        accept(visitor)
+        setColumn()
+    }  
+
+    class Minimax {
+        {static} MAX_STEPS
+        {static} MAX_LIMIT 
+        {static} MAX_COST 
+        {static} MIN_COST
+        color
+        lowerLimit
+        opposite
+        bestScoreColor
+        getCost(steps, board)
+        nextCost(cost, nextMoveCost)
+        isEnd(steps, board)
+        getEndCost(board, costValue)
+        getBestScore(board)
+        getInLinePoint(board,line)
+    }
+
+    class MaxPlayer extends Minimax {
+        nextCost(maxCost, minCost, column)
+    }
+
+    class MinPlayer extends Minimax {
+        nextCost(minCost, maxCost, column)
+    }
+
+    class MinimaxCost {
+        column
+        value
+    }
+
+    class Turn{
+        {static} NUMBER_PLAYERS
+        players
+        activePlayer
+        next()
+        getToken()
+        getActivePlayer()
+    }
+
     class Game {
+        board
+        turn
         isFinished()
         isWinner()
         getWinnerToken()
@@ -76,72 +162,124 @@ package "Model" <<Rectangle>> #aca {
 
 package "Views" <<Rectangle>> #caa {
     class CoordinateView {
+        coordinate
         readColumn()
     }
 
     class BoardView{
+        board
         writeTokens()
     }
 
-    class TurnView {
+    class PlayerView {
+        player
         playTurn()
-        getColumn()
+        putToken(message)
+        visitUserPlayer()
+        visitMachinePlayer()
+        visitMinimaxMachinePlayer()
     }
 
     class GameView {
+        game
+        boardView
         writeFinish()
         play()
     }
 
     class YesNoDialog {
-        #question
-        #answer
+        question
+        answer
         read()
         isAffirmative()
         isNegative()
     }
+
+    class Option {
+        title
+        value
+    }
+
+    class Menu {
+        title
+        options
+        answer
+        add(option)
+        interact()
+        show()
+        showTitle()
+        execChoosedOption()
+        readInt(prompt)
+        getChoosedOptionValue()
+    }
+
+    class NumPlayersMenu extends Menu {
+        read()
+    }
 }
 
 class Connect4 {
-    #continueDialog
+    numPlayersMenu
+    continueDialog
     play()
 }
 
-Coordinate -> Coordinate
-
-CoordinateView -> Coordinate
-
 Direction *-down-> Coordinate
 
-Line -down-> Coordinate
+Line -down-> "4" Coordinate
 Line -down-> Direction
 
-Board *-down-> Coordinate
-Board *-down-> "4" Direction
-Board *-down-> Line
+Board -down-> Coordinate
+Board -down-> "4" Direction
+Board -down-> Line
+Board -down-> Color
 
-BoardView -down-> Board
+Player -down-> Color
+Player -r-> Board
+
+RandomMachinePlayer --> Coordinate
+
+MinimaxMachinePlayer *-d-> MaxPlayer
+MinimaxMachinePlayer *-d-> MinPlayer
+
+Minimax -d-> Line
+Minimax -d-> Coordinate
+Minimax -d-> Direction
+Minimax -d-> Color
+Minimax *-d-> MinimaxCost
+Minimax --> assert
+
+UserPlayer --> assert
 
 Turn *-down-> "2" Player
-Turn -down-> Board
-
-TurnView -down-> Turn
-TurnView *-down-> CoordinateView
+Turn .-> Board
 
 Game *-down-> Board
 Game *-down-> Turn
 
+CoordinateView -> Coordinate
+
+BoardView -down-> Board
+
+PlayerView -down-> Player
+PlayerView *-down-> CoordinateView
+
 GameView *-down-> Game
 GameView *-down-> BoardView
-GameView *-down-> TurnView
+GameView *-down-> PlayerView
 
 Connect4 -down-> YesNoDialog
+Connect4 -down-> NumPlayersMenu
 Connect4 *-down-> GameView
+
+Menu --> Option
+NumPlayersMenu *-down-> Option
 
 YesNoDialog .-l-> console
 GameView .-l-> console
 BoardView .-l-> console
-TurnView .-l-> console
+PlayerView .-l-> console
 CoordinateView .-l-> console
+Menu .-down-> console
 
 @enduml
