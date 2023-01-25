@@ -19,11 +19,11 @@ export class Direction{
     }
 
     toString() {
-        return `(${this.#name} -> direction: ${this.#coordinate.toString()}, oposite direction: ${this.#coordinate.getOposite().toString()})`;
+        return `(${this.#name} -> direction: ${this.#coordinate.toString()}, oposite direction: ${this.#coordinate.getOpposite().toString()})`;
     }
     
-    getOpositeCoordinate() {
-        return this.#coordinate.getOposite();
+    getOppositeCoordinate() {
+        return this.#coordinate.getOpposite();
     }
 
     getCoordinate(){

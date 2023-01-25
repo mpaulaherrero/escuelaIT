@@ -11,7 +11,7 @@ package "Types" <<Rectangle>> #aca {
         shifted(coordinate)
         toString()
         isValid()
-        getOposite()
+        getOpposite()
         getRow()
         getColumn()
         setRow(value)
@@ -29,7 +29,7 @@ package "Types" <<Rectangle>> #aca {
         constructor(name, coordinate)
         {static} getValues()
         toString()
-        getOpositeCoordinate()
+        getOppositeCoordinate()
         getCoordinate()
         clone()
     }

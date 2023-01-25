@@ -89,7 +89,7 @@ export class Board {
 
     getEmptyColumns() {
         let emptyColumns = [];
-        for (let i = 0; i < Coordinate.MAX_COLUMNS; i++) {
+        for (let i = 0; i < this.getMaxColumns(); i++) {
             if (this.isColumnEmpty(i)) {
                 emptyColumns.push(i);
             }

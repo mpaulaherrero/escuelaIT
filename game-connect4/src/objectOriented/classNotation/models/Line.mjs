@@ -24,7 +24,7 @@ export class Line {
     
     shift(){
         for (let i = 0; i <  Line.LENGTH; i++) {
-            this.#coordinates[i] = this.#coordinates[i].shifted(this.#direction.getOpositeCoordinate());
+            this.#coordinates[i] = this.#coordinates[i].shifted(this.#direction.getOppositeCoordinate());
         }
     }
 

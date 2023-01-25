@@ -24,7 +24,7 @@ export class Coordinate {
         return 0 <= this.#row && this.#row < Coordinate.MAX_ROWS && 0 <= this.#column && this.#column < Coordinate.MAX_COLUMNS
     }
     
-    getOposite() {
+    getOpposite() {
         return new Coordinate(this.#row * -1, this.#column * -1);
     }
 

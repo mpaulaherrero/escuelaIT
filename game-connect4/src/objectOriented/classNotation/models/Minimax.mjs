@@ -16,13 +16,13 @@ export class Minimax {
     color
     #lowerLimit
     #opposite
-    #bestScoreToken
+    #bestScoreColor
     
     constructor(color, lowerLimit, isMainPlayer){
         this.color = color;
         this.#lowerLimit = lowerLimit;
-        this.#bestScoreToken = (isMainPlayer)? color : color.getOpposite();
-        //logger.info(`PLAYER ${this.color.getCode()} creado con  bestScoreToken: ${this.#bestScoreToken.getCode()}`);
+        this.#bestScoreColor = (isMainPlayer)? color : color.getOpposite();
+        //logger.info(`PLAYER ${this.color.getCode()} creado con  bestScoreColor: ${this.#bestScoreColor.getCode()}`);
     }
 
     setOpposite(opposite){
@@ -93,7 +93,7 @@ export class Minimax {
         let point = 0;
         let coordinates = line.getCoordinates();   
         for(let i = 0; i < coordinates.length; i++) {
-            if (board.getToken(coordinates[i].getRow(), coordinates[i].getColumn()) === this.#bestScoreToken) {
+            if (board.getToken(coordinates[i].getRow(), coordinates[i].getColumn()) === this.#bestScoreColor) {
                 point += 1;
             }
         }
