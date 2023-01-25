@@ -18,10 +18,10 @@ export class Minimax {
     #opposite
     #bestScoreColor
     
-    constructor(color, lowerLimit, isMainPlayer){
+    constructor(color, lowerLimit, bestScoreColor){
         this.color = color;
         this.#lowerLimit = lowerLimit;
-        this.#bestScoreColor = (isMainPlayer)? color : color.getOpposite();
+        this.#bestScoreColor = bestScoreColor;
         //logger.info(`PLAYER ${this.color.getCode()} creado con  bestScoreColor: ${this.#bestScoreColor.getCode()}`);
     }
 

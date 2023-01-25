@@ -4,7 +4,7 @@ import { Minimax } from "./Minimax.mjs";
 export class MaxPlayer extends Minimax {
     
     constructor(color){
-        super(color, Minimax.MIN_COST, true);
+        super(color, Minimax.MIN_COST, color);
     }
 
     nextCost(maxCost, minCost, column){

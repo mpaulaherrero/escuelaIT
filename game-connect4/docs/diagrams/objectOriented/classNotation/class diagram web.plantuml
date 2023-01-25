@@ -148,7 +148,7 @@ package "Models" <<Rectangle>> #aca {
         -lowerLimit
         -opposite
         -bestScoreToken
-        constructor(color, lowerLimit, isMainPlayer)
+        constructor(color, lowerLimit, bestScoreColor)
         setOpposite(opposite)
         getCost(steps, board)
         nextCost(cost, nextMoveCost)
