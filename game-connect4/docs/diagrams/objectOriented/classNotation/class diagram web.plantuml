@@ -67,6 +67,7 @@ package "Models" <<Rectangle>> #aca {
         setLastCoordinate(lastCoordinate)
         setTokens(tokens)
         setWinnerLine(winnerLine)
+        getTokens()
         getToken(row, column)
         isLastCoordinateColumnEmpty()
         putLastCoordinate(token)

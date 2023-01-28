@@ -37,6 +37,10 @@ export class Board {
         this.#lastCoordinate = lastCoordinate;
     }
 
+    getTokens(){
+        return this.#tokens;
+    }
+    
     setTokens(tokens){
         this.#tokens = tokens;
     }
