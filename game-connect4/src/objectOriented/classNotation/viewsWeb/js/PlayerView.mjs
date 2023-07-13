@@ -80,7 +80,7 @@ export class PlayerView{
             this.#boardView.removeClassUserPlayer();
             this.#callback();
             this.#thinking.remove();
-        }.bind(this), 1000);
+        }.bind(this), 100);
     }
 
     visitMachinePlayer() {
