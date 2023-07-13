@@ -77,7 +77,7 @@ export class PlayerView{
         setTimeout(function() {
             this.#player.setColumn();
             this.#player.putCoordinate();
-            this.#boardView.removeClassUserPlayer();
+            this.#boardView.removeEvent();
             this.#callback();
             this.#thinking.remove();
         }.bind(this), 100);

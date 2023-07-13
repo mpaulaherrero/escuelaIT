@@ -47,10 +47,6 @@ export class BoardView {
       this.#tBody.removeEventListener('click', this.#eventListener);
     }
 
-    removeClassUserPlayer(){
-      document.getElementById(BoardView.GAME_BOARD_ID).classList.remove('userPlayer');
-    }
-
     writeTokens() {
       for (let row = 0; row < this.#board.getMaxRows(); row++) {
         const tr = this.#tBody.children[row];
