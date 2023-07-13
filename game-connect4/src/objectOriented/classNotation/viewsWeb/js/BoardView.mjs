@@ -35,6 +35,7 @@ export class BoardView {
     }
 
     addEvent(callback){
+      document.getElementById(BoardView.GAME_BOARD_ID).classList.add('userPlayer');
       this.#eventListener = (e) => {
         callback(e.target.cellIndex);
       }
@@ -42,7 +43,12 @@ export class BoardView {
     }
 
     removeEvent(){
+      document.getElementById(BoardView.GAME_BOARD_ID).classList.remove('userPlayer');
       this.#tBody.removeEventListener('click', this.#eventListener);
+    }
+
+    removeClassUserPlayer(){
+      document.getElementById(BoardView.GAME_BOARD_ID).classList.remove('userPlayer');
     }
 
     writeTokens() {

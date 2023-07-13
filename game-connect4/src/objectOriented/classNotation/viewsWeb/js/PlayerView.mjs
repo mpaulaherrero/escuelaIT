@@ -56,7 +56,6 @@ export class PlayerView{
             DialogView.writeFullColumn();
         } else {
             this.#player.putCoordinate();
-            document.getElementById('game_board').classList.remove('userPlayer');
             DialogView.write('');
             this.#boardView.removeEvent();
             this.#callback();
@@ -64,7 +63,6 @@ export class PlayerView{
     }
 
     visitUserPlayer() {
-        document.getElementById('game_board').classList.add('userPlayer');
         DialogView.writeSelectColumnIfNotWelcome();
         this.#boardView.addEvent(this.getBoardColumn.bind(this));
     }
@@ -79,10 +77,10 @@ export class PlayerView{
         setTimeout(function() {
             this.#player.setColumn();
             this.#player.putCoordinate();
-            document.getElementById('game_board').classList.remove('userPlayer');
+            this.#boardView.removeClassUserPlayer();
             this.#callback();
             this.#thinking.remove();
-        }.bind(this), 100);
+        }.bind(this), 1000);
     }
 
     visitMachinePlayer() {
