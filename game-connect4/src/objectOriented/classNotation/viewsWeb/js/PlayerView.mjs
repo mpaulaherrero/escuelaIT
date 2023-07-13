@@ -57,8 +57,7 @@ export class PlayerView{
         } else {
             this.#player.putCoordinate();
             DialogView.write('');
-            this.#boardView.removeEvent();
-            this.#callback();
+            this.endSetColumn();
         }
     }
 
@@ -77,10 +76,14 @@ export class PlayerView{
         setTimeout(function() {
             this.#player.setColumn();
             this.#player.putCoordinate();
-            this.#boardView.removeEvent();
-            this.#callback();
+            this.endSetColumn();
             this.#thinking.remove();
         }.bind(this), 100);
+    }
+
+    endSetColumn(){
+        this.#boardView.removeEvent();
+        this.#callback();
     }
 
     visitMachinePlayer() {
