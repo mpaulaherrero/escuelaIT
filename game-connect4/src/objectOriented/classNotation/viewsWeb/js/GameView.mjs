@@ -20,11 +20,11 @@ export class GameView {
             winnerTable.style.width="24px";
             winnerTable.style.display="inline-block";
             winnerTable.style.marginLeft="5px";
-            DialogView.writeWinner(`Victoria para`, winnerTable);
+            DialogView.writeWinner(winnerTable);
             document.getElementById('turn').innerHTML="";
             this.#boardView.displayWinnerLine();
         } else {
-            DialogView.write(`¡Empate!`);
+            DialogView.writeTie();
             document.getElementById('turn').innerHTML="";
         }
     }

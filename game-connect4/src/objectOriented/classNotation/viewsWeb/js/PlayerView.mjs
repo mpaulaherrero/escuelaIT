@@ -53,7 +53,7 @@ export class PlayerView{
     getBoardColumn(column){
         this.#player.getCoordinate().setColumn(column);
         if (!this.#player.isCoordinateColumnEmpty()) {
-            DialogView.write(`La columna esta llena, intente con otra`);
+            DialogView.writeFullColumn();
         } else {
             this.#player.putCoordinate();
             document.getElementById('game_board').classList.remove('userPlayer');
@@ -65,10 +65,10 @@ export class PlayerView{
 
     visitUserPlayer() {
         document.getElementById('game_board').classList.add('userPlayer');
-        DialogView.writeIfNotWelcome(`Selecciona una columna`);
+        DialogView.writeSelectColumnIfNotWelcome();
         this.#boardView.addEvent(this.getBoardColumn.bind(this));
     }
-    
+
     putToken(message){
         this.#thinking = document.createElement('div');
         this.#thinking.id="loading";
