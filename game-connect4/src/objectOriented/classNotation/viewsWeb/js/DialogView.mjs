@@ -31,10 +31,7 @@ export class DialogView {
         }
     }
 
-    static writeWinner(element){
-        const dialogElement = document.getElementById('dialog');
-        dialogElement.innerHTML=DialogView.WINNER_TEXT;
-        dialogElement.append(element);
-        //dialogElement.parentNode.insertBefore(element,dialogElement.nextSibling);
+    static writeWinner(){
+        this.write(this.WINNER_TEXT);
     }
 }

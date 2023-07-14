@@ -69,8 +69,8 @@ export class BoardView {
     displayWinnerLine(){
       document.getElementById(BoardView.GAME_BOARD_ID).className = "finished";
       const winnerLine = this.#board.getWinnerLine().getCoordinates();
-      for (var i = 0; i < Line.LENGTH; i++) {
+      for (let i = 0; i < Line.LENGTH; i++) {
           document.getElementById('game_board').rows[winnerLine[i].getRow()].cells[winnerLine[i].getColumn()].classList.add("win");
       }
     }
-}    
+}

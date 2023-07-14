@@ -93,4 +93,15 @@ export class PlayerView{
     visitMinimaxMachinePlayer() {
         this.putToken("La IA esta pensado...");
     }
+
+    setWinner(){
+        document.getElementsByClassName("turn-text")[0].classList.add("hidden");
+        document.getElementById(`turn_board_player${this.#player.getColor().getOpposite().getCode()}`).classList.add("hidden");
+    }
+
+    setTie(){
+        document.getElementsByClassName("turn-text")[0].classList.add("hidden");
+        document.getElementById(`turn_board_player${this.#player.getColor().getOpposite().getCode()}`).classList.add("hidden");
+        document.getElementById(`turn_board_player${this.#player.getColor().getCode()}`).classList.add("hidden");
+    }
 }

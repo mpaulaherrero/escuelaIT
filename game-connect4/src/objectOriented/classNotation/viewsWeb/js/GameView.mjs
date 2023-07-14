@@ -5,6 +5,7 @@ import { DialogView } from './DialogView.mjs'
 
 export class GameView {
     #game
+    #activePlayer
     #boardView
 
     constructor(numPlayers){
@@ -15,22 +16,18 @@ export class GameView {
     
     #writeFinish() {
         if(this.#game.isWinner()){
-            const winnerTable = document.getElementsByClassName('turn_active')[0];
-            winnerTable.id="winnerDisplay";
-            winnerTable.style.width="24px";
-            winnerTable.style.display="inline-block";
-            winnerTable.style.marginLeft="5px";
-            DialogView.writeWinner(winnerTable);
-            document.getElementById('turn').innerHTML="";
+            DialogView.writeWinner();
+            this.#activePlayer.setWinner();
             this.#boardView.displayWinnerLine();
         } else {
             DialogView.writeTie();
-            document.getElementById('turn').innerHTML="";
+            this.#activePlayer.setTie();
         }
     }
 
     play() {
-        new PlayerView(this.#game.getTurn().getActivePlayer(), this.#boardView, this.isFinished.bind(this)).playTurn();
+        this.#activePlayer = new PlayerView(this.#game.getTurn().getActivePlayer(), this.#boardView, this.isFinished.bind(this));
+        this.#activePlayer.playTurn();
     }
 
     isFinished(){
