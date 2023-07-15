@@ -34,7 +34,7 @@ export class BoardView {
       }  
     }
 
-    addEvent(callback){
+    allowSelectColumn(callback){
       document.getElementById(BoardView.GAME_BOARD_ID).classList.add('userPlayer');
       this.#eventListener = (e) => {
         callback(e.target.cellIndex);
@@ -42,7 +42,7 @@ export class BoardView {
       this.#tBody.addEventListener('click', this.#eventListener);
     }
 
-    removeEvent(){
+    notAllowSelectColumn(){
       document.getElementById(BoardView.GAME_BOARD_ID).classList.remove('userPlayer');
       this.#tBody.removeEventListener('click', this.#eventListener);
     }

@@ -57,13 +57,14 @@ export class PlayerView{
         } else {
             this.#player.putCoordinate();
             DialogView.write('');
-            this.endSetColumn();
+            this.#boardView.notAllowSelectColumn();
+            this.#callback();
         }
     }
 
     visitUserPlayer() {
         DialogView.writeSelectColumnIfNotWelcome();
-        this.#boardView.addEvent(this.getBoardColumn.bind(this));
+        this.#boardView.allowSelectColumn(this.getBoardColumn.bind(this));
     }
 
     putToken(message){
@@ -73,13 +74,8 @@ export class PlayerView{
         setTimeout(function() {
             this.#thinking.className='hidden';
             this.#player.putCoordinate();
-            this.endSetColumn();
+            this.#callback();
         }.bind(this), 100);
-    }
-
-    endSetColumn(){
-        this.#boardView.removeEvent();
-        this.#callback();
     }
 
     visitMachinePlayer() {
