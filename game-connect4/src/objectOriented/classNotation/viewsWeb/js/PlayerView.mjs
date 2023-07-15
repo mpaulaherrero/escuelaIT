@@ -4,7 +4,7 @@ export class PlayerView{
     #player
     #boardView
     #callback
-    #thinking
+    #thinking = document.getElementById('thinking');
 
     constructor(player, boardView, callback) {
         this.#player = player;
@@ -67,17 +67,13 @@ export class PlayerView{
     }
 
     putToken(message){
-        this.#thinking = document.createElement('div');
-        this.#thinking.id="loading";
         this.#thinking.innerText=message;
-        document.getElementsByClassName('box-left')[0].append(this.#thinking);
-
-        document.getElementById('loading').style.display = "block";
+        this.#thinking.className='thinking';
+        this.#player.setColumn();
         setTimeout(function() {
-            this.#player.setColumn();
+            this.#thinking.className='hidden';
             this.#player.putCoordinate();
             this.endSetColumn();
-            this.#thinking.remove();
         }.bind(this), 100);
     }
 
