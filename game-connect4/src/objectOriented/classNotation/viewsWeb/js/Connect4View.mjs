@@ -1,17 +1,17 @@
-import { NumPlayersMenu } from './NumPlayersMenu.mjs'
+import { PlayersSelectorView } from './PlayersSelectorView.mjs'
 import { GameView } from './GameView.mjs'
 import { DialogView } from './DialogView.mjs';
 
 export class Connect4View {
-    #numPlayersMenu
-   
+    #playersSelectorView
+
     constructor(){
-        this.#numPlayersMenu = new NumPlayersMenu(this.play.bind(this));
+        this.#playersSelectorView = new PlayersSelectorView(this.play.bind(this));
         DialogView.writeWelcome();
     }
 
     play() {
-        const numPlayers = this.#numPlayersMenu.read();
+        const numPlayers = this.#playersSelectorView.read();
         const gameView = new GameView(numPlayers);
         gameView.play();
     }    
