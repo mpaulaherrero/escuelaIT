@@ -1,5 +1,5 @@
 import { DialogView } from './DialogView.mjs'
-export class NumPlayersMenu {
+export class PlayersSelectorView {
 
     #options
 
