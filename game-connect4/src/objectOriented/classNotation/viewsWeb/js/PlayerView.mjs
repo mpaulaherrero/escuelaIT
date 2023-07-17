@@ -4,13 +4,13 @@ export class PlayerView{
     #player
     #boardView
     #callback
-    #thinking = document.getElementById('thinking');
+    #thinking;
 
     constructor(player, boardView, callback) {
         this.#player = player;
         this.#boardView = boardView;
         this.#callback = callback;
-
+        this.#thinking = document.getElementById('thinking');
         this.#renderHTML();
     }
 
