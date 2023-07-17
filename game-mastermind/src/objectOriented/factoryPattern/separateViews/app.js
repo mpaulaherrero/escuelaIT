@@ -52,7 +52,7 @@ function initGameView() {
             } while (!that.game.checkEnd());
             that.showResults();
             const STATES_MESSAGE = ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"];
-            console.writeln(STATES_MESSAGE[this.game.getState()]);
+            console.writeln(STATES_MESSAGE[that.game.getState()]);
         }
     }
 }
@@ -274,7 +274,7 @@ function initResult(){
 function initColors(){
     const that = {
         COLORS: "rgybmc"
-    }    
+    }
 
     return {
         getRandomColor(){
