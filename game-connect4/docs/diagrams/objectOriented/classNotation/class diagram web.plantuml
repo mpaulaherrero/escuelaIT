@@ -199,29 +199,37 @@ package "ViewsWeb" <<Rectangle>> #caa {
         -eventListener
         constructor(board)
         -renderHTML()
-        addEvent(callback)
-        removeEvent()
+        allowSelectColumn(callback)
+        notAllowSelectColumn()
         writeTokens()
         displayWinnerLine()
     }
 
     class Connect4View {
-        -numPlayersMenu
+        -playersSelectorView
         
-        constructor(console)
+        constructor()
         play()
     }
 
     class DialogView {
-        {static} welcomeText
+        {static} WELCOME_TEXT
+        {static} WINNER_TEXT
+        {static} TIE_TEXT
+        {static} FULL_COLUMN_TEXT
+        {static} SELECT_COLUMN_TEXT
         {static} writeWelcome()
+        {static} writeTie()
+        {static} writeFullColumn()
         {static} write(text)
+        {static} writeSelectColumnIfNotWelcome()
         {static} writeIfNotWelcome(text)
-        {static} writeWinner(text, element)
-    }    
+        {static} writeWinner()
+    }
 
     class GameView {
         -game
+        -activePlayer
         -boardView
         
         constructor(numPlayers)
@@ -230,17 +238,17 @@ package "ViewsWeb" <<Rectangle>> #caa {
         isFinished()
     }
 
-    class NumPlayersMenu {
+    class PlayersSelectorView {
         -options
         constructor(callback)
-        -getOption(text,value,selected)
+        -getOption(text, value, selected)
         -getButton(text, callback)
         read()
     }
 
     class PlayerView {
         -player
-        -cboardView
+        -boardView
         -callback
         -thinking
 
@@ -253,6 +261,8 @@ package "ViewsWeb" <<Rectangle>> #caa {
         visitUserPlayer()
         visitMachinePlayer()
         visitMinimaxMachinePlayer()
+        setWinner()
+        setTie()
     }
 }
 
@@ -303,10 +313,10 @@ GameView *-down-> BoardView
 GameView *-down-> PlayerView
 
 Connect4View -down-> DialogView
-Connect4View -down-> NumPlayersMenu
+Connect4View -down-> PlayersSelectorView
 Connect4View *-down-> GameView
 
-NumPlayersMenu -down-> DialogView
+PlayersSelectorView -down-> DialogView
 
 indexHTML *-> Connect4View
 
