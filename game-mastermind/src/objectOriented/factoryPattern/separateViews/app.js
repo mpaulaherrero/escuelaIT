@@ -99,15 +99,15 @@ function initGame(){
 
 function initCombination(){
     const that = {
-       COMBINATION_LENGHT: 4,
+       COMBINATION_LENGTH: 4,
        value: "",
 
        colors: initColors()
 
     }
     return {
-        getLenght(){
-            return that.COMBINATION_LENGHT;
+        getLength(){
+            return that.COMBINATION_LENGTH;
         },
         setValue(value){
             that.value=value;
@@ -115,8 +115,8 @@ function initCombination(){
         getValue(){
             return that.value;
         },
-        validateLenght(){
-            return that.COMBINATION_LENGHT !== that.value.length;
+        validateLength(){
+            return that.COMBINATION_LENGTH !== that.value.length;
         },
         validateColors() {
             let validColor = true;
@@ -155,7 +155,7 @@ function initSecretCombination(){
     const that = {
         combination: initCombination(),
         generate(){
-            for (let i = 0; i < this.combination.getLenght(); i++) {
+            for (let i = 0; i < this.combination.getLength(); i++) {
                 let uniqueColor;
                  do {
                     let randomColor = this.combination.getRandomColor();
@@ -170,7 +170,7 @@ function initSecretCombination(){
         }
     }
     that.generate();
-    console.writeln(`The secret combination is ${that.combination.getValue()}`);
+    //console.writeln(`The secret combination is ${that.combination.getValue()}`);
     return that.combination;
 }
 
@@ -210,7 +210,7 @@ function initProposedCombination(){
         },
         checkErrors(){
             let errors = [];
-            if (that.combination.validateLenght()) {
+            if (that.combination.validateLength()) {
                 errors[errors.length] = `Wrong proposed combination length`;
             }
             if (!that.combination.validateColors()) {
@@ -222,7 +222,7 @@ function initProposedCombination(){
             return errors;
         },
         compare(secretCombination){
-            for (let i = 0; i < that.combination.getLenght(); i++) {
+            for (let i = 0; i < that.combination.getLength(); i++) {
                 if (secretCombination.getValue()[i] === that.combination.getValue()[i]) {
                    that.result.addBlacks();
                 } else {
@@ -231,7 +231,7 @@ function initProposedCombination(){
                     }
                 }
             }
-            that.result.setWinner(that.combination.getLenght());
+            that.result.setWinner(that.combination.getLength());
         },
         isWinner(){
             return that.result.isWinner();
@@ -262,8 +262,8 @@ function initResult(){
         getWhites(){
             return that.whites;
         },
-        setWinner(combinationLenght){
-            that.isWinner = that.blacks === combinationLenght;
+        setWinner(combinationLength){
+            that.isWinner = that.blacks === combinationLength;
         },
         isWinner(){
             return that.isWinner;
