@@ -20,6 +20,7 @@ export class GameView {
 
     play(){
         this.#console.writeln(`----- MASTERMIND -----`);
+        this.#boardView.setSecretCombination();
         do {
             this.#boardView.writeAttempts();
             this.#boardView.readProposedCombination();

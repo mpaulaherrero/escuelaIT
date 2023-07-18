@@ -1,3 +1,5 @@
+import { RandomSecretCombination } from './RandomSecretCombination.mjs'
+import { UserSecretCombination } from './UserSecretCombination.mjs'
 import { Result } from './Result.mjs'
 
 export class Board {
@@ -8,10 +10,17 @@ export class Board {
     #secretCombination
     #results
 
-    constructor(secretCombination){
-        this.#secretCombination = secretCombination;
+    constructor(numOfPlayers){
         this.#proposedCombinations = [];
         this.#results = [];
+
+        switch(numOfPlayers){
+            case 0:
+                this.#secretCombination = new RandomSecretCombination();
+                break;
+            default:
+                this.#secretCombination = new UserSecretCombination();
+        }
     }
 
     getSecretCombination(){

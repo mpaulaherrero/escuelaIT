@@ -1,4 +1,3 @@
-import { SecretCombination } from './SecretCombination.mjs'
 import { Board } from './Board.mjs'
 
 export class Game {
@@ -9,7 +8,7 @@ export class Game {
     #state
 
     constructor(numPlayers){
-        this.#board = new Board(new SecretCombination());
+        this.#board = new Board(numPlayers);
         this.#state = Game.STATES.PLAYER_IN_GAME;
     }
 
