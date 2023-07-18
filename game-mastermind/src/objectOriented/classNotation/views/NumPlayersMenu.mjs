@@ -1,5 +1,5 @@
-import { Option } from '../types/Option.mjs'
-import { Menu } from '../types/Menu.mjs'
+import { Option } from './Option.mjs'
+import { Menu } from './Menu.mjs'
 
 export class NumPlayersMenu extends Menu {
 
