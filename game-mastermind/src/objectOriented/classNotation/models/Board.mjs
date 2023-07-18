@@ -1,13 +1,16 @@
 import { RandomSecretCombination } from './RandomSecretCombination.mjs'
+import { RandomProposedCombination } from './RandomProposedCombination.mjs'
 import { UserSecretCombination } from './UserSecretCombination.mjs'
+import { UserProposedCombination } from './UserProposedCombination.mjs'
 import { Result } from './Result.mjs'
 
 export class Board {
 
     MAX_ATTEMPTS = 10;
 
-    #proposedCombinations
     #secretCombination
+    #proposedCombination
+    #proposedCombinations
     #results
 
     constructor(numOfPlayers){
@@ -17,9 +20,15 @@ export class Board {
         switch(numOfPlayers){
             case 0:
                 this.#secretCombination = new RandomSecretCombination();
+                this.#proposedCombination = new RandomProposedCombination();
+                break;
+            case 1:
+                this.#secretCombination = new RandomSecretCombination();
+                this.#proposedCombination = new UserProposedCombination();
                 break;
             default:
                 this.#secretCombination = new UserSecretCombination();
+                this.#proposedCombination = new UserProposedCombination();
         }
     }
 
@@ -27,8 +36,8 @@ export class Board {
         return this.#secretCombination;
     }
 
-    setLastProposedCombination(proposedCombination){
-        this.#proposedCombinations[this.#proposedCombinations.length] = proposedCombination;
+    newLastProposedCombination(){
+        this.#proposedCombinations[this.#proposedCombinations.length] = this.#proposedCombination.clone();
     }
 
     getLastProposedCombination(){

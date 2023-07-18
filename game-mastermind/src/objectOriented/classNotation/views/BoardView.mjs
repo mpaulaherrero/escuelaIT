@@ -19,7 +19,7 @@ export class BoardView {
     }
 
     visitUserSecretCombination(){
-        this.#board.getSecretCombination().setCombination(new CombinationView(this.#console,`Propose a secret combination`).readValue());
+        new CombinationView(this.#console,this.#board.getSecretCombination(),`Propose a secret combination`).readValue();
         //this.#console.writeln(`The user secret combination is ${this.#board.getSecretCombination().getValue()}`);
 
     }
@@ -35,9 +35,18 @@ export class BoardView {
         return `${this.#board.getProposedCombination(position).getValue()}  --> ${this.#board.getResult(position).getBlacks()} blacks and ${this.#board.getResult(position).getWhites()} whites`;
     }
 
-    readProposedCombination(){
-        this.#board.setLastProposedCombination(new CombinationView(this.#console).readValue());
+    getProposedCombination(){
+        this.#board.newLastProposedCombination();
+        this.#board.getLastProposedCombination().accept(this);
+    }
+
+    visitRandomProposedCombination(){
+        this.#board.getLastProposedCombination().setCombination();
         this.#board.checkBlacksAndWhites();
     }
 
+    visitUserProposedCombination(){
+        new CombinationView(this.#console,this.#board.getLastProposedCombination()).readValue();
+        this.#board.checkBlacksAndWhites();
+    }
 }

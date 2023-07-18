@@ -23,7 +23,7 @@ export class GameView {
         this.#boardView.setSecretCombination();
         do {
             this.#boardView.writeAttempts();
-            this.#boardView.readProposedCombination();
+            this.#boardView.getProposedCombination();
         } while (!this.#game.checkEnd());
         this.#boardView.writeAttempts();
         this.writeFinish();

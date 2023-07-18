@@ -1,6 +1,6 @@
-import { SecretCombination } from './SecretCombination.mjs'
+import { UserCombination } from './UserCombination.mjs'
 
-export class UserSecretCombination extends SecretCombination {
+export class UserSecretCombination extends UserCombination {
 
     constructor(){
         super();
@@ -8,9 +8,5 @@ export class UserSecretCombination extends SecretCombination {
 
     accept(visitor){
         visitor.visitUserSecretCombination();
-    }
-
-    setCombination(combination){
-       this.setValue(combination.getValue());
     }
 }

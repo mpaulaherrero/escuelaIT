@@ -1,6 +1,6 @@
-import { SecretCombination } from './SecretCombination.mjs'
+import { RandomCombination } from './RandomCombination.mjs'
 
-export class RandomSecretCombination extends SecretCombination {
+export class RandomSecretCombination extends RandomCombination {
 
     constructor(){
         super();
@@ -10,18 +10,4 @@ export class RandomSecretCombination extends SecretCombination {
         visitor.visitRandomSecretCombination();
     }
 
-    setCombination(){
-        for (let i = 0; i < this.getLength(); i++) {
-            let uniqueColor;
-             do {
-                let randomColor = this.getRandomColor();
-                let originalValue = this.getValue();
-                this.setValue(originalValue + randomColor);
-                uniqueColor = this.validateUniqueColors();
-                if (!uniqueColor) {
-                    this.setValue(originalValue);
-                }
-            } while (!uniqueColor);
-        }
-    }
 }

@@ -6,9 +6,9 @@ export class CombinationView {
     #combination
     #console
 
-    constructor(console, message=`Propose a combination`){
+    constructor(console, combination, message=`Propose a combination`){
         this.#message = message;
-        this.#combination = new Combination();
+        this.#combination = combination;
         this.#console = console;
     }
 
