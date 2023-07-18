@@ -30,4 +30,8 @@ export class Game {
     getState(){
         return this.#state;
     }
+
+    checkBlacksAndWhites(){
+        this.getBoard().checkBlacksAndWhites();
+    }
 }

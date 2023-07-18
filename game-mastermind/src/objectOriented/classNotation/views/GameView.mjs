@@ -24,6 +24,7 @@ export class GameView {
         do {
             this.#boardView.writeAttempts();
             this.#boardView.getProposedCombination();
+            this.#game.checkBlacksAndWhites();
         } while (!this.#game.checkEnd());
         this.#boardView.writeAttempts();
         this.writeFinish();
