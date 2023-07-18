@@ -1,29 +1,24 @@
 import { Combination } from './Combination.mjs'
 
-export class SecretCombination {
-    #combination
+export class SecretCombination extends Combination {
 
     constructor(){
-        this.#combination = new Combination();
+        super();
+        this.#create();
     }
 
-    #generate(){
-        for (let i = 0; i < this.#combination.getLength(); i++) {
+    #create(){
+        for (let i = 0; i < this.getLength(); i++) {
             let uniqueColor;
              do {
-                let randomColor = this.#combination.getRandomColor();
-                let originalValue = this.#combination.getValue();
-                this.#combination.setValue(originalValue + randomColor);
-                uniqueColor = this.#combination.validateUniqueColors();
+                let randomColor = this.getRandomColor();
+                let originalValue = this.getValue();
+                this.setValue(originalValue + randomColor);
+                uniqueColor = this.validateUniqueColors();
                 if (!uniqueColor) {
-                    this.#combination.setValue(originalValue);
+                    this.setValue(originalValue);
                 }
             } while (!uniqueColor);
         }
-    }
-
-    create(){
-        this.#generate();
-        return this.#combination
     }
 }

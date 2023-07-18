@@ -1,40 +1,26 @@
 import { SecretCombination } from './SecretCombination.mjs'
+import { Board } from './Board.mjs'
 
 export class Game {
 
+    #board
     #state
-    #proposedCombinations
-    #secretCombination
 
-    constructor(){
+    constructor(numPlayers){
+        this.#board = new Board(new SecretCombination());
         this.#state = 2;
-        this.#proposedCombinations = [];
-        this.#secretCombination = new SecretCombination().create();
     }
 
-    getProposedCombinationsLength(){
-        return this.#proposedCombinations.length;
-    }
-
-    proposedCombinationToString(position){
-        return this.#proposedCombinations[position].toString();
-    }
-
-    compareSecretCombination(){
-        this.#proposedCombinations[this.#proposedCombinations.length-1].compare(this.#secretCombination);
-    }
-
-    setLastProposedCombination(proposedCombination){
-        this.#proposedCombinations[this.#proposedCombinations.length] = proposedCombination;
+    getBoard(){
+        return this.#board;
     }
 
     checkEnd(){
         const STATES = { PLAYER_LOOSE: 0, PLAYER_WIN: 1, PLAYER_IN_GAME: 2 };
-        const MAX_ATTEMPTS = 10;
-    
-        if (this.#proposedCombinations[this.#proposedCombinations.length-1].isWinner()) {
+
+        if (this.#board.isLastProposedCombinationAWinner()) {
             this.#state = STATES.PLAYER_WIN
-        } else if (this.#proposedCombinations.length === MAX_ATTEMPTS) {
+        } else if (this.#board.isComplete()) {
             this.#state  = STATES.PLAYER_LOOSE;
         } else{
             this.#state = STATES.PLAYER_IN_GAME;
@@ -44,9 +30,5 @@ export class Game {
 
     getState(){
         return this.#state;
-    }
-
-    getSecretCombination(){
-        return this.#secretCombination;
     }
 }

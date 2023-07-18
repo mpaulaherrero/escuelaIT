@@ -9,9 +9,8 @@ export class GameView {
 
     constructor(numPlayers, console){
         this.#game = new Game(numPlayers);
-        this.#boardView = new BoardView(this.#game,console);
+        this.#boardView = new BoardView(this.#game.getBoard(),console);
         this.#console = console;
-        //console.writeln(`The secret combination is ${this.#game.getSecretCombination().getValue()}`);
     }
 
     writeFinish() {
@@ -27,11 +26,10 @@ export class GameView {
     play(){
         this.#console.writeln(`----- MASTERMIND -----`);
         do {
-            this.#boardView.showResults();
+            this.#boardView.writeAttempts();
             this.#boardView.readProposedCombination();
-            this.#game.compareSecretCombination();
         } while (!this.#game.checkEnd());
-        this.#boardView.showResults();
+        this.#boardView.writeAttempts();
         this.writeFinish();
     }
 }

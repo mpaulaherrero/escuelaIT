@@ -24,6 +24,7 @@ export class Result {
     getWhites(){
         return this.#whites;
     }
+    
     setWinner(combinationLength){
         this.#isWinner = this.#blacks === combinationLength;
     }
