@@ -20,5 +20,5 @@ export class Connect4View {
             gameView.play();
             this.#continueDialog.read();
         } while (this.#continueDialog.isAffirmative());
-    }    
+    }
 }
