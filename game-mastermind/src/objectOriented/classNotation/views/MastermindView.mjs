@@ -1,7 +1,7 @@
 import { YesNoDialog } from '../types/YesNoDialog.mjs'
 import { NumPlayersMenu } from './NumPlayersMenu.mjs'
 import { GameView } from './GameView.mjs'
-import { ConsoleView } from './views/ConsoleView.mjs'
+import { ConsoleView } from './ConsoleView.mjs'
 
 export class MastermindView {
 
