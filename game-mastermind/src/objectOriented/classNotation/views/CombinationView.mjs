@@ -1,4 +1,3 @@
-import { Combination } from '../models/Combination.mjs'
 import { Color } from '../types/Color.mjs'
 
 export class CombinationView {

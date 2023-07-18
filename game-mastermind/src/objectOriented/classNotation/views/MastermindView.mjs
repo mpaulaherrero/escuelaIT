@@ -1,6 +1,7 @@
 import { YesNoDialog } from '../types/YesNoDialog.mjs'
 import { NumPlayersMenu } from './NumPlayersMenu.mjs'
 import { GameView } from './GameView.mjs'
+import { ConsoleView } from './views/ConsoleView.mjs'
 
 export class MastermindView {
 
@@ -8,8 +9,8 @@ export class MastermindView {
     #continueDialog
     #numPlayersMenu
 
-    constructor(console){
-        this.#console = console;
+    constructor(){
+        this.#console = new ConsoleView();
         this.#continueDialog = new YesNoDialog(`Do you want to continue? (y/n): `, this.#console);
         this.#numPlayersMenu = new NumPlayersMenu(this.#console);
     }
