@@ -55,8 +55,4 @@ export class Combination {
     getRandomColor(){
         return Color.getRandomColor().getCode();
     }
-
-    colorsToString(){
-        return Color.colorsCodeToString();
-    }
 }

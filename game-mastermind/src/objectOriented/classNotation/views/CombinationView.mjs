@@ -1,4 +1,5 @@
 import { Combination } from '../models/Combination.mjs'
+import { Color } from '../types/Color.mjs'
 
 export class CombinationView {
     #combination
@@ -30,7 +31,7 @@ export class CombinationView {
             errors[errors.length] = `Wrong proposed combination length`;
         }
         if (!this.#combination.validateColors()) {
-            errors[errors.length] = `Wrong colors, they must be: ${this.#combination.colorsToString()}`;
+            errors[errors.length] = `Wrong colors, they must be: ${Color.colorsCodeToString()}`;
         }
         if (!this.#combination.validateUniqueColors()) {
             errors[errors.length] = `Wrong proposed combination, at least one color is repeated`;
