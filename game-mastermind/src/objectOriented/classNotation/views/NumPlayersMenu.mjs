@@ -4,10 +4,10 @@ import { Menu } from '../types/Menu.mjs'
 export class NumPlayersMenu extends Menu {
 
     constructor(console) {
-        super("Número de Jugadores", console);
-        this.add(new Option("Máquina VS Máquina", 0));
-        this.add(new Option("Máquina VS Jugador", 1));
-        this.add(new Option("Jugador VS Jugador", 2));
+        super("Number of Players", console);
+        this.add(new Option("Machine VS Machine", 0));
+        this.add(new Option("Machine VS Player", 1));
+        this.add(new Option("Player VS Player", 2));
     }
 
     read() {
