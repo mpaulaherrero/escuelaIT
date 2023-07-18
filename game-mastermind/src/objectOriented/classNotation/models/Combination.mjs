@@ -1,14 +1,12 @@
-import { Colors } from './Colors.mjs'
+import { Color } from '../types/Color.mjs'
 
 export class Combination {
     COMBINATION_LENGTH = 4;
 
     #value
-    #colors
 
     constructor(){
         this.#value = "";
-        this.#colors = new Colors();
     }
 
     getLength(){
@@ -30,7 +28,7 @@ export class Combination {
     validateColors() {
         let validColor = true;
         for (let i = 0; validColor && i < this.#value.length; i++) {
-          validColor = this.#colors.validColor(this.#value[i]);
+          validColor = Color.validateColorCode(this.#value[i]);
         }
         return validColor;
     }
@@ -55,10 +53,10 @@ export class Combination {
     }
 
     getRandomColor(){
-        return this.#colors.getRandomColor();
+        return Color.getRandomColor().getCode();
     }
 
     colorsToString(){
-        return this.#colors.toString();
+        return Color.colorsCodeToString();
     }
 }
