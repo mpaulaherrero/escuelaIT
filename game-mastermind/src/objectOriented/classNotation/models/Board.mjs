@@ -51,7 +51,6 @@ export class Board {
         }
         result.setWinner(this.#secretCombination.getLength());
         this.#results[this.#results.length] = result;
-
     }
 
     isLastProposedCombinationAWinner(){
