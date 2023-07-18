@@ -19,8 +19,8 @@ export class BoardView {
     }
 
     visitUserSecretCombination(){
-        this.#board.getSecretCombination().setCombination(new CombinationView(this.#console).readValue());
-        this.#console.writeln(`The user secret combination is ${this.#board.getSecretCombination().getValue()}`);
+        this.#board.getSecretCombination().setCombination(new CombinationView(this.#console,`Propose a secret combination`).readValue());
+        //this.#console.writeln(`The user secret combination is ${this.#board.getSecretCombination().getValue()}`);
 
     }
 

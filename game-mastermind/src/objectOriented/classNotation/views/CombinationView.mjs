@@ -2,10 +2,12 @@ import { Combination } from '../models/Combination.mjs'
 import { Color } from '../types/Color.mjs'
 
 export class CombinationView {
+    #message
     #combination
     #console
 
-    constructor(console){
+    constructor(console, message=`Propose a combination`){
+        this.#message = message;
         this.#combination = new Combination();
         this.#console = console;
     }
@@ -13,7 +15,7 @@ export class CombinationView {
     readValue(){
         let correctCombination;
         do {
-            this.#combination.setValue(this.#console.readString(`Propose a combination: `));
+            this.#combination.setValue(this.#console.readString(`${this.#message} (valid colors: ${Color.colorsCodeToString()}): `));
             const errors = this.checkErrors();
             correctCombination = errors.length === 0;
             if (!correctCombination) {
