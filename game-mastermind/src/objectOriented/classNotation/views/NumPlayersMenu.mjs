@@ -5,7 +5,7 @@ export class NumPlayersMenu extends Menu {
 
     constructor(console) {
         super("Número de Jugadores", console);
-        this.add(new Option("Jugador VS Máquina", 0));
+        this.add(new Option("Máquina VS Jugador", 0));
         this.add(new Option("Jugador VS Jugador", 1));
     }
 

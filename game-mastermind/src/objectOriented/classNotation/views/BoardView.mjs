@@ -13,11 +13,11 @@ export class BoardView {
     writeAttempts(){
         this.#console.writeln(`\n${this.#board.getProposedCombinationsLength()} attempt(s):\n****`);
         for (let i = 0; i < this.#board.getProposedCombinationsLength(); i++) {
-            this.#console.writeln(this.writeLine(i));
+            this.#console.writeln(this.#writeLine(i));
         }
     }
 
-    writeLine(position){
+    #writeLine(position){
         return `${this.#board.getProposedCombination(position).getValue()}  --> ${this.#board.getResult(position).getBlacks()} blacks and ${this.#board.getResult(position).getWhites()} whites`;
     }
 

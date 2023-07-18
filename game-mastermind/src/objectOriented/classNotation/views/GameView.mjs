@@ -16,11 +16,6 @@ export class GameView {
     writeFinish() {
         const STATES_MESSAGE = ["You've lost!!! :-(", "You've won!!! ;-)","You're playing"];
         this.#console.writeln(STATES_MESSAGE[this.#game.getState()]);
-        // if(this.#game.isWinner()){
-        //     this.#console.writeln(`Victoria para ${this.#game.getWinnerToken().getCode()}`);
-        // } else {
-        //     this.#console.writeln(`¡Empate!`);
-        // }
     }
 
     play(){
