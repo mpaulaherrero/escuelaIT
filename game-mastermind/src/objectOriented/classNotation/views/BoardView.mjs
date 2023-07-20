@@ -29,7 +29,7 @@ export class BoardView {
         this.#board.getLastProposedCombination().accept(this);
     }
 
-    visitMinimaxSecretCombination(){
+    visitMinimaxProposedCombination(){
         this.#board.getLastProposedCombination().setCombination();
         this.#board.getLastProposedCombination().setResult(this.#board.getBlacksAndWhites());
     }

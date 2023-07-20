@@ -138,7 +138,7 @@ package "Views" <<Rectangle>> #caa {
         visitRandomSecretCombination()
         visitUserSecretCombination()
         getProposedCombination()
-        visitMinimaxSecretCombination()
+        visitMinimaxProposedCombination()
         visitUserProposedCombination()
         writeAttempts()
         -writeLine(position)
