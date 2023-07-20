@@ -29,8 +29,9 @@ export class BoardView {
         this.#board.getLastProposedCombination().accept(this);
     }
 
-    visitRandomProposedCombination(){
+    visitMinimaxSecretCombination(){
         this.#board.getLastProposedCombination().setCombination();
+        this.#board.getLastProposedCombination().setResult(this.#board.getBlacksAndWhites());
     }
 
     visitUserProposedCombination(){
