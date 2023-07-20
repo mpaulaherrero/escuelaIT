@@ -43,13 +43,14 @@ package "Models" <<Rectangle>> #aca {
         getProposedCombination(position)
         getProposedCombinationsLength()
         getResult(position)
-        checkBlacksAndWhites()
+        setResult()
+        getBlacksAndWhites()
         isLastProposedCombinationAWinner()
         isComplete()
     }
 
     class Combination {
-        COMBINATION_LENGTH
+        {static} COMBINATION_LENGTH
         -value
         constructor()
         getLength()
@@ -58,7 +59,6 @@ package "Models" <<Rectangle>> #aca {
         validateLength()
         validateColors()
         validateUniqueColors()
-        hasColor(color)
         getRandomColor()
     }
 
@@ -70,19 +70,25 @@ package "Models" <<Rectangle>> #aca {
         getBoard()
         checkEnd()
         getState()
-        checkBlacksAndWhites()
+        setResult()
+    }
+
+    class MinimaxProposedCombination extends Combination {
+        -impossibleCombination
+        -possibleCombination
+        constructor()
+        accept(visitor)
+        setCombination()
+        -getInitialMinMaxTable()
+        setResult(result)
+        {static} getAllCombinations()
+        clone()
     }
 
     class RandomCombination extends Combination{
         constructor()
         accept(visitor)
         setCombination()
-    }
-
-    class RandomProposedCombination extends RandomCombination{
-        constructor()
-        accept(visitor)
-        clone()
     }
 
     class RandomSecretCombination extends RandomCombination{
@@ -117,6 +123,9 @@ package "Models" <<Rectangle>> #aca {
         getWhites()
         setWinner(combinationLength)
         isWinner()
+        equals(result)
+        {static} checkBlacksAndWhites(secretCombination, combination)
+        {static} hasColor(combination, color)
     }
 }
 
@@ -129,7 +138,7 @@ package "Views" <<Rectangle>> #caa {
         visitRandomSecretCombination()
         visitUserSecretCombination()
         getProposedCombination()
-        visitRandomProposedCombination()
+        visitMinimaxSecretCombination()
         visitUserProposedCombination()
         writeAttempts()
         -writeLine(position)
@@ -208,13 +217,16 @@ package "Views" <<Rectangle>> #caa {
 }
 
 Board *-down-> RandomSecretCombination
-Board *-down-> RandomProposedCombination
+Board *-down-> MinimaxProposedCombination
 Board *-down-> UserSecretCombination
 Board *-down-> UserProposedCombination
 Board *-right-> Result
 Board -down[hidden]-> Combination
 
 Combination -d-> Color
+
+MinimaxProposedCombination -> Color
+MinimaxProposedCombination -> Result
 
 Game *-down-> Board
 
