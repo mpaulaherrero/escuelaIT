@@ -39,9 +39,13 @@ Existe la rama **pruebasUnitaras** donde se programaron pruebas unitarias para a
 + Jest
 
 ## Ejecutar
-para ejecutar los ejemplos:
+
+Para ejecutar los ejemplos:
 > node app.js
 
 > node app.mjs
 
 En el caso de las vistas con HTML se debe levantar un servidor (open width live server en Visual Code) y en el navegador abrir index.html.
+
+Para ejecutar las pruebas:
+> npm test
